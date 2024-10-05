@@ -63,9 +63,6 @@ private:
     D3D12_COMMAND_QUEUE_DESC                            commandQueueDesc_               = {};           // コマンドキューの設定
     DXGI_SWAP_CHAIN_DESC1                               swapChainDesc_                  = {};           // スワップチェーンの設定
     D3D12_RENDER_TARGET_VIEW_DESC                       rtvDesc_                        = {};           // RTVの設定
-    D3D12_DESCRIPTOR_RANGE                              descriptorRange_[1]             = {};
-    D3D12_ROOT_SIGNATURE_DESC                           descriptionRootSignature_       = {};
-    D3D12_INPUT_LAYOUT_DESC                             inputLayoutDesc_                = {};
     D3D12_DEPTH_STENCIL_VIEW_DESC                       dsvDesc_                        = {};
     D3D12_DEPTH_STENCIL_DESC                            depthStencilDesc_               = {};
     HANDLE                                              fenceEvent_                     = {};
@@ -80,16 +77,6 @@ private: /// ======= プライベート関数
         bool _shaderVisible
     );
 
-    Microsoft::WRL::ComPtr<IDxcBlob> CompileShader(
-        // CompilerするShaderファイルへのパス
-        const std::wstring& filePath,
-        // Compilerに使用するProfile
-        const wchar_t* profile,
-        // 初期化で生成したものを3つ
-        const Microsoft::WRL::ComPtr<IDxcUtils>& dxcUtils,
-        const Microsoft::WRL::ComPtr<IDxcCompiler3>& dxcCompiler,
-        const Microsoft::WRL::ComPtr<IDxcIncludeHandler>& includeHandler
-    );
     Microsoft::WRL::ComPtr<ID3D12Resource> CreateDepthStencilTextureResource(
         const Microsoft::WRL::ComPtr<ID3D12Device>& _device,
         int32_t _width,

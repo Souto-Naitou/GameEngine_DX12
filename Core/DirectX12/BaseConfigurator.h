@@ -9,10 +9,10 @@ public:
     /// 変更を適用する
     /// </summary>
     /// <param name="_mode">モード</param>
-    inline void Set(T& _data) const { current_ = _data; }
+    inline void Set(T& _data) const { data_ = _data; }
 
-    inline T* Get() { return &current_; }
+    inline T* Get() { return &data_; }
 
 protected:
-    T current_ = {};
+    T data_ = {};
 };

@@ -115,13 +115,7 @@ int DirectXCommon::Initialize()
     pPipelineConfig_ = std::make_unique<PipelineState::Configurator>();
     pPipelineConfig_->Initialize(PipelineState::Types::Add, device_.Get());
 
-    /// ディスクリプタテーブルのディスクリプタレンジを設定する (SRVを通じてシェーダにリソースへのアクセスを提供・t0)
-    descriptorRange_[0].BaseShaderRegister = 0; // 0から始まる
-    descriptorRange_[0].NumDescriptors = 1; // 数は1つ
-    descriptorRange_[0].RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV; // SRVを使う
-    descriptorRange_[0].OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND; // Offsetを自動計算
-
-    // DespStencilResource
+    // DepthStencilResource
     depthStencilResource_ = CreateDepthStencilTextureResource(device_, clientWidth_, clientHeight_);
     // DSV用のヒープでディスクリプタの数は1。DSVはShader内で触るものではないため、ShaderVisibleはfalse
     dsvDescriptorHeap_ = CreateDescriptorHeap(device_, D3D12_DESCRIPTOR_HEAP_TYPE_DSV, 1, false);
@@ -129,7 +123,7 @@ int DirectXCommon::Initialize()
     /// DSVの設定
     dsvDesc_.Format = DXGI_FORMAT_D24_UNORM_S8_UINT; // Format。基本的にはResourceに合わせる
     dsvDesc_.ViewDimension = D3D12_DSV_DIMENSION_TEXTURE2D; // 2dTexture
-    // DSVHeapの戦闘にDSVを作る
+    // DSVHeapの先頭にDSVを作る
     device_->CreateDepthStencilView(depthStencilResource_.Get(), &dsvDesc_, dsvDescriptorHeap_.Get()->GetCPUDescriptorHandleForHeapStart());
 
     return 0;
@@ -149,72 +143,6 @@ Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> DirectXCommon::CreateDescriptorHeap
     descriptorHeapDesc.Flags = _shaderVisible ? D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE : D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
     HRESULT hr = _device->CreateDescriptorHeap(&descriptorHeapDesc, IID_PPV_ARGS(&descriptorHeap));
     return descriptorHeap;
-}
-
-Microsoft::WRL::ComPtr<IDxcBlob> DirectXCommon::CompileShader(
-    const std::wstring& filePath, 
-    const wchar_t* profile, 
-    const Microsoft::WRL::ComPtr<IDxcUtils>& dxcUtils, 
-    const Microsoft::WRL::ComPtr<IDxcCompiler3>& dxcCompiler, 
-    const Microsoft::WRL::ComPtr<IDxcIncludeHandler>& includeHandler
-)
-{
-    /// 1. hlslファイルを読み込む
-
-    // これからシェーダーをコンパイルする旨をログに出す
-    Log(ConvertString(std::format(L"Begin CompileShader, path:{}, profile:{}\n", filePath, profile)));
-    // hlslファイルを読む
-    Microsoft::WRL::ComPtr<IDxcBlobEncoding> shaderSource = nullptr;
-    HRESULT hr = dxcUtils->LoadFile(filePath.c_str(), nullptr, &shaderSource);
-    // 読めなかったら止める
-    assert(SUCCEEDED(hr));
-    // 読み込んだファイルの内容を設定する
-    DxcBuffer shaderSourceBuffer;
-    shaderSourceBuffer.Ptr = shaderSource->GetBufferPointer();
-    shaderSourceBuffer.Size = shaderSource->GetBufferSize();
-    shaderSourceBuffer.Encoding = DXC_CP_UTF8; // UTF-8の文字コードであることを通知
-
-    /// 2. Compileする
-    LPCWSTR arguments[] = {
-        filePath.c_str(),			// コンパイル対象のhlslファイル名
-        L"-E", L"main",				// エントリーポイントの指定。基本的にmain以外にはしない
-        L"-T", profile,				// ShaderProfileの設定
-        L"-Zi", L"-Qembed_debug",	// デバッグ用の情報を埋め込む
-        L"-Od",						// 最適化を外しておく
-        L"-Zpr",					// メモリレイアウトは行優先
-    };
-    // 実際にShaderをコンパイルする
-    Microsoft::WRL::ComPtr<IDxcResult> shaderResult = nullptr;
-    hr = dxcCompiler->Compile(
-        &shaderSourceBuffer,		// 読み込んだファイル
-        arguments,					// コンパイルオプション
-        _countof(arguments),		// コンパイルオプションの数
-        includeHandler.Get(),				// includeが含まれた諸々
-        IID_PPV_ARGS(&shaderResult)	// コンパイル結果
-    );
-    // コンパイルエラーではなくdxcが起動できないなど致命的な状況
-    assert(SUCCEEDED(hr));
-
-    /// 3. 警告・エラーが出ていないか確認する
-    Microsoft::WRL::ComPtr<IDxcBlobUtf8> shaderError = nullptr;
-    shaderResult->GetOutput(DXC_OUT_ERRORS, IID_PPV_ARGS(&shaderError), nullptr);
-    if (shaderError != nullptr && shaderError->GetStringLength() != 0)
-    {
-        Log(shaderError->GetStringPointer());
-        // 警告・エラーダメゼッタイ
-        assert(false);
-    }
-
-    /// 4. Compile結果を受け取って返す
-
-    // コンパイル結果から実行用のバイナリ部分を取得
-    Microsoft::WRL::ComPtr<IDxcBlob> shaderBlob = nullptr;
-    hr = shaderResult->GetOutput(DXC_OUT_OBJECT, IID_PPV_ARGS(&shaderBlob), nullptr);
-    assert(SUCCEEDED(hr));
-    // 成功したログを出す
-    Log(ConvertString(std::format(L"Compile Succeeded, path:{}, profile:{}\n", filePath, profile)));
-    // 実行用のバイナリを返却
-    return shaderBlob;
 }
 
 Microsoft::WRL::ComPtr<ID3D12Resource> DirectXCommon::CreateDepthStencilTextureResource(const Microsoft::WRL::ComPtr<ID3D12Device>& _device, int32_t _width, int32_t _height)

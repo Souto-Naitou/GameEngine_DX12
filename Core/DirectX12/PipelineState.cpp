@@ -62,9 +62,9 @@ void PipelineState::Configurator::Initialize(Types _type, ID3D12Device* _device)
 
     /// 実際に生成
     HRESULT hr_ = _device->CreateGraphicsPipelineState(&pipelineStateDesc,
-        IID_PPV_ARGS(&current_));
+        IID_PPV_ARGS(&data_));
     assert(SUCCEEDED(hr_));
-    if (!current_) return;
+    if (!data_) return;
 }
 
 void PipelineState::Configurator::Apply(Types _type)

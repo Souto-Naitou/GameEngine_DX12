@@ -7,8 +7,8 @@ class BaseConfiguratorForComPtr
 {
 public:
     virtual void Initialize() = 0;
-    T* Get() { return current_.Get(); }
+    T* Get() { return data_.Get(); }
 
 protected:
-    Microsoft::WRL::ComPtr<T> current_;
+    Microsoft::WRL::ComPtr<T> data_;
 };

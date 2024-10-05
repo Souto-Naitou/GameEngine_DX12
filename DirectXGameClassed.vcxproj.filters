@@ -37,9 +37,6 @@
     <Filter Include="DirectX\RootParameters">
       <UniqueIdentifier>{d0ca0545-14ee-4419-80ca-fc131d33ab81}</UniqueIdentifier>
     </Filter>
-    <Filter Include="DescriptorRange">
-      <UniqueIdentifier>{1572e578-5cca-4055-ada6-291866a11f0c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="DirectX\StaticSamplers">
       <UniqueIdentifier>{157749c7-58b7-4a90-a8fd-141c10e3d03a}</UniqueIdentifier>
     </Filter>
@@ -54,6 +51,9 @@
     </Filter>
     <Filter Include="DirectX\DepthStencil">
       <UniqueIdentifier>{47e3114f-9fbb-445f-866e-e4f4424942dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DirectX\DescriptorRange">
+      <UniqueIdentifier>{1572e578-5cca-4055-ada6-291866a11f0c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -88,7 +88,7 @@
       <Filter>DirectX\RootParameters</Filter>
     </ClCompile>
     <ClCompile Include="Core\DirectX12\DescriptorRange.cpp">
-      <Filter>DescriptorRange</Filter>
+      <Filter>DirectX\DescriptorRange</Filter>
     </ClCompile>
     <ClCompile Include="Core\DirectX12\StaticSamplers.cpp">
       <Filter>DirectX\StaticSamplers</Filter>
@@ -144,7 +144,7 @@
       <Filter>DirectX\RootParameters</Filter>
     </ClInclude>
     <ClInclude Include="Core\DirectX12\DescriptorRange.h">
-      <Filter>DescriptorRange</Filter>
+      <Filter>DirectX\DescriptorRange</Filter>
     </ClInclude>
     <ClInclude Include="Core\DirectX12\StaticSamplers.h">
       <Filter>DirectX\StaticSamplers</Filter>

@@ -16,6 +16,6 @@ void InputLayout::Configurator::Initialize()
     inputElementDescs_[2].Format = DXGI_FORMAT_R32G32B32_FLOAT;
     inputElementDescs_[2].AlignedByteOffset = D3D12_APPEND_ALIGNED_ELEMENT;
 
-    current_.pInputElementDescs = inputElementDescs_;
-    current_.NumElements = _countof(inputElementDescs_);
+    data_.pInputElementDescs = inputElementDescs_;
+    data_.NumElements = _countof(inputElementDescs_);
 }

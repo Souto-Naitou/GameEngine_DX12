@@ -7,36 +7,35 @@
 
 void DxcUtils::Configurator::Initialize()
 {
-    /// dxcCompilerを初期化
-    HRESULT hr_ = DxcCreateInstance(CLSID_DxcUtils, IID_PPV_ARGS(&current_));
+    HRESULT hr_ = DxcCreateInstance(CLSID_DxcUtils, IID_PPV_ARGS(&data_));
     assert(SUCCEEDED(hr_) && "DirectX Shader Compilerの初期化に失敗しました [DxcUtils]");
 }
 
 void DxcCompiler::Configurator::Initialize()
 {
-    HRESULT hr_ = DxcCreateInstance(CLSID_DxcCompiler, IID_PPV_ARGS(&current_));
+    HRESULT hr_ = DxcCreateInstance(CLSID_DxcCompiler, IID_PPV_ARGS(&data_));
     assert(SUCCEEDED(hr_) && "DirectX Shader Compilerの初期化に失敗しました [DxcCompiler]");
 }
 
 void IncludeHandler::Configurator::Initialize()
 {
     /// 現時点でincludeはしないが、includeに対応するための設定を行っておく
-    HRESULT hr_ = DxcUtils::Configurator::GetInstance()->Get()->CreateDefaultIncludeHandler(&current_);
+    HRESULT hr_ = DxcUtils::Configurator::GetInstance()->Get()->CreateDefaultIncludeHandler(&data_);
     assert(SUCCEEDED(hr_) && "includeに対応する設定に失敗しました");
 }
 
 void VertexShaderBlob::Configurator::Initialize()
 {
     /// ShaderをCompileする
-    current_ = CompileShader(L"Resources/Shaders/Object3d.VS.hlsl", L"vs_6_0");
-    assert(current_ != nullptr);
+    data_ = CompileShader(L"Resources/Shaders/Object3d.VS.hlsl", L"vs_6_0");
+    assert(data_ != nullptr);
 }
 
 void PixelShaderBlob::Configurator::Initialize()
 {
     /// ShaderをCompileする
-    current_ = CompileShader(L"Resources/Shaders/Object3d.PS.hlsl", L"ps_6_0");
-    assert(current_ != nullptr);
+    data_ = CompileShader(L"Resources/Shaders/Object3d.PS.hlsl", L"ps_6_0");
+    assert(data_ != nullptr);
 }
 
 Microsoft::WRL::ComPtr<IDxcBlob> CompileShader(
