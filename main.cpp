@@ -1,16 +1,25 @@
 #include <Windows.h>
 #include <DirectXCommon.h>
 #include <Win32Application.h>
+#include <Input.h>
+#include <memory>
 
-int _stdcall WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
+int _stdcall WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int)
 {
-	Win32Application* pWin32App = Win32Application::GetInstance();
-	DirectXCommon* pDirectXCommon = DirectXCommon::GetInstance();
+	Win32Application* pWin32App = nullptr;
+	DirectXCommon* pDirectXCommon = nullptr;
+	std::unique_ptr<Input> pInput = nullptr;
+
+	pWin32App = Win32Application::GetInstance();
+	pDirectXCommon = DirectXCommon::GetInstance();
+	pInput = std::make_unique<Input>();
 
 	pWin32App->Initialize();
 	pWin32App->ShowWnd();
 
 	pDirectXCommon->Initialize();
+	pInput->Initialize(hInstance, pWin32App->GetHwnd());
+
 
 	while (pWin32App->GetMsg() != WM_QUIT)
 	{
