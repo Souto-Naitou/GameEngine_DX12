@@ -26,3 +26,11 @@ void Input::Initialize(HINSTANCE _hInstance, HWND _hwnd)
     );
     assert(SUCCEEDED(hr));
 }
+
+void Input::Update()
+{
+    // キーボード情報の取得開始
+    keyboard_->Acquire();
+    // 全キーの入力情報を取得
+    keyboard_->GetDeviceState(sizeof(key_), key_);
+}

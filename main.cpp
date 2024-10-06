@@ -23,7 +23,8 @@ int _stdcall WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int)
 
 	while (pWin32App->GetMsg() != WM_QUIT)
 	{
-
+		// 入力の更新
+		pInput->Update();
 	}
 
 	pDirectXCommon->Finalize();
