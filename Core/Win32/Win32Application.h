@@ -16,6 +16,7 @@ public:
     static Win32Application* GetInstance() { static Win32Application instance;return &instance; };
 
     HWND GetHwnd() const { return hwnd_; }
+    HINSTANCE GetHInstance() const { return wc_.hInstance; }
 
     void Initialize();
     void Finalize();

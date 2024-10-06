@@ -4,7 +4,7 @@
 #include <Input.h>
 #include <memory>
 
-int _stdcall WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int)
+int _stdcall WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
 	Win32Application* pWin32App = nullptr;
 	DirectXCommon* pDirectXCommon = nullptr;
@@ -18,7 +18,7 @@ int _stdcall WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int)
 	pWin32App->ShowWnd();
 
 	pDirectXCommon->Initialize();
-	pInput->Initialize(hInstance, pWin32App->GetHwnd());
+	pInput->Initialize(pWin32App->GetHInstance(), pWin32App->GetHwnd());
 
 
 	while (pWin32App->GetMsg() != WM_QUIT)
