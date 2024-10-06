@@ -25,6 +25,16 @@ int _stdcall WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int)
 	{
 		// 入力の更新
 		pInput->Update();
+
+		/// デバッグ用
+		if (pInput->TriggerKey(DIK_SPACE))
+		{
+			OutputDebugString(L"とりがー\n");
+		}
+		if (pInput->PushKey(DIK_RETURN))
+		{
+			OutputDebugString(L"ぷっしゅちゅー\n");
+		}
 	}
 
 	pDirectXCommon->Finalize();
