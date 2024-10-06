@@ -55,6 +55,9 @@
     <Filter Include="DirectX\DescriptorRange">
       <UniqueIdentifier>{1572e578-5cca-4055-ada6-291866a11f0c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Input">
+      <UniqueIdentifier>{dac57756-7560-416f-9c36-a1b760902eb3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -104,6 +107,9 @@
     </ClCompile>
     <ClCompile Include="Core\DirectX12\DepthStencil.cpp">
       <Filter>DirectX\DepthStencil</Filter>
+    </ClCompile>
+    <ClCompile Include="Features\Input.cpp">
+      <Filter>Input</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -163,6 +169,9 @@
     </ClInclude>
     <ClInclude Include="BaseConfiguratorForComPtr.h">
       <Filter>DirectX\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="Features\Input.h">
+      <Filter>Input</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
