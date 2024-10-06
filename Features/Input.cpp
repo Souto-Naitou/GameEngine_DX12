@@ -31,6 +31,29 @@ void Input::Update()
 {
     // キーボード情報の取得開始
     keyboard_->Acquire();
+
+    // 配列をコピー
+    memcpy(keyPre_, key_, 256);
+
     // 全キーの入力情報を取得
     keyboard_->GetDeviceState(sizeof(key_), key_);
+}
+
+bool Input::PushKey(BYTE _keyNumber) const
+{
+    // 指定キーを押して入ればtrueを返す
+    if (key_[_keyNumber])
+    {
+        return true;
+    }
+    else return false;
+}
+
+bool Input::TriggerKey(BYTE _keyNumber) const
+{
+    if (key_[_keyNumber] && !keyPre_[_keyNumber])
+    {
+        return true;
+    }
+    else return false;
 }
