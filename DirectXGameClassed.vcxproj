@@ -156,6 +156,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="structs.h" />
     <ClInclude Include="Utility\ConvertString.h" />
     <ClInclude Include="Utility\Logger.h" />
+    <ClInclude Include="Utility\ReakChecker.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".editorconfig">

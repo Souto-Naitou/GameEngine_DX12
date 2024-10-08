@@ -224,6 +224,9 @@
     <ClInclude Include="Externals\imgui\imstb_truetype.h">
       <Filter>External\ImGui</Filter>
     </ClInclude>
+    <ClInclude Include="Utility\ReakChecker.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include=".editorconfig" />
