@@ -138,9 +138,4 @@ std::filesystem::path ModelManager::GetLowerPath(const std::string& _path)
 
 void ModelManager::Update()
 {
-    if (!uploadQueue_.empty())
-    {
-        uploadQueue_.front()->Upload();
-        uploadQueue_.pop();
-    }
 }

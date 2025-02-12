@@ -18,14 +18,12 @@ public: /// 公開メンバ関数
     void Initialize(const std::string& _filePath);
     void Update();
     void Draw();
-    void Upload();
     ~Model();
 
 
 public: /// Getter
     ModelData* GetModelData() { return &modelData_; }
     D3D12_VERTEX_BUFFER_VIEW GetVertexBufferView() const { return vertexBufferView_; }
-    bool IsUploaded() const { return isUploaded_; }
     D3D12_GPU_DESCRIPTOR_HANDLE GetTextureSrvHandleGPU() const { return textureSrvHandleGPU_; }
 
 
@@ -38,7 +36,6 @@ private: /// メンバ変数
     VertexData*                             vertexData_                 = nullptr;
     D3D12_GPU_DESCRIPTOR_HANDLE             textureSrvHandleGPU_        = {};
 
-    bool                                    isUploaded_                 = false;
 
 
 private: /// 非公開メンバ関数
@@ -48,7 +45,6 @@ private: /// 非公開メンバ関数
 private: /// 他クラスのインスタンス
     DirectX12* pDx12_ = nullptr;
     ID3D12Device* device_ = nullptr;
-    std::unique_ptr<std::thread> th_LoadObjectFile_ = nullptr;
     std::string filePath_;
     std::string directoryPath_;
 };

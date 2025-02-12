@@ -65,19 +65,12 @@ public:
     /// <returns>モデルデータ</returns>
     Model* FindModel(const std::string& _filePath);
 
-    /// <summary>
-    /// アップロードキューに登録
-    /// </summary>
-    /// <param name="_pFunc">関数ポインタ</param>
-    void InqueueUpload(Model* _ptr) { uploadQueue_.push(_ptr); }
-
 private:
     std::list<std::string> searchPaths_;
     std::list<std::string> autoLoadPaths_;
 
     std::unordered_map<std::filesystem::path, std::unique_ptr<Model>> models_;
 
-    std::queue<Model*> uploadQueue_;
     std::queue<Particle*> uploadQueueParticle_;
 
     ModelManager() = default;

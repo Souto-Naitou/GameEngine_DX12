@@ -17,13 +17,16 @@ void Model::Initialize(const std::string& _filePath)
     filePath_ = _filePath;
 
     /// モデルデータを読み込む
-    th_LoadObjectFile_ = std::make_unique<std::thread>([&]()
-    {
-        directoryPath_ = ModelManager::GetInstance()->GetDirectoryPath(filePath_);
-        modelData_ = ModelHelper::LoadObjFile(directoryPath_, filePath_);
-        ModelManager::GetInstance()->InqueueUpload(this);
-        DebugManager::GetInstance()->PushLog("[ロード完了] path: " + filePath_ + "\n");
-    });
+    directoryPath_ = ModelManager::GetInstance()->GetDirectoryPath(filePath_);
+    modelData_ = ModelHelper::LoadObjFile(directoryPath_, filePath_);
+    DebugManager::GetInstance()->PushLog("[ロード完了] path: " + filePath_ + "\n");
+
+    /// 頂点リソースを作成
+    CreateVertexResource();
+
+    /// テクスチャを読み込む
+    LoadModelTexture();
+
 }
 
 void Model::Update()
@@ -32,7 +35,6 @@ void Model::Update()
 
 void Model::Draw()
 {
-    if (th_LoadObjectFile_->joinable()) return;
     ID3D12GraphicsCommandList* commandList = pDx12_->GetCommandList();
 
     // 頂点バッファを設定
@@ -46,7 +48,6 @@ void Model::Draw()
 Model::~Model()
 {
     OutputDebugStringA("Model Destructor\n");
-    if (th_LoadObjectFile_->joinable()) th_LoadObjectFile_->join();
 }
 
 void Model::CreateVertexResource()
@@ -78,20 +79,4 @@ void Model::LoadModelTexture()
     TextureManager* textureManager = TextureManager::GetInstance();
     textureManager->LoadTexture(filePath);
     textureSrvHandleGPU_ = TextureManager::GetInstance()->GetSrvHandleGPU(filePath);
-}
-
-void Model::Upload()
-{
-    if (th_LoadObjectFile_ && th_LoadObjectFile_->joinable())
-    {
-        th_LoadObjectFile_->join();
-    }
-
-    /// 頂点リソースを作成
-    CreateVertexResource();
-
-    /// テクスチャを読み込む
-    LoadModelTexture();
-
-    isUploaded_ = true;
 }

@@ -36,7 +36,6 @@ void Particle::Initialize(const std::string& _filepath)
     modelPath_ = _filepath;
     ModelManager::GetInstance()->LoadModel(_filepath);
     pModel_ = ModelManager::GetInstance()->FindModel(_filepath);
-    if (pModel_->IsUploaded()) GetModelData();
 
     /// 正面を向く行列を作成
     backToFrontMatrix_ = Matrix4x4::RotateYMatrix(std::numbers::pi_v<float>);
@@ -46,7 +45,6 @@ void Particle::Update()
 {
     /// モデル情報の取得
     if (!pModel_) pModel_ = ModelManager::GetInstance()->FindModel(modelPath_);
-    else if (pModel_->IsUploaded()) GetModelData();
 
     /// パーティクルの更新
     if (particleData_.empty()) return;
@@ -117,7 +115,6 @@ void Particle::Finalize()
 void Particle::Draw()
 {
     /// モデルのテクスチャがアップロードされていない場合は描画しない
-    if (!pModel_->IsUploaded()) return;
     auto commandList = pDx12_->GetCommandList();
 
     /// 描画設定と実行
