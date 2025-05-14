@@ -396,6 +396,9 @@
     <ClCompile Include="DebugTools\EventTimer\EventTimer.cpp">
       <Filter>DebugTools\EventTimer</Filter>
     </ClCompile>
+    <ClCompile Include="Features\LevelLoader\LevelLoader.cpp">
+      <Filter>Feature\LevelLoader</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Common\define.h">
@@ -613,6 +616,9 @@
     </ClInclude>
     <ClInclude Include="DebugTools\EventTimer\EventTimer.h">
       <Filter>DebugTools\EventTimer</Filter>
+    </ClInclude>
+    <ClInclude Include="Features\LevelLoader\LevelLoader.h">
+      <Filter>Feature\LevelLoader</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

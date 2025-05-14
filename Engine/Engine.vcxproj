@@ -160,6 +160,7 @@
     <ClCompile Include="Features\GameEye\FreeLook\FreeLookEye.cpp" />
     <ClCompile Include="Features\GameEye\GameEye.cpp" />
     <ClCompile Include="Features\Input\Input.cpp" />
+    <ClCompile Include="Features\LevelLoader\LevelLoader.cpp" />
     <ClCompile Include="Features\Lighting\Manager\LightingManager.cpp" />
     <ClCompile Include="Features\Lighting\PointLight\PointLight.cpp" />
     <ClCompile Include="Features\Line\Line.cpp" />
@@ -228,6 +229,7 @@
     <ClInclude Include="Features\IContainer\ListContainer.h" />
     <ClInclude Include="Features\IContainer\VectorContainer.h" />
     <ClInclude Include="Features\Input\Input.h" />
+    <ClInclude Include="Features\LevelLoader\LevelLoader.h" />
     <ClInclude Include="Features\Lighting\Manager\LightingManager.h" />
     <ClInclude Include="Features\Lighting\PointLight\PointLight.h" />
     <ClInclude Include="Features\Line\Line.h" />
