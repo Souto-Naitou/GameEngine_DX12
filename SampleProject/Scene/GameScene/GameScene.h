@@ -35,9 +35,9 @@ public:
 
 private:
     std::unique_ptr<GameEye> pGameEye_;
-    std::unique_ptr<ParticleEmitter> pSmoke_;
-    std::unique_ptr<ParticleEmitter> pFirework_;
-    std::unique_ptr<ParticleEmitter> pSpark_;
+    //std::unique_ptr<ParticleEmitter> pSmoke_;
+    //std::unique_ptr<ParticleEmitter> pFirework_;
+    //std::unique_ptr<ParticleEmitter> pSpark_;
     std::unique_ptr<Object3d> pSkydome_;
     std::unique_ptr<Object3d> pGrid_;
     std::unique_ptr<Sprite> pGuideSprite_;

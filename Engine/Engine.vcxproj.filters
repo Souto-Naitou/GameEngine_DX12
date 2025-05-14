@@ -211,6 +211,9 @@
     <Filter Include="DebugTools\EventTimer">
       <UniqueIdentifier>{df5f5a1a-502e-4329-9008-38543f810d61}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Feature\LevelLoader">
+      <UniqueIdentifier>{10bd7f50-3f81-4f56-9dbf-1b77f032d7aa}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DebugTools\DebugManager\DebugManager.cpp">
