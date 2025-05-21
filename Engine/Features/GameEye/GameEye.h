@@ -8,7 +8,7 @@ class GameEye
 {
 public:
     GameEye();
-    ~GameEye();
+    virtual ~GameEye();
     virtual void        Update();
 
 

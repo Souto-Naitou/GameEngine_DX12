@@ -4,14 +4,18 @@
 
 #include <Core/DirectX12/DirectX12.h>
 #include <Common/structs.h>
-#include <wrl.h>
+#include <wrl/client.h>
 #include <d3d12.h>
 #include <Features/Model/Model.h>
 #include "ParticleSystem.h"
 #include <Matrix4x4.h>
 #include <Timer/Timer.h>
+#include <vector>
+#include <Vector4.h>
+#include <Vector3.h>
+#include <cstdint>
 
-enum class ParticleDeleteCondition
+enum class ParticleDeleteCondition : int
 {
     LifeTime,
     ZeroAlpha,
@@ -81,7 +85,7 @@ private:
     /// Model
     std::string                             modelPath_                          = {};
     Model*                                  pModel_                             = nullptr;
-    ModelData*                              pModelData_;
+    ModelData*                              pModelData_                         = nullptr;
     D3D12_VERTEX_BUFFER_VIEW                vertexBufferView_                   = {};
 
     /// SRV

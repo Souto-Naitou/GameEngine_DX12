@@ -36,6 +36,37 @@ namespace Json
     class Value
     {
     public:
+        class Iterator
+        {
+        private:
+            using ArrayIter = Json::Array::iterator;
+            using ObjectIter = Json::Object::iterator;
+            std::variant<std::monostate, ObjectIter, ArrayIter> iter_;
+
+        public:
+            Iterator() = default;
+            Iterator(ArrayIter it) : iter_(it) {}
+            Iterator(ObjectIter it) : iter_(it) {}
+
+            std::shared_ptr<Json::Value>& operator*() 
+            { 
+                if (auto p = std::get_if<ArrayIter>(&iter_)) return **p;
+                if (auto p = std::get_if<ObjectIter>(&iter_)) return (*p)->second;
+                throw std::runtime_error("Invalid iterator dereference");
+            }
+
+            Iterator& operator++() {
+                if (auto p = std::get_if<ArrayIter>(&iter_)) ++(*p);
+                else if (auto p = std::get_if<ObjectIter>(&iter_)) ++(*p);
+                return *this;
+            }
+
+            bool operator!=(const Iterator& other) const {
+                return iter_ != other.iter_;
+            }
+        };
+
+    public:
 
         /// <summary>
         /// JSONデータの種類
@@ -69,8 +100,33 @@ namespace Json
         Value& operator=(const std::shared_ptr<Json::Value>& _value);
 
 
+    public:
+        Value::Iterator begin() {
+            if (type == Type::Array)
+                return Iterator(std::get<Json::Array>(value).begin());
+            else if (type == Type::Object)
+                return Iterator(std::get<Json::Object>(value).begin());
+            else
+                return Iterator(); // 無効
+        }
+
+        Value::Iterator end() {
+            if (type == Type::Array)
+                return Iterator(std::get<Json::Array>(value).end());
+            else if (type == Type::Object)
+                return Iterator(std::get<Json::Object>(value).end());
+            else
+                return Iterator(); // 無効
+        }
+
+
+    public:
+        _NODISCARD Value& at(const std::string& _key);
+
+
     private:
-        Value& recursive_search(const std::string& _key, const Json::Object& _obj);
+        Value& _Search(const std::string& _key, const Json::Object& _obj);
+        Value& _Recursive_search(const std::string& _key, const Json::Object& _obj);
     };
 
 

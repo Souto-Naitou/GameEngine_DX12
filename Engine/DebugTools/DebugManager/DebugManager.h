@@ -8,13 +8,12 @@
 #include <Features/Text/Text.h>
 
 #include <Timer/Timer.h>
-
-#define BINDCOMPONENT(class, __funcName) std::bind(&class::__funcName, this)
+#include <array>
 
 class DebugManager
 {
 public:
-    static DebugManager* GetInstance() { static DebugManager instance; return &instance; }
+    static DebugManager* GetInstance();
 
     DebugManager(const DebugManager&) = delete;
     DebugManager& operator=(const DebugManager&) = delete;
@@ -88,11 +87,11 @@ private:
     double                  fps_ = 0.0;
     std::array<float, 120>  fpsList_ = {};
     unsigned int            frameCount_ = 0u;
-    bool                    onDisplay_ = true;
-    std::string             textLog_ = "";
-    bool                    enableAutoScroll_ = true;
+    std::string             textLog_ = {};
     double                  frameTime_ = 0.0;
 
+    bool                    onDisplay_ = true;
+    bool                    enableAutoScroll_ = true;
     bool                    isExistSettingFile_ = false;
 
 private: /// 借 り 物

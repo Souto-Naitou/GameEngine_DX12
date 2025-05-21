@@ -12,8 +12,39 @@
 
 const uint32_t ParticleEmitter::kDefaultReserveCount_;
 
+EmitterData& EmitterData::operator=(const EmitterData & _rv)
+{
+    if (&_rv == this) return *this;
+    name_                           = _rv.name_;
+    startScale_                     = _rv.startScale_;
+    endScale_                       = _rv.endScale_;
+    emitInterval_                   = _rv.emitInterval_;
+    emitNum_                        = _rv.emitNum_;
+    emitterLifeTime_                = _rv.emitterLifeTime_;
+    particleLifeTime_               = _rv.particleLifeTime_;
+    scaleDelayTime_                 = _rv.scaleDelayTime_;
+    beginPosition_                  = _rv.beginPosition_;
+    endPosition_                    = _rv.endPosition_;
+    emitPositionFixed_              = _rv.emitPositionFixed_;
+    beginColor_                     = _rv.beginColor_;
+    endColor_                       = _rv.endColor_;
+    alphaDeltaValue_                = _rv.alphaDeltaValue_;
+    velocityRandomRangeBegin_       = _rv.velocityRandomRangeBegin_;
+    velocityRandomRangeEnd_         = _rv.velocityRandomRangeEnd_;
+    velocityFixed_                  = _rv.velocityFixed_;
+    gravity_                        = _rv.gravity_;
+    resistance_                     = _rv.resistance_;
+    enableRandomVelocity_           = _rv.enableRandomVelocity_;
+    enableRandomEmit_               = _rv.enableRandomEmit_;
+
+    return *this;
+}
+
 void ParticleEmitter::Initialize(const std::string& _modelPath, const std::string& _jsonPath, bool _manualMode)
 {
+    auto size = sizeof(ParticleEmitter);
+    size;
+
 #ifdef _DEBUG
     std::stringstream ss;
     ss << "0x" << std::hex << this;
@@ -35,6 +66,11 @@ void ParticleEmitter::Initialize(const std::string& _modelPath, const std::strin
 
     fromJsonData_ = EmitterManager::GetInstance()->LoadFile(jsonPath_);
     emitterData_ = fromJsonData_;
+
+    auto addr = std::addressof(emitterData_);
+    auto addr2 = std::addressof(fromJsonData_);
+    addr;
+    addr2;
 
     if (!emitterData_.name_.empty())
     {

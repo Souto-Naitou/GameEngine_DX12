@@ -20,6 +20,20 @@ struct EmitterData
         //_CrtDbgBreak();
     }
 
+    EmitterData& operator= (const EmitterData& _rv);
+    void Copy(const EmitterData& _rv, const EmitterData* _pDest = nullptr)
+    {
+        // コピー先とthisが一致するか確認
+        if (_pDest != nullptr)
+        {
+            if (_pDest != this) __debugbreak();
+        }
+
+        operator=(_rv);
+
+        return;
+    }
+
     std::string     name_                       = {};                   // 名前
     Vector3         startScale_                 = {};                   // 開始スケール
     Vector3         endScale_                   = {};                   // 終了スケール

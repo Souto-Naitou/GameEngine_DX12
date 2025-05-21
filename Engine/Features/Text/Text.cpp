@@ -18,7 +18,7 @@ void Text::Initialize()
     pViewport_ = pTextSystem_->GetViewport();
 
 #ifdef _DEBUG
-    DebugManager::GetInstance()->SetComponent("Text", name_, BINDCOMPONENT(Text, DebugWindow));
+    DebugManager::GetInstance()->SetComponent("Text", name_, std::bind(&Text::DebugWindow, this));
 #endif // _DEBUG
 
     fontFamily_ = "Bahnschrift";

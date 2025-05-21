@@ -64,6 +64,9 @@ void GameScene::Finalize()
     pSkydome_->Finalize();
     pGrid_->Finalize();
     pGuideSprite_->Finalize();
+    //pFirework_->Finalize();
+    //pSmoke_->Finalize();
+    //pSpark_->Finalize();
     pAudio_->Finalize();
     //pFirework_->Finalize();
     //pSmoke_->Finalize();

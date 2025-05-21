@@ -7,6 +7,15 @@
 
 #include <Core/DirectX12/SRVManager.h>
 
+DebugManager* DebugManager::GetInstance()
+{
+    auto size = sizeof(DebugManager);
+    size;
+
+    static DebugManager instance; 
+    return &instance;
+}
+
 DebugManager::DebugManager()
 {
     pDX12_ = DirectX12::GetInstance();
