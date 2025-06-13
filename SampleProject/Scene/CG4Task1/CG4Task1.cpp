@@ -53,15 +53,6 @@ void CG4Task1::Initialize()
     pEmitter_Test_ = std::make_unique<ParticleEmitter>();
     pEmitter_Test_->Initialize("Particle/ParticleSpark.obj", "spark.png");
     pEmitter_Test_->SetEnableBillboard(true);
-
-    pPEGrayscale_ = std::make_unique<PEGrayscale>();
-    pPEGrayscale_->Initialize();
-
-    pPEVignette_ = std::make_unique<PEVignette>();
-    pPEVignette_->Initialize();
-
-    PostEffect::GetInstance()->AddPostEffect(pPEGrayscale_.get())
-        .AddPostEffect(pPEVignette_.get());
 }
 
 void CG4Task1::Finalize()

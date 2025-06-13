@@ -6,6 +6,8 @@
 #include <dxcapi.h>
 #include <Core/DirectX12/DirectX12.h>
 #include <Core/DirectX12/ResourceStateTracker/ResourceStateTracker.h>
+#include <Vector4.h>
+#include <Vector3.h>
 
 /// <ビネット>
 /// - PEはPost Effectの略
@@ -15,8 +17,11 @@ class PEVignette : public IPostEffect
 public:
     struct VignetteOption
     {
+        Vector3 color;
         float scale;
         float power;
+        int enableMultiply;
+        Vector3 padding;
     };
 
 public:

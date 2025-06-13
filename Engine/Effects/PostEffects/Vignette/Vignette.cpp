@@ -112,9 +112,10 @@ void PEVignette::ToShaderResourceState()
 void PEVignette::DebugOverlay()
 {
     #ifdef _DEBUG
-
     ImGui::DragFloat("Scale", &pOption_->scale, 0.01f, FLT_MIN);
     ImGui::DragFloat("Power", &pOption_->power, 0.01f, FLT_MIN);
+    ImGui::ColorEdit3("Power", &pOption_->color.x);
+    ImGui::Checkbox("Multiply blending", reinterpret_cast<bool*>(&pOption_->enableMultiply));
 
     #endif //_DEBUG
 }
@@ -272,4 +273,5 @@ void PEVignette::CreateResourceCBuffer()
 
     pOption_->scale = 16.0f;
     pOption_->power = 0.8f;
+    pOption_->color = { 0.0f, 0.0f, 0.0f };
 }

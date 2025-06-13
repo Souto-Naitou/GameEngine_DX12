@@ -4,8 +4,7 @@
 #include <Interfaces/IScene.h>
 #include <Features/Object3d/Object3d.h>
 #include <Features/GameEye/GameEye.h>
-#include <Effects/PostEffects/Grayscale/Grayscale.h>
-#include <Effects/PostEffects/Vignette/Vignette.h>
+
 
 #include <memory>
 #include <Features/Particle/Emitter/ParticleEmitter.h>
@@ -36,8 +35,6 @@ private:
     std::unique_ptr<ParticleEmitter>    pEmitter_Snow_      = nullptr;
     std::unique_ptr<ParticleEmitter>    pEmitter_Spark_     = nullptr;
     std::unique_ptr<ParticleEmitter>    pEmitter_Test_      = nullptr;
-    std::unique_ptr<PEGrayscale>        pPEGrayscale_       = nullptr;
-    std::unique_ptr<PEVignette>         pPEVignette_        = nullptr;
 
     // Pointers
     Input*  pInput_     = nullptr;

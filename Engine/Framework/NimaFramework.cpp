@@ -148,6 +148,15 @@ void NimaFramework::Initialize()
     /// ポストエフェクト
     pPostEffect_->Initialize();
 
+    pPEGrayscale_ = std::make_unique<PEGrayscale>();
+    pPEGrayscale_->Initialize();
+
+    pPEVignette_ = std::make_unique<PEVignette>();
+    pPEVignette_->Initialize();
+
+    PostEffect::GetInstance()->AddPostEffect(pPEGrayscale_.get())
+        .AddPostEffect(pPEVignette_.get());
+
     /// コマンドリストを追加
     pDirectX_->AddCommandList(pObject3dSystem_->GetCommandList());
     pDirectX_->AddCommandList(pParticleSystem_->GetCommandList());

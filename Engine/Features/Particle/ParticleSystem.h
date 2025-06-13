@@ -56,7 +56,6 @@ private: /// メンバ変数
     static constexpr wchar_t kPixelShaderPath[] = L"EngineResources/Shaders/Particle.PS.hlsl";
     Microsoft::WRL::ComPtr<ID3D12RootSignature> rootSignature_ = nullptr;
     Microsoft::WRL::ComPtr<ID3D12PipelineState> graphicsPipelineState_ = nullptr;
-    GameEye* pGlobalEye_ = nullptr;
     D3D12_CPU_DESCRIPTOR_HANDLE* rtvHandle_ = nullptr;
 
     std::list<CommandListData> commandListDatas_;
