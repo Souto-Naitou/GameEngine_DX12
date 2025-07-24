@@ -73,6 +73,16 @@ const std::string& RandomFilter::GetName() const
     return name_;
 }
 
+RandomFilter::RandomFilterOption& RandomFilter::GetOption()
+{
+    return *pOption_;
+}
+
+const RandomFilter::RandomFilterOption& RandomFilter::GetOption() const
+{
+    return *pOption_;
+}
+
 void RandomFilter::Apply()
 {
     commandList_->DrawInstanced(3, 1, 0, 0); // 三角形を1つ描画

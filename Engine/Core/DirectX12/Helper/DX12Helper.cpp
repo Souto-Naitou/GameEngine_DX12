@@ -30,18 +30,18 @@ void DX12Helper::CreateDevice(Microsoft::WRL::ComPtr<ID3D12Device>& _device, Mic
         if (SUCCEEDED(hr))
         {
             // 生成できたのでログ出力を行ってループを抜ける
-            Logger::GetInstance()->LogInfo("DX12Helper", __func__, std::format("FeatureLevel : {}", featureLevelStrings[i]));
+            Logger::GetInstance()->LogInfo(__FILE__, __FUNCTION__, std::format("FeatureLevel : {}", featureLevelStrings[i]));
             break;
         }
     }
     // デバイスの生成がうまくいかなかったので起動できない
     if (!_device)
     {
-        Logger::GetInstance()->LogError("DX12Helper", __func__, "Failed to create");
+        Logger::GetInstance()->LogError(__FILE__, __FUNCTION__, "Failed to create");
         assert(_device && "Failed to create device");
     }
 
-    Logger::GetInstance()->LogInfo("DX12Helper", __func__, "Initilization succeeded"); // 初期化完了のログを出力
+    Logger::GetInstance()->LogInfo(__FILE__, __FUNCTION__, "Initilization succeeded"); // 初期化完了のログを出力
 }
 
 
@@ -138,11 +138,7 @@ Microsoft::WRL::ComPtr<ID3D12Resource> DX12Helper::CreateDepthStencilTextureReso
 
     if (FAILED(hr))
     {
-        Logger::GetInstance()->LogError(
-            "DX12Helper",
-            __func__,
-            "Failed to Create DSTR"
-        );
+        Logger::GetInstance()->LogError(__FILE__, __FUNCTION__, "Failed to Create DSTR");
         assert(false && "Failed create depth stencil texture resource");
     }
 
@@ -161,16 +157,12 @@ Microsoft::WRL::ComPtr<IDxcBlob> DX12Helper::CompileShader(
     /// 1. hlslファイルを読み込む
 
     // これからシェーダーをコンパイルする旨をログに出す
+    std::string filepathA = ConvertString(filePath);
+    std::string profileA = ConvertString(profile);
     Logger::GetInstance()->LogInfo(
-        "DX12Helper",
-        __func__,
-        ConvertString(
-            std::format(
-                L"Begin compile. Path:{}, Profile:{}",
-                filePath, 
-                profile
-            )
-        )
+        __FILE__,
+        __FUNCTION__,
+        std::format("Begin compile. Path:{}, Profile:{}", filepathA, profileA)
     );
 
     // hlslファイルを読む
@@ -180,17 +172,7 @@ Microsoft::WRL::ComPtr<IDxcBlob> DX12Helper::CompileShader(
     // 読めなかったら止める
     if (FAILED(hr))
     {
-        Logger::GetInstance()->LogError(
-            "DX12Helper",
-            __func__,
-            ConvertString(
-                std::format(
-                    L"Failed to load file. Path:{}, Profile:{}",
-                    filePath,
-                    profile
-                )
-            )
-        );
+        Logger::GetInstance()->LogError(__FILE__, __FUNCTION__, "Failed load file");
 
         assert(false && "Failed loadfile.");
     }
@@ -225,27 +207,17 @@ Microsoft::WRL::ComPtr<IDxcBlob> DX12Helper::CompileShader(
     // 実際にShaderをコンパイルする
     Microsoft::WRL::ComPtr<IDxcResult> shaderResult = nullptr;
     hr = dxcCompiler->Compile(
-        &shaderSourceBuffer,		// 読み込んだファイル
-        arguments,					// コンパイルオプション
-        _countof(arguments),		// コンパイルオプションの数
-        includeHandler.Get(),				// includeが含まれた諸々
-        IID_PPV_ARGS(&shaderResult)	// コンパイル結果
+        &shaderSourceBuffer,        // 読み込んだファイル
+        arguments,                  // コンパイルオプション
+        _countof(arguments),        // コンパイルオプションの数
+        includeHandler.Get(),       // includeが含まれた諸々
+        IID_PPV_ARGS(&shaderResult) // コンパイル結果
     );
 
     // コンパイルエラーではなくdxcが起動できないなど致命的な状況
     if (FAILED(hr))
     {
-        Logger::GetInstance()->LogError(
-            "DX12Helper",
-            __func__,
-            ConvertString(
-                std::format(
-                    L"Failed compile shader, path:{}, profile:{}",
-                    filePath,
-                    profile
-                )
-            )
-        );
+        Logger::GetInstance()->LogError(__FILE__, __FUNCTION__, "Failed launch DXC compiler");
         assert(false && "Failed compile shader");
     }
 
@@ -254,12 +226,7 @@ Microsoft::WRL::ComPtr<IDxcBlob> DX12Helper::CompileShader(
     shaderResult->GetOutput(DXC_OUT_ERRORS, IID_PPV_ARGS(&shaderError), nullptr);
     if (shaderError != nullptr && shaderError->GetStringLength() != 0)
     {
-        Logger::GetInstance()->LogError(
-            "DX12Helper",
-            __func__,
-            shaderError->GetStringPointer()
-        );
-
+        Logger::GetInstance()->LogError(__FILE__, __FUNCTION__, shaderError->GetStringPointer());
         assert(false);
     }
 
@@ -269,17 +236,12 @@ Microsoft::WRL::ComPtr<IDxcBlob> DX12Helper::CompileShader(
     Microsoft::WRL::ComPtr<IDxcBlob> shaderBlob = nullptr;
     hr = shaderResult->GetOutput(DXC_OUT_OBJECT, IID_PPV_ARGS(&shaderBlob), nullptr);
     assert(SUCCEEDED(hr));
+
     // 成功したログを出す
     Logger::GetInstance()->LogInfo(
-        "DX12Helper",
-        __func__,
-        ConvertString(
-            std::format(
-                L"Compile succeeded, path:{}, profile:{}",
-                filePath,
-                profile
-            )
-        )
+        __FILE__,
+        __FUNCTION__,
+        "Compile succeeded." + std::format(" Size: {}bytes", shaderBlob->GetBufferSize())
     );
 
     // 実行用のバイナリを返却
@@ -319,7 +281,7 @@ Microsoft::WRL::ComPtr<ID3D12Resource> DX12Helper::CreateBufferResource(const Co
 
     if (FAILED(hr))
     {
-        Logger::GetInstance()->LogError("DX12Helper", __func__, "CreateCommittedResource failed");
+        Logger::GetInstance()->LogError(__FILE__, __FUNCTION__, "CreateCommittedResource failed");
         assert(false && "Create committed resource failed");
     }
 
@@ -333,7 +295,7 @@ DirectX::ScratchImage DX12Helper::LoadTexture(const std::string& _filePath)
     HRESULT hr = DirectX::LoadFromWICFile(filePathW.c_str(), DirectX::WIC_FLAGS_FORCE_SRGB, nullptr, image);
     if (FAILED(hr))
     {
-        Logger::GetInstance()->LogError("DX12Helper", __func__, "Failed LoadFromWICFile");
+        Logger::GetInstance()->LogError(__FILE__, __FUNCTION__, "Failed LoadFromWICFile");
         assert(false && "Failed LoadFromWICFile");
     }
 
@@ -341,7 +303,7 @@ DirectX::ScratchImage DX12Helper::LoadTexture(const std::string& _filePath)
     hr = DirectX::GenerateMipMaps(image.GetImages(), image.GetImageCount(), image.GetMetadata(), DirectX::TEX_FILTER_SRGB, 0, mipImages);
     if (FAILED(hr))
     {
-        Logger::GetInstance()->LogError("DX12Helper", __func__, "Failed GenerateMipMaps");
+        Logger::GetInstance()->LogError(__FILE__, __FUNCTION__, "Failed GenerateMipMaps");
         assert(false && "Failed GenerateMipMaps");
     }
 
@@ -378,7 +340,7 @@ Microsoft::WRL::ComPtr<ID3D12Resource> DX12Helper::CreateTextureResource(const M
 
     if (FAILED(hr))
     {
-        Logger::GetInstance()->LogError("DX12Helper", __func__, "CreateCommittedResource failed");
+        Logger::GetInstance()->LogError(__FILE__, __FUNCTION__, "CreateCommittedResource failed");
         assert(false && "Create committed resource failed");
     }
 
@@ -405,7 +367,7 @@ void DX12Helper::UploadTextureData(const Microsoft::WRL::ComPtr<ID3D12Resource>&
         );
         if (FAILED(hr))
         {
-            Logger::GetInstance()->LogError("DX12Helper", __func__, "WriteToSubresource failed");
+            Logger::GetInstance()->LogError(__FILE__, __FUNCTION__, "WriteToSubresource failed");
             assert(false && "WriteToSubresource failed");
         }
     }
@@ -515,7 +477,7 @@ Microsoft::WRL::ComPtr<ID3D12Resource> DX12Helper::CreateRenderTextureResource(c
 
     if (FAILED(hr))
     {
-        Logger::GetInstance()->LogError("DX12Helper", __func__, "CreateCommittedResource failed");
+        Logger::GetInstance()->LogError(__FILE__, __FUNCTION__, "CreateCommittedResource failed");
         assert(false && "Create committed resource failed");
     }
 

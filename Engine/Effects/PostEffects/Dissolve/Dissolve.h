@@ -34,8 +34,6 @@ public:
 
     void    SetTextureResource(const TextureResource& _texResource);
 
-private:
-    // PostEffectクラスがアクセスする
     void    Apply() override;
     void    Setting() override;
     void    OnResizeBefore() override;
@@ -49,6 +47,8 @@ private:
     // Getters
     D3D12_GPU_DESCRIPTOR_HANDLE     GetOutputTextureHandle() const override;
     const std::string&              GetName() const override;
+    DissolveOption&                 GetOption();
+    const DissolveOption&           GetOption() const;
 
 private:
     ID3D12Device*                                       device_                 = nullptr;

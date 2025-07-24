@@ -7,6 +7,8 @@
 #include <Core/DirectX12/Helper/DX12Helper.h>
 #include <Core/DirectX12/RootParameters/RootParameters.h>
 #include <Core/DirectX12/StaticSamplerDesc/StaticSamplerDesc.h>
+#include <Core/DirectX12/BlendDesc.h>
+#include <Core/DirectX12/PipelineStateObject/PipelineStateObject.h>
 #include <imgui.h>
 #include <Math/Functions.hpp>
 
@@ -45,6 +47,12 @@ void SeparatedGaussianFilter::SetInputTextureHandle(D3D12_GPU_DESCRIPTOR_HANDLE 
     inputGpuHandle_ = _gpuHandle;
 }
 
+void SeparatedGaussianFilter::SetSigma(float _sigma)
+{
+    sigma_ = _sigma;
+    this->CreateKernel();
+}
+
 bool SeparatedGaussianFilter::Enabled() const
 {
     return isEnabled_;
@@ -58,6 +66,16 @@ D3D12_GPU_DESCRIPTOR_HANDLE SeparatedGaussianFilter::GetOutputTextureHandle() co
 const std::string& SeparatedGaussianFilter::GetName() const
 {
     return name_;
+}
+
+SeparatedGaussianFilterOption& SeparatedGaussianFilter::GetOption()
+{
+    return *pOption_;
+}
+
+const SeparatedGaussianFilterOption& SeparatedGaussianFilter::GetOption() const
+{
+    return *pOption_;
 }
 
 void SeparatedGaussianFilter::Apply()
@@ -135,19 +153,17 @@ void SeparatedGaussianFilter::DebugOverlay()
 
 void SeparatedGaussianFilter::CreateRootSignature()
 {
-    /// RootSignature作成
     D3D12_ROOT_SIGNATURE_DESC descriptionRootSignature{};
     descriptionRootSignature.Flags = D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT;
 
-    // RootParameter作成。複数設定できるので配列
     RootParameters<3> rootParameters = {};
     rootParameters
-        .SetParameter(0, "t0")
-        .SetParameter(1, "b0")
-        .SetParameter(2, "b1");
+        .SetParameter(0, "t0", D3D12_SHADER_VISIBILITY_PIXEL)
+        .SetParameter(1, "b0", D3D12_SHADER_VISIBILITY_PIXEL)
+        .SetParameter(2, "b1", D3D12_SHADER_VISIBILITY_PIXEL);
 
-    descriptionRootSignature.pParameters = rootParameters.GetParams();      // ルートパラメータ配列へのポインタ
-    descriptionRootSignature.NumParameters = rootParameters.GetSize();      // 配列の長さ
+    descriptionRootSignature.pParameters = rootParameters.GetParams();
+    descriptionRootSignature.NumParameters = rootParameters.GetSize();
 
     StaticSamplerDesc staticSamplerDesc = {};
     staticSamplerDesc
@@ -159,21 +175,14 @@ void SeparatedGaussianFilter::CreateRootSignature()
     descriptionRootSignature.pStaticSamplers = &staticSamplerDesc.Get();
     descriptionRootSignature.NumStaticSamplers = 1;
 
-    // シリアライズしてバイナリにする
     Microsoft::WRL::ComPtr<ID3DBlob> signatureBlob = nullptr;
     Microsoft::WRL::ComPtr<ID3DBlob> errorBlob = nullptr;
     HRESULT hr = D3D12SerializeRootSignature(&descriptionRootSignature, D3D_ROOT_SIGNATURE_VERSION_1, &signatureBlob, &errorBlob);
     if (FAILED(hr))
     {
-        Logger::GetInstance()->LogError(
-            "SeparatedGaussianFilter",
-            __func__,
-            reinterpret_cast<char*>(errorBlob->GetBufferPointer())
-        );
-
+        Logger::GetInstance()->LogError(__FILE__, __FUNCTION__, reinterpret_cast<char*>(errorBlob->GetBufferPointer()));
         assert(false);
     }
-    // バイナリをもとに生成
     hr = device_->CreateRootSignature(0, signatureBlob->GetBufferPointer(), signatureBlob->GetBufferSize(), IID_PPV_ARGS(&rootSignature_));
     assert(SUCCEEDED(hr));
 }
@@ -188,64 +197,41 @@ void SeparatedGaussianFilter::CreatePipelineStateObject()
     inputLayoutDesc.pInputElementDescs = nullptr;
     inputLayoutDesc.NumElements = 0;
 
-    /// BlendStateの設定
-    D3D12_BLEND_DESC blendDesc{};
-    blendDesc.RenderTarget[0].BlendEnable = TRUE;
-    blendDesc.RenderTarget[0].SrcBlend = D3D12_BLEND_SRC_ALPHA;
-    blendDesc.RenderTarget[0].DestBlend = D3D12_BLEND_INV_SRC_ALPHA;
-    blendDesc.RenderTarget[0].BlendOp = D3D12_BLEND_OP_ADD;
-    blendDesc.RenderTarget[0].SrcBlendAlpha = D3D12_BLEND_ONE;
-    blendDesc.RenderTarget[0].DestBlendAlpha = D3D12_BLEND_ZERO;
-    blendDesc.RenderTarget[0].BlendOpAlpha = D3D12_BLEND_OP_ADD;
-    blendDesc.RenderTarget[0].RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
+    BlendDesc blendDesc = {};
+    blendDesc.Initialize(BlendDesc::BlendModes::Alpha);
 
-
-    /// RasterizerStateの設定
     D3D12_RASTERIZER_DESC rasterizerDesc{};
     rasterizerDesc.CullMode = D3D12_CULL_MODE_NONE;
     rasterizerDesc.FillMode = D3D12_FILL_MODE_SOLID;
-    rasterizerDesc.MultisampleEnable = TRUE;  // アンチエイリアス有効化
-    rasterizerDesc.AntialiasedLineEnable = TRUE;  // ラインのアンチエイリアス有効化
+    rasterizerDesc.MultisampleEnable = TRUE;
+    rasterizerDesc.AntialiasedLineEnable = TRUE;
 
-    /// ShaderをCompileする
     vertexShaderBlob_ = DX12Helper::CompileShader(kVertexShaderPath, L"vs_6_0", dxcUtils, dxcCompiler, includeHandler);
     assert(vertexShaderBlob_ != nullptr);
-
     pixelShaderBlob_ = DX12Helper::CompileShader(kPixelShaderPath, L"ps_6_0", dxcUtils, dxcCompiler, includeHandler);
     assert(pixelShaderBlob_ != nullptr);
 
-    /// PSOを生成する
-    D3D12_GRAPHICS_PIPELINE_STATE_DESC graphicsPipelineStateDesc{};
-    graphicsPipelineStateDesc.pRootSignature = rootSignature_.Get();    // RootSignature
-    graphicsPipelineStateDesc.InputLayout = inputLayoutDesc;    // InputLayout
-    graphicsPipelineStateDesc.VS = { vertexShaderBlob_.Get()->GetBufferPointer(), vertexShaderBlob_.Get()->GetBufferSize() };
-    graphicsPipelineStateDesc.PS = { pixelShaderBlob_.Get()->GetBufferPointer(), pixelShaderBlob_.Get()->GetBufferSize() };
-    graphicsPipelineStateDesc.BlendState = blendDesc;            // BlendState
-    graphicsPipelineStateDesc.RasterizerState = rasterizerDesc;    // RasterizerState
-    // 書き込むRTVの情報
-    graphicsPipelineStateDesc.NumRenderTargets = 1;
-    graphicsPipelineStateDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM;
-    // 利用するトポロジ（形状）のタイプ。三角形
-    graphicsPipelineStateDesc.PrimitiveTopologyType =
-        D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
-    // どのように画面に色を打ち込むかの設定（気にしなくて良い）
-    graphicsPipelineStateDesc.SampleDesc.Count = 1;
-    graphicsPipelineStateDesc.SampleMask = D3D12_DEFAULT_SAMPLE_MASK;
-    // DepthStencilの設定
-    graphicsPipelineStateDesc.DepthStencilState = {};
-    graphicsPipelineStateDesc.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
-    // 実際に生成
-    HRESULT hr = device_->CreateGraphicsPipelineState(&graphicsPipelineStateDesc, IID_PPV_ARGS(&pso_));
-    if (FAILED(hr))
+    try
     {
-        Logger::GetInstance()->LogError(
-            "SeparatedGaussianFilter",
-            __func__,
-            "Failed to create pipeline state"
-        );
+        PipelineStateObject psoBuilder;
+        psoBuilder.SetRootSignature(rootSignature_.Get())
+            .SetInputLayout(inputLayoutDesc)
+            .SetVertexShader(vertexShaderBlob_.Get()->GetBufferPointer(), vertexShaderBlob_.Get()->GetBufferSize())
+            .SetPixelShader(pixelShaderBlob_.Get()->GetBufferPointer(), pixelShaderBlob_.Get()->GetBufferSize())
+            .SetBlendState(blendDesc.Get())
+            .SetRasterizerState(rasterizerDesc)
+            .SetRenderTargetFormats(1, &renderTexture_.format, DXGI_FORMAT_D24_UNORM_S8_UINT)
+            .SetPrimitiveTopologyType(D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE)
+            .SetSampleDesc({ 1, 0 })
+            .SetSampleMask(D3D12_DEFAULT_SAMPLE_MASK)
+            .Build(device_);
+        pso_ = psoBuilder.GetPSO();
+    }
+    catch (const std::exception& _e)
+    {
+        Logger::GetInstance()->LogError(__FILE__, __FUNCTION__, _e.what());
         assert(false);
     }
-
     return;
 }
 

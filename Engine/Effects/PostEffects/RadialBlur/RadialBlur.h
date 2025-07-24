@@ -10,20 +10,19 @@
 #include <Vector3.h>
 #include <Vector2.h>
 
-/// <ビネット>
+struct alignas(16) RadialBlurOption
+{
+    Vector2 center = Vector2(0.5f, 0.5f); // 中心位置 (0.0f ~ 1.0f)
+    int samples = 16; // サンプル数
+    float blurWidth = 0.01f; // 幅 (0.0f ~ 1.0f)
+};
+
+/// <ラジアルブラー>
 /// - ApplyメソッドとSettingメソッドはPostEffectクラスで実行する
 class RadialBlur : 
     public IPostEffect,
     public EngineFeature
 {
-public:
-    struct alignas(16) RadialBlurOption
-    {
-        Vector2 center = Vector2(0.5f, 0.5f); // 中心位置 (0.0f ~ 1.0f)
-        int samples = 16; // サンプル数
-        float blurWidth = 0.01f; // 幅 (0.0f ~ 1.0f)
-    };
-
 public:
     void    Initialize() override;
     void    Finalize() override;
@@ -36,8 +35,6 @@ public:
     void    SetSamples(int _sample) { pOption_->samples = _sample; }
     void    SetBlurWidth(float _width) { pOption_->blurWidth = _width; }
 
-private:
-    // PostEffectクラスがアクセスする
     void    Apply() override;
     void    Setting() override;
     void    OnResizeBefore() override;
@@ -48,9 +45,15 @@ private:
     // Setters
     void    SetInputTextureHandle(D3D12_GPU_DESCRIPTOR_HANDLE _gpuHandle) override;
 
-    // Getters
+    // =============================================
+    // [Getters Begin]
     D3D12_GPU_DESCRIPTOR_HANDLE     GetOutputTextureHandle() const override;
     const std::string&              GetName() const override;
+    RadialBlurOption&               GetOption();
+    const RadialBlurOption&         GetOption() const;
+    // [Getters End]
+    // =============================================
+
 
 private:
     ID3D12Device*                                       device_                 = nullptr;

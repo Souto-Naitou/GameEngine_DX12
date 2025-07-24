@@ -7,8 +7,9 @@
 #include <Core/DirectX12/DirectX12.h>
 #include <Core/DirectX12/ResourceStateTracker/ResourceStateTracker.h>
 #include <Matrix4x4.h>
+#include <Core/DirectX12/PipelineStateObject/PipelineStateObject.h>
 
-struct alignas(16) OutlineOption
+struct alignas(16) DepthBasedOutlineOption
 {
     float weightMultiply = 1.0f;
     float padding[3] = {};
@@ -33,8 +34,6 @@ public:
     void    Enable(bool _flag) override;
     bool    Enabled() const override;
 
-private:
-    // PostEffectクラスがアクセスする
     void    Apply() override;
     void    Setting() override;
     void    OnResizeBefore() override;
@@ -46,10 +45,12 @@ private:
     void    SetInputTextureHandle(D3D12_GPU_DESCRIPTOR_HANDLE _gpuHandle) override;
 
     // Getters
-    D3D12_GPU_DESCRIPTOR_HANDLE     GetOutputTextureHandle() const override;
-    const std::string&              GetName() const override;
-    OutlineOption*                  GetOption();
-    DepthBasedOutlineMaterial*      GetMaterial();
+    D3D12_GPU_DESCRIPTOR_HANDLE         GetOutputTextureHandle() const override;
+    const std::string&                  GetName() const override;
+    DepthBasedOutlineOption&            GetOption();
+    const DepthBasedOutlineOption&      GetOption() const;
+    DepthBasedOutlineMaterial&          GetMaterial();
+    const DepthBasedOutlineMaterial&    GetMaterial() const;
 
 private:
     ID3D12Device*                                       device_                 = nullptr;
@@ -60,7 +61,7 @@ private:
     ResourceStateTracker                                renderTexture_          = {};
     Microsoft::WRL::ComPtr<IDxcBlob>                    vertexShaderBlob_       = nullptr;
     Microsoft::WRL::ComPtr<IDxcBlob>                    pixelShaderBlob_        = nullptr;
-    Microsoft::WRL::ComPtr<ID3D12PipelineState>         pso_                    = nullptr;
+    PipelineStateObject                                 pso_                    = {};
     Microsoft::WRL::ComPtr<ID3D12RootSignature>         rootSignature_          = nullptr;
     D3D12_CPU_DESCRIPTOR_HANDLE                         rtvHandleCpu_           = {};
     D3D12_GPU_DESCRIPTOR_HANDLE                         rtvHandleGpu_           = {};
@@ -74,7 +75,7 @@ private:
 
     // Constant buffers
     Microsoft::WRL::ComPtr<ID3D12Resource>              optionResource_         = nullptr;
-    OutlineOption*                                      pOption_                = nullptr;
+    DepthBasedOutlineOption*                            pOption_                = nullptr;
     Microsoft::WRL::ComPtr<ID3D12Resource>              materialResource_       = nullptr;
     DepthBasedOutlineMaterial*                          pMaterial_              = nullptr;
 

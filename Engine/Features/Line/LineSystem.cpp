@@ -121,7 +121,7 @@ void LineSystem::CreatePipelineState()
     pipelineStateDesc.RasterizerState = rasterizerDesc; // RasterizerState
     // 書き込むRTVの情報
     pipelineStateDesc.NumRenderTargets = 1;
-    pipelineStateDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM;
+    pipelineStateDesc.RTVFormats[0] = DirectX12::kRenderTargetFormat_;
     // 利用するトポロジ（形状）のタイプ。ライン
     pipelineStateDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_LINE;
     // どのように画面に色を打ち込むかの設定

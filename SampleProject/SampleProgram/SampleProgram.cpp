@@ -13,8 +13,6 @@ void SampleProgram::Initialize()
 
     #ifdef _DEBUG
     pImGuiManager_->EnableDocking();
-    //pImGuiManager_->EnableMultiViewport();
-    //pImGuiManager_->StyleMaterialFlat();
     #endif // _DEBUG
     
     /// シーンファクトリの設定
@@ -35,10 +33,6 @@ void SampleProgram::Initialize()
 
     /// モデルを全てロード
     pTextureManager_->LoadTexture("noise0.png");
-    pPEDissolve_->SetTextureResource(pTextureManager_->GetTextureResource("noise0.png"));
-
-    // 計測スタート
-    globalTimer_.Start();
 }
 
 void SampleProgram::Finalize()
@@ -53,7 +47,6 @@ void SampleProgram::Update()
     /// 基底クラスの更新処理
     NimaFramework::Update();
     pModelLoader_->Update();
-    pPERandomFilter_->SetSeed(globalTimer_.GetNow<float>() * 0.01f);
 }
 
 void SampleProgram::Draw()

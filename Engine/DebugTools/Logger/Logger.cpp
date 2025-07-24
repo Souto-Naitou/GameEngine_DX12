@@ -49,7 +49,7 @@ void Logger::Save()
         filePayload += "[" + log.status + "] ";
         filePayload += log.date + " ";
         filePayload += log.time + ", ";
-        filePayload += log.className + ", ";
+        filePayload += log.filename + ", ";
         filePayload += log.action + ", ";
         filePayload += log.message + "\n";
     }
@@ -98,19 +98,19 @@ void Logger::DrawUI()
 #endif // _DEBUG
 }
 
-void Logger::LogError(const std::string& _className, const std::string& _action, const std::string& _message)
+void Logger::LogError(const std::string& _filename, const std::string& _action, const std::string& _message)
 {
-    Log("Error", _className, _action, _message);
+    Log("Error", _filename, _action, _message);
 }
 
-void Logger::LogWarning(const std::string& _className, const std::string& _action, const std::string& _message)
+void Logger::LogWarning(const std::string& _filename, const std::string& _action, const std::string& _message)
 {
-    Log("Warning", _className, _action, _message);
+    Log("Warning", _filename, _action, _message);
 }
 
-void Logger::LogInfo(const std::string& _className, const std::string& _action, const std::string& _message)
+void Logger::LogInfo(const std::string& _filename, const std::string& _action, const std::string& _message)
 {
-    Log("Info", _className, _action, _message);
+    Log("Info", _filename, _action, _message);
 }
 
 void Logger::LogForOutput(const std::string& _message)
@@ -118,9 +118,8 @@ void Logger::LogForOutput(const std::string& _message)
     OutputDebugStringA(_message.c_str());
 }
 
-void Logger::Log(const std::string& _status, const std::string& _className, const std::string& _action, const std::string& _message)
+void Logger::Log(const std::string& _status, const std::string& _filename, const std::string& _action, const std::string& _message)
 {
-
     auto now = std::chrono::system_clock::now();
     auto now_sec = std::chrono::floor<std::chrono::seconds>(now);
 
@@ -132,7 +131,7 @@ void Logger::Log(const std::string& _status, const std::string& _className, cons
     data.date = date;
     data.time = time;
     data.status = _status;
-    data.className = _className;
+    data.filename = _filename;
     data.action = _action;
     data.message = _message;
 
@@ -140,21 +139,21 @@ void Logger::Log(const std::string& _status, const std::string& _className, cons
     {
         std::lock_guard<std::mutex> lock(mutex_);
         logData_.emplace_back(data);
-        LogJson(date, time, _status, _className, _action, _message);
+        LogJson(date, time, _status, _filename, _action, _message);
     }
 
-    OutputDebugStringA(std::format("[{}] {} {}, {}, {}, {}\n", _status, date, time, _className, _action, _message).c_str());
+    OutputDebugStringA(std::format("[{}] {} {}, {}, {}, {}\n", _status, date, time, _filename, _action, _message).c_str());
 
     this->Save();
 }
 
-void Logger::LogJson(const std::string& _date, const std::string& _time, const std::string& _status, const std::string& _className, const std::string& _action, const std::string& _message)
+void Logger::LogJson(const std::string& _date, const std::string& _time, const std::string& _status, const std::string& _filename, const std::string& _action, const std::string& _message)
 {
     auto object = json::object();
     object["Date"] = _date;
     object["Time"] = _time;
     object["Status"] = _status;
-    object["ClassName"] = _className;
+    object["ClassName"] = _filename;
     object["Action"] = _action;
     object["Message"] = _message;
 

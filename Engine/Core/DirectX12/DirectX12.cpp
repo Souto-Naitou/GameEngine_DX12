@@ -49,12 +49,7 @@ void DirectX12::Initialize()
 
     if (FAILED(hr_))
     {
-        pLogger_->LogError(
-            "DirectX12",
-            __func__,
-            "Failed to create DXGI Factory."
-        );
-
+        pLogger_->LogError(__FILE__, __FUNCTION__, "Failed to create DXGI Factory.");
         return;
     }
 
@@ -159,11 +154,7 @@ void DirectX12::CommandExecute()
     hr_ = commandList_->Close();
     if (FAILED(hr_))
     {
-        pLogger_->LogError(
-            "DirectX12",
-            __func__,
-            "Failed to close command list."
-        );
+        pLogger_->LogError(__FILE__, __FUNCTION__, "Failed to close command list.");
         assert(false && "Failed to close command list");
     }
 

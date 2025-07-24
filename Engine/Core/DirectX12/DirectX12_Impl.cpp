@@ -41,11 +41,7 @@ void DirectX12::ChooseAdapter()
         hr_ = useAdapter_->GetDesc3(&adapterDesc);
         if (FAILED(hr_))
         {
-            pLogger_->LogError(
-                "DirectX12",
-                "ChooseAdapter",
-                "Failed to get adapter description"
-            );
+            pLogger_->LogError(__FILE__, __FUNCTION__, "Failed to get adapter description");
             assert(false && "Failed to get adapter description");
         }
 
@@ -53,10 +49,7 @@ void DirectX12::ChooseAdapter()
         if (!(adapterDesc.Flags & DXGI_ADAPTER_FLAG3_SOFTWARE))
         {
             // 出力
-            pLogger_->LogInfo(
-                "DirectX12",
-                "ChooseAdapter",
-                std::format("Adapter : {}", ConvertString(adapterDesc.Description)));
+            pLogger_->LogInfo(__FILE__, __FUNCTION__, std::format("Adapter : {}", ConvertString(adapterDesc.Description)));
             break;
         }
         useAdapter_ = nullptr;
@@ -65,11 +58,7 @@ void DirectX12::ChooseAdapter()
     // アダプタが見つからなかった場合
     if (!useAdapter_)
     {
-        pLogger_->LogError(
-            "DirectX12",
-            "ChooseAdapter",
-            "Adapter not found"
-        );
+        pLogger_->LogError(__FILE__, __FUNCTION__, "Adapter not found");
         assert(useAdapter_ && "Failed to find adapter");
     }
 }
@@ -77,86 +66,50 @@ void DirectX12::ChooseAdapter()
 void DirectX12::CreateCommandResources()
 {
     /// コマンドキューを生成
-    pLogger_->LogInfo(
-        "DirectX12",
-        "CreateCommandResources",
-        "Begin to create command queue"
-    );
+    pLogger_->LogInfo(__FILE__, __FUNCTION__, "Begin to create command queue");
     hr_ = device_->CreateCommandQueue(&commandQueueDesc_, IID_PPV_ARGS(&commandQueue_));
     if (FAILED(hr_))
     {
-        pLogger_->LogError(
-            "DirectX12",
-            "CreateCommandResources",
-            "Failed to create command queue"
-        );
+        pLogger_->LogError(__FILE__, __FUNCTION__, "Failed to create command queue");
         assert(false && "Failed to create command queue");
 
         return;
     }
     else
     {
-        pLogger_->LogInfo(
-            "DirectX12",
-            "CreateCommandResources",
-            "Command queue creation completed"
-        );
+        pLogger_->LogInfo(__FILE__, __FUNCTION__, "Command queue creation completed");
     }
 
 
     /// コマンドアロケータを生成
-    pLogger_->LogInfo(
-        "DirectX12",
-        "CreateCommandResources",
-        "Begin to create command allocator"
-    );
+    pLogger_->LogInfo(__FILE__, __FUNCTION__, "Begin to create command allocator");
     hr_ = device_->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT, IID_PPV_ARGS(&commandAllocator_));
     if (FAILED(hr_))
     {
-        pLogger_->LogError(
-            "DirectX12",
-            "CreateCommandResources",
-            "Failed to create command allocator"
-        );
+        pLogger_->LogError(__FILE__, __FUNCTION__, "Failed to create command allocator");
         assert(false && "Failed to create command allocator");
 
         return;
     }
     else
     {
-        pLogger_->LogInfo(
-            "DirectX12",
-            "CreateCommandResources",
-            "Command allocator creation completed"
-        );
+        pLogger_->LogInfo(__FILE__, __FUNCTION__, "Command allocator creation completed");
     }
 
 
     /// コマンドリストを生成
-    pLogger_->LogInfo(
-        "DirectX12",
-        "CreateCommandResources",
-        "Begin to create command list"
-    );
+    pLogger_->LogInfo(__FILE__, __FUNCTION__, "Begin to create command list");
     hr_ = device_->CreateCommandList(0, D3D12_COMMAND_LIST_TYPE_DIRECT, commandAllocator_.Get(), nullptr, IID_PPV_ARGS(&commandList_));
     if (FAILED(hr_))
     {
-        pLogger_->LogError(
-            "DirectX12",
-            "CreateCommandResources",
-            "Failed to create command list"
-        );
+        pLogger_->LogError(__FILE__, __FUNCTION__, "Failed to create command list");
         assert(false && "Failed to create command list");
 
         return;
     }
     else
     {
-        pLogger_->LogInfo(
-            "DirectX12",
-            "CreateCommandResources",
-            "Command list creation completed"
-        );
+        pLogger_->LogInfo(__FILE__, __FUNCTION__, "Command list creation completed");
     }
 }
 
@@ -166,7 +119,7 @@ void DirectX12::CreateSwapChainAndResource()
     swapChainDesc_ = {};
     swapChainDesc_.Width            = WinSystem::clientWidth;               // 画面の幅。ウィンドウのクライアント領域を同じものにしておく
     swapChainDesc_.Height           = WinSystem::clientHeight;              // 画面の高さ。ウィンドウのクライアント領域を同じものにしておく
-    swapChainDesc_.Format           = DXGI_FORMAT_R8G8B8A8_UNORM;           // 色の形式
+    swapChainDesc_.Format           = DirectX12::kRenderTargetFormat_;           // 色の形式
     swapChainDesc_.SampleDesc.Count = 1;                                    // マルチサンプルしない
     swapChainDesc_.BufferUsage      = DXGI_USAGE_RENDER_TARGET_OUTPUT;      // 描画のターゲットとして利用する
     swapChainDesc_.BufferCount      = 2;                                    // ダブルバッファ
@@ -177,21 +130,13 @@ void DirectX12::CreateSwapChainAndResource()
     hr_ = dxgiFactory_->CreateSwapChainForHwnd(commandQueue_.Get(), hwnd_, &swapChainDesc_, nullptr, nullptr, reinterpret_cast<IDXGISwapChain1**>(swapChain_.GetAddressOf()));
     if (FAILED(hr_))
     {
-        pLogger_->LogError(
-            "DirectX12",
-            "CreateSwapChainAndResource",
-            "Failed to create swap chain"
-        );
+        pLogger_->LogError(__FILE__, __FUNCTION__, "Failed to create swap chain");
         assert(false && "Failed to create swap chain");
         return;
     }
     else
     {
-        pLogger_->LogInfo(
-            "DirectX12",
-            "CreateSwapChainAndResource",
-            "Swap chain creation completed"
-        );
+        pLogger_->LogInfo(__FILE__, __FUNCTION__, "Swap chain creation completed");
     }
 
 
@@ -212,36 +157,24 @@ void DirectX12::CreateSwapChainAndResource()
     hr_ = swapChain_->GetBuffer(0, IID_PPV_ARGS(&swapChainResources_[0].resource));
     if (FAILED(hr_))
     {
-        pLogger_->LogError(
-            "DirectX12",
-            "CreateSwapChainAndResource",
-            "Failed to get resource from swap chain [0]"
-        );
+        pLogger_->LogError(__FILE__, __FUNCTION__, "Failed to get resource from swap chain [0]");
         assert(false && "Failed to get resource from swap chain [0]");
         return;
     }
     hr_ = swapChain_->GetBuffer(1, IID_PPV_ARGS(&swapChainResources_[1].resource));
     if (FAILED(hr_))
     {
-        pLogger_->LogError(
-            "DirectX12",
-            "CreateSwapChainAndResource",
-            "Failed to get resource from swap chain [1]"
-        );
+        pLogger_->LogError(__FILE__, __FUNCTION__, "Failed to get resource from swap chain [1]");
         assert(false && "Failed to get resource from swap chain [1]");
         return;
     }
-    pLogger_->LogInfo(
-        "DirectX12",
-        "CreateSwapChainAndResource",
-        "Resource acquisition from swap chain completed"
-    );
+    pLogger_->LogInfo(__FILE__, __FUNCTION__, "Resource acquisition from swap chain completed");
 
     swapChain_->SetColorSpace1(DXGI_COLOR_SPACE_RGB_FULL_G22_NONE_P709);
 
 
     /// RTVの設定
-    rtvDesc_.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+    rtvDesc_.Format = DirectX12::kRenderTargetFormat_;
     rtvDesc_.ViewDimension = D3D12_RTV_DIMENSION_TEXTURE2D;
 
 
@@ -269,7 +202,7 @@ void DirectX12::CreateGameScreenResource()
     resourceDesc.Height           = static_cast<UINT>(viewport_.Height);        // 高さ
     resourceDesc.MipLevels        = 1;                                          // mipmapの数
     resourceDesc.DepthOrArraySize = 1;                                          // 奥行き or 配列Textureの配列数
-    resourceDesc.Format           = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;            // フォーマット
+    resourceDesc.Format           = DirectX12::kRenderTargetFormat_;            // フォーマット
     resourceDesc.SampleDesc.Count = 1;                                          // サンプリング数
     resourceDesc.Dimension        = D3D12_RESOURCE_DIMENSION_TEXTURE2D;         // 2DTexture
     resourceDesc.Flags            = D3D12_RESOURCE_FLAG_ALLOW_UNORDERED_ACCESS; // UAVを使うためのフラグ
@@ -293,7 +226,7 @@ void DirectX12::CreateGameScreenResource()
     /// SRVの生成
     SRVManager* psrvm = SRVManager::GetInstance();
     gameWndSrvIndex_ = psrvm->Allocate();
-    psrvm->CreateForTexture2D(gameWndSrvIndex_, gameScreenResource_.resource.Get(), DXGI_FORMAT_R8G8B8A8_UNORM_SRGB, 1);
+    psrvm->CreateForTexture2D(gameWndSrvIndex_, gameScreenResource_.resource.Get(), DirectX12::kRenderTargetFormat_, 1);
 
     /// UAVの生成
     D3D12_RESOURCE_DESC textureDesc = {};
@@ -303,7 +236,7 @@ void DirectX12::CreateGameScreenResource()
     textureDesc.Height             = static_cast<UINT>(viewport_.Height);
     textureDesc.DepthOrArraySize   = 1;
     textureDesc.MipLevels          = 1;
-    textureDesc.Format             = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
+    textureDesc.Format             = DirectX12::kRenderTargetFormat_;
     textureDesc.SampleDesc.Count   = 1;
     textureDesc.SampleDesc.Quality = 0;
     textureDesc.Layout             = D3D12_TEXTURE_LAYOUT_UNKNOWN;
@@ -352,20 +285,12 @@ void DirectX12::CreateFenceAndEvent()
     hr_ = device_->CreateFence(fenceValue_, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&fence_));
     if (FAILED(hr_))
     {
-        pLogger_->LogError(
-            "DirectX12",
-            "CreateFenceAndEvent",
-            "Failed to create fence"
-        );
+        pLogger_->LogError(__FILE__, __FUNCTION__, "Failed to create fence");
         assert(false && "Failed to create fence");
     }
     else
     {
-        pLogger_->LogInfo(
-            "DirectX12",
-            "CreateFenceAndEvent",
-            "Fence creation completed"
-        );
+        pLogger_->LogInfo(__FILE__, __FUNCTION__, "Fence creation completed");
     }
 
 
@@ -398,21 +323,13 @@ void DirectX12::CreateDirectXShaderCompiler()
     hr_ = DxcCreateInstance(CLSID_DxcUtils, IID_PPV_ARGS(&dxcUtils_));
     if (FAILED(hr_))
     {
-        pLogger_->LogError(
-            "DirectX12",
-            "CreateDirectXShaderCompiler",
-            "Failed to initialize DXC"
-        );
+        pLogger_->LogError(__FILE__, __FUNCTION__, "Failed to initialize DXC");
         assert(false && "Failed to create DXCUtils");
     }
     hr_ = DxcCreateInstance(CLSID_DxcCompiler, IID_PPV_ARGS(&dxcCompiler_));
     if (FAILED(hr_))
     {
-        pLogger_->LogError(
-            "DirectX12",
-            "CreateDirectXShaderCompiler",
-            "Failed to initialize DXCCompiler"
-        );
+        pLogger_->LogError(__FILE__, __FUNCTION__, "Failed to initialize DXCCompiler");
         assert(false && "Failed to create DXCCompiler");
     }
 
@@ -420,19 +337,11 @@ void DirectX12::CreateDirectXShaderCompiler()
     hr_ = dxcUtils_->CreateDefaultIncludeHandler(&includeHandler_);
     if (FAILED(hr_))
     {
-        pLogger_->LogError(
-            "DirectX12",
-            "CreateDirectXShaderCompiler",
-            "Failed to create include handler"
-        );
+        pLogger_->LogError(__FILE__, __FUNCTION__, "Failed to create include handler");
         assert(false && "Failed to create include handler");
     }
 
-    pLogger_->LogInfo(
-        "DirectX12",
-        "CreateDirectXShaderCompiler",
-        "DXC initialization completed"
-    );
+    pLogger_->LogInfo(__FILE__, __FUNCTION__, "DXC initialization completed");
 }
 
 void DirectX12::CreateD2D1Factory()
@@ -441,20 +350,12 @@ void DirectX12::CreateD2D1Factory()
     hr_ = D2D1CreateFactory(D2D1_FACTORY_TYPE_SINGLE_THREADED, IID_PPV_ARGS(&d2dFactory_));
     if (FAILED(hr_))
     {
-        pLogger_->LogError(
-            "DirectX12",
-            "CreateD2D1Factory",
-            "Failed to create D2D1 factory"
-        );
+        pLogger_->LogError(__FILE__, __FUNCTION__, "Failed to create D2D1 factory");
         assert(false && "Failed to create D2D1 factory");
     }
     else
     {
-        pLogger_->LogInfo(
-            "DirectX12",
-            "CreateD2D1Factory",
-            "D2D1 factory creation completed"
-        );
+        pLogger_->LogInfo(__FILE__, __FUNCTION__, "D2D1 factory creation completed");
     }
 }
 
@@ -469,39 +370,23 @@ void DirectX12::CreateD3D11Device()
     hr_ = D3D11On12CreateDevice(device_.Get(), d3d11flags, nullptr, 0, reinterpret_cast<IUnknown**>(commandQueue_.GetAddressOf()), 1, 0, &d3d11Device_, &d3d11On12DeviceContext_, nullptr);
     if (FAILED(hr_))
     {
-        pLogger_->LogError(
-            "DirectX12",
-            "CreateD3D11Device",
-            "Failed to create D3D11 device"
-        );
+        pLogger_->LogError(__FILE__, __FUNCTION__, "Failed to create D3D11 device");
         assert(false && "Failed to create D3D11 device");
     }
     else
     {
-        pLogger_->LogInfo(
-            "DirectX12",
-            "CreateD3D11Device",
-            "D3D11 device creation completed"
-        );
+        pLogger_->LogInfo(__FILE__, __FUNCTION__, "D3D11 device creation completed");
     }
 
     hr_ = d3d11Device_.As(&d3d11On12Device_);
     if (FAILED(hr_))
     {
-        pLogger_->LogError(
-            "DirectX12",
-            "CreateD3D11Device",
-            "Failed to create D3D11On12 device"
-        );
+        pLogger_->LogError(__FILE__, __FUNCTION__, "Failed to create D3D11On12 device");
         assert(false && "Failed to create D3D11On12 device");
     }
     else
     {
-        pLogger_->LogInfo(
-            "DirectX12",
-            "CreateD3D11Device",
-            "D3D11On12 device creation completed"
-        );
+        pLogger_->LogInfo(__FILE__, __FUNCTION__, "D3D11On12 device creation completed");
     }
 }
 
@@ -510,41 +395,25 @@ void DirectX12::CreateID2D1DeviceContext()
     hr_ = d3d11On12Device_.As(&dxgiDevice_);
     if (FAILED(hr_))
     {
-        pLogger_->LogError(
-            "DirectX12",
-            "CreateID2D1DeviceContext",
-            "Failed to create DXGI device"
-        );
+        pLogger_->LogError(__FILE__, __FUNCTION__, "Failed to create DXGI device");
         assert(false && "Failed to create DXGI device");
     }
 
     hr_ = d2dFactory_->CreateDevice(dxgiDevice_.Get(), &d2dDevice_);
     if (FAILED(hr_))
     {
-        pLogger_->LogError(
-            "DirectX12",
-            "CreateID2D1DeviceContext",
-            "Failed to create D2D device"
-        );
+        pLogger_->LogError(__FILE__, __FUNCTION__, "Failed to create D2D device");
         assert(false && "Failed to create D2D device");
     }
 
     hr_ = d2dDevice_->CreateDeviceContext(D2D1_DEVICE_CONTEXT_OPTIONS_NONE, d2dDeviceContext_.ReleaseAndGetAddressOf());
     if (FAILED(hr_))
     {
-        pLogger_->LogError(
-            "DirectX12",
-            "CreateID2D1DeviceContext",
-            "Failed to create D2D device context"
-        );
+        pLogger_->LogError(__FILE__, __FUNCTION__, "Failed to create D2D device context");
         assert(false && "Failed to create D2D device context");
     }
 
-    pLogger_->LogInfo(
-        "DirectX12",
-        "CreateID2D1DeviceContext",
-        "D2D device context creation completed"
-    );
+    pLogger_->LogInfo(__FILE__, __FUNCTION__, "D2D device context creation completed");
 }
 
 void DirectX12::CreateD2DRenderTarget()
@@ -572,11 +441,7 @@ void DirectX12::CreateD2DRenderTarget()
 
         if (FAILED(hr_))
         {
-            pLogger_->LogError(
-                "DirectX12",
-                "CreateD2DRenderTarget",
-                "Failed to create D3D11 wrapped back buffer"
-            );
+            pLogger_->LogError(__FILE__, __FUNCTION__, "Failed to create D3D11 wrapped back buffer");
             assert(false && "Failed to create D2D render target");
 
             return;
@@ -586,11 +451,7 @@ void DirectX12::CreateD2DRenderTarget()
         hr_ = wrappedBackBuffer.As(&dxgiSurface);
         if (FAILED(hr_))
         {
-            pLogger_->LogError(
-                "DirectX12",
-                "CreateD2DRenderTarget",
-                "Failed to create DXGI surface"
-            );
+            pLogger_->LogError(__FILE__, __FUNCTION__, "Failed to create DXGI surface");
             assert(false && "Failed to create DXGI surface");
 
             return;
@@ -604,11 +465,7 @@ void DirectX12::CreateD2DRenderTarget()
         );
         if (FAILED(hr_))
         {
-            pLogger_->LogError(
-                "DirectX12",
-                "CreateD2DRenderTarget",
-                "Failed to create D2D render target"
-            );
+            pLogger_->LogError(__FILE__, __FUNCTION__, "Failed to create D2D render target");
             assert(false && "Failed to create D2D render target");
 
             return;
@@ -618,11 +475,7 @@ void DirectX12::CreateD2DRenderTarget()
         d2dRenderTargets_[i] = d2dRenderTarget;
     }
 
-    pLogger_->LogInfo(
-        "DirectX12",
-        "CreateD2DRenderTarget",
-        "D2D render target creation completed"
-    );
+    pLogger_->LogInfo(__FILE__, __FUNCTION__, "D2D render target creation completed");
 }
 
 void DirectX12::ResizeBuffers()
@@ -667,12 +520,12 @@ void DirectX12::ResizeBuffers()
 
     if (FAILED(hr_))
     {
-        pLogger_->LogError("DirectX12", __func__, "Failed to resizing buffers");
+        pLogger_->LogError(__FILE__, __FUNCTION__, "Failed to resizing buffers");
         assert(false);
     }
     else
     {
-        pLogger_->LogInfo("DirectX12", __func__, "Success resizing buffers");
+        pLogger_->LogInfo(__FILE__, __FUNCTION__, "Success resizing buffers");
     }
 
     for (UINT i = 0; i < 2; ++i)

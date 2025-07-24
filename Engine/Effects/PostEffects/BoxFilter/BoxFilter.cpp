@@ -57,6 +57,16 @@ const std::string& BoxFilter::GetName() const
     return name_;
 }
 
+BoxFilterOption& BoxFilter::GetOption()
+{
+    return *pOption_;
+}
+
+const BoxFilterOption& BoxFilter::GetOption() const
+{
+    return *pOption_;
+}
+
 void BoxFilter::Apply()
 {
     commandList_->DrawInstanced(3, 1, 0, 0); // 三角形を1つ描画
@@ -151,12 +161,7 @@ void BoxFilter::CreateRootSignature()
     HRESULT hr = D3D12SerializeRootSignature(&descriptionRootSignature, D3D_ROOT_SIGNATURE_VERSION_1, &signatureBlob, &errorBlob);
     if (FAILED(hr))
     {
-        Logger::GetInstance()->LogError(
-            "BoxFilter",
-            __func__,
-            reinterpret_cast<char*>(errorBlob->GetBufferPointer())
-        );
-
+        Logger::GetInstance()->LogError(__FILE__, __FUNCTION__, reinterpret_cast<char*>(errorBlob->GetBufferPointer()));
         assert(false);
     }
     // バイナリをもとに生成
@@ -208,11 +213,7 @@ void BoxFilter::CreatePipelineStateObject()
     }
     catch (const std::exception& _e)
     {
-        Logger::GetInstance()->LogError(
-            "BoxFilter",
-            __func__,
-            _e.what()
-        );
+        Logger::GetInstance()->LogError(__FILE__, __FUNCTION__, _e.what());
         assert(false);
     }
 

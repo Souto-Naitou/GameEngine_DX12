@@ -25,17 +25,6 @@
 #include <Features/NiGui/NiGuiDebug.h>
 #include <DebugTools/EventTimer/EventTimer.h>
 
-#include <Effects/PostEffects/Grayscale/Grayscale.h>
-#include <Effects/PostEffects/Vignette/Vignette.h>
-#include <Effects/PostEffects/BoxFilter/BoxFilter.h>
-#include <Effects/PostEffects/GaussianFilter/GaussianFilter.h>
-#include <Effects/PostEffects/PrewittOutline/PrewittOutline.h>
-#include <Effects/PostEffects/DepthBasedOutline/DepthBasedOutline.h>
-#include <Effects/PostEffects/RadialBlur/RadialBlur.h>
-#include <Effects/PostEffects/Dissolve/Dissolve.h>
-#include <Effects/PostEffects/RandomFilter/RandomFilter.h>
-#include <Effects/PostEffects/SeparatedGaussianFilter/SeparatedGaussianFilter.h>
-
 #include <memory> /// std::unique_ptr
 #include <Core/DirectX12/PostEffect.h>
 #include <Features/Model/GltfModelSystem.h>
@@ -94,21 +83,7 @@ protected:
     EventTimer*                     pEventTimer_                = nullptr;
     PostEffectExecuter*             pPostEffectExecuter_        = nullptr;
 
-    // ポストエフェクト
-    std::unique_ptr<Grayscale>                  pPEGrayscale_               = nullptr;
-    std::unique_ptr<Vignette>                   pPEVignette_                = nullptr;
-    std::unique_ptr<BoxFilter>                  pPEBoxFilter_               = nullptr;
-    std::unique_ptr<GaussianFilter>             pPEGaussianFilter_          = nullptr;
-    std::unique_ptr<PrewittOutline>             pPEPrewittOutline_          = nullptr;
-    std::unique_ptr<DepthBasedOutline>          pPEDepthBasedOutline_       = nullptr;
-    std::unique_ptr<RadialBlur>                 pPERadialBlur_              = nullptr;
-    std::unique_ptr<Dissolve>                   pPEDissolve_                = nullptr;
-    std::unique_ptr<RandomFilter>               pPERandomFilter_            = nullptr;
-    std::unique_ptr<SeparatedGaussianFilter>    pPESeparatedGaussianFilter_ = nullptr;
-
     bool                                isExitProgram_          = false;
-
-    void    InitializePostEffects();
 };
 
 #define CREATE_APPLICATION(class) \

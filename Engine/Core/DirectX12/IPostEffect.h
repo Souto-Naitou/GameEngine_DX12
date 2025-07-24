@@ -6,8 +6,6 @@
 
 class IPostEffect
 {
-    friend class PostEffectExecuter;
-
 public:
     IPostEffect() = default;
     virtual ~IPostEffect() = default;
@@ -21,7 +19,6 @@ public:
     virtual void    Enable(bool _flag) = 0;
     virtual bool    Enabled() const = 0;
 
-private:
     // Setter
     virtual void    SetInputTextureHandle(D3D12_GPU_DESCRIPTOR_HANDLE handle) = 0;
     // Getter

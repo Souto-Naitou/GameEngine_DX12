@@ -39,9 +39,19 @@ public:
 
 
 public:
-    PostEffectExecuter& AddPostEffect(IPostEffect* postEffect)
+    PostEffectExecuter& RegisterPostEffect(IPostEffect* postEffect)
     {
         postEffects_.emplace_back(postEffect);
+        return *this;
+    }
+
+    PostEffectExecuter& UnregisterPostEffect(IPostEffect* postEffect)
+    {
+        auto it = std::remove(postEffects_.begin(), postEffects_.end(), postEffect);
+        if (it != postEffects_.end())
+        {
+            postEffects_.erase(it, postEffects_.end());
+        }
         return *this;
     }
 

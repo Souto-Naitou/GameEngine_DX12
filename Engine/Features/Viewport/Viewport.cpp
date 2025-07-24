@@ -128,16 +128,16 @@ void Viewport::CreatePSO()
 void Viewport::CreateSRV()
 {
     inputSRVIndex_ = pSRVManager_->Allocate();
-    pSRVManager_->CreateForTexture2D(inputSRVIndex_, inputTexture_->resource.Get(), DXGI_FORMAT_R8G8B8A8_UNORM, 1);
+    pSRVManager_->CreateForTexture2D(inputSRVIndex_, inputTexture_->resource.Get(), DirectX12::kRenderTargetFormat_, 1);
 
     outputSRVIndex_ = pSRVManager_->Allocate();
-    pSRVManager_->CreateForTexture2D(outputSRVIndex_, outputTexture_->resource.Get(), DXGI_FORMAT_R8G8B8A8_UNORM, 1);
+    pSRVManager_->CreateForTexture2D(outputSRVIndex_, outputTexture_->resource.Get(), DirectX12::kRenderTargetFormat_, 1);
 }
 
 void Viewport::CreateUAV()
 {
     outputUAVIndex_ = pSRVManager_->Allocate();
-    pSRVManager_->CreateUAV(outputUAVIndex_, outputTexture_->resource.Get(), DXGI_FORMAT_R8G8B8A8_UNORM);
+    pSRVManager_->CreateUAV(outputUAVIndex_, outputTexture_->resource.Get(), DirectX12::kRenderTargetFormat_);
 }
 
 void Viewport::Compute()

@@ -154,11 +154,14 @@ void NimaFramework::Initialize()
    
     NiGui::SetDebug(pNiGuiDebug_.get());
 
+    /// Gltfモデルシステムの初期化
     pGltfModelSystem_ = std::make_unique<GltfModelSystem>();
     pGltfModelSystem_->SetDirectX12(pDirectX_.get());
     pGltfModelSystem_->Initialize();
 
-    this->InitializePostEffects();
+    /// ポストエフェクトの初期化
+    pPostEffectExecuter_->SetDirectX12(pDirectX_.get());
+    pPostEffectExecuter_->Initialize();
 
     /// コマンドリストを追加
     pDirectX_->AddCommandList(pObject3dSystem_->GetCommandList());
@@ -329,11 +332,11 @@ void NimaFramework::PreProcess()
 {
     pPostEffectExecuter_->NewFrame();
     pSRVManager_->SetDescriptorHeaps();
-
-    pObject3dSystem_->SetRTVHandle(pPostEffectExecuter_->GetRTVHandle());
-    pSpriteSystem_->SetRTVHandle(pPostEffectExecuter_->GetRTVHandle());
-    pParticleSystem_->SetRTVHandle(pPostEffectExecuter_->GetRTVHandle());
-    pLineSystem_->SetRTVHandle(pPostEffectExecuter_->GetRTVHandle());
+    auto rtvHandle = pPostEffectExecuter_->GetRTVHandle();
+    pObject3dSystem_->SetRTVHandle(rtvHandle);
+    pSpriteSystem_->SetRTVHandle(rtvHandle);
+    pParticleSystem_->SetRTVHandle(rtvHandle);
+    pLineSystem_->SetRTVHandle(rtvHandle);
 }
 
 void NimaFramework::PostProcess()
@@ -344,33 +347,4 @@ void NimaFramework::PostProcess()
     pParticleSystem_->PostDraw();
     pLineSystem_->PostDraw();
     pPostEffectExecuter_->PostDraw();
-}
-
-void NimaFramework::InitializePostEffects()
-{
-    /// ポストエフェクト
-    pPostEffectExecuter_->SetDirectX12(pDirectX_.get());
-    pPostEffectExecuter_->Initialize();
-
-    pPEGrayscale_               = Helper::PostEffect::CreatePostEffect<Grayscale>(pDirectX_.get());
-    pPEVignette_                = Helper::PostEffect::CreatePostEffect<Vignette>(pDirectX_.get());
-    pPEBoxFilter_               = Helper::PostEffect::CreatePostEffect<BoxFilter>(pDirectX_.get());
-    pPEGaussianFilter_          = Helper::PostEffect::CreatePostEffect<GaussianFilter>(pDirectX_.get());
-    pPEPrewittOutline_          = Helper::PostEffect::CreatePostEffect<PrewittOutline>(pDirectX_.get());
-    pPEDepthBasedOutline_       = Helper::PostEffect::CreatePostEffect<DepthBasedOutline>(pDirectX_.get());
-    pPERadialBlur_              = Helper::PostEffect::CreatePostEffect<RadialBlur>(pDirectX_.get());
-    pPEDissolve_                = Helper::PostEffect::CreatePostEffect<Dissolve>(pDirectX_.get());
-    pPERandomFilter_            = Helper::PostEffect::CreatePostEffect<RandomFilter>(pDirectX_.get());
-    pPESeparatedGaussianFilter_ = Helper::PostEffect::CreatePostEffect<SeparatedGaussianFilter>(pDirectX_.get());
-
-    pPostEffectExecuter_->AddPostEffect(pPEGrayscale_.get())
-        .AddPostEffect(pPEVignette_.get())
-        .AddPostEffect(pPEBoxFilter_.get())
-        .AddPostEffect(pPEGaussianFilter_.get())
-        .AddPostEffect(pPEPrewittOutline_.get())
-        .AddPostEffect(pPEDepthBasedOutline_.get())
-        .AddPostEffect(pPERadialBlur_.get())
-        .AddPostEffect(pPEDissolve_.get())
-        .AddPostEffect(pPERandomFilter_.get())
-        .AddPostEffect(pPESeparatedGaussianFilter_.get());
 }

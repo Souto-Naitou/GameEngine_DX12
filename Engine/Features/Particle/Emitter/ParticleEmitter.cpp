@@ -12,6 +12,7 @@
 #include "EmitterData.h"
 #include <WinTools/WinTools.h>
 #include <Range.h>
+#include <numbers>
 
 const uint32_t ParticleEmitter::kDefaultReserveCount_;
 
@@ -163,11 +164,21 @@ void ParticleEmitter::EmitParticle()
     /// 速度
     if (emitterData_.flags.enableRandomVelocity)
     {
-        datum.velocity_ = Vector3(
-            random->Generate(emitterData_.ranges.velocityRandom.start().x, emitterData_.ranges.velocityRandom.end().x),
-            random->Generate(emitterData_.ranges.velocityRandom.start().y, emitterData_.ranges.velocityRandom.end().y),
-            random->Generate(emitterData_.ranges.velocityRandom.start().z, emitterData_.ranges.velocityRandom.end().z)
-        );
+        if (emitterData_.flags.velocityDistribution == VelocityDistribution::Box)
+        {
+            datum.velocity_ = Vector3(
+                random->Generate(emitterData_.ranges.velocityRandom.start().x, emitterData_.ranges.velocityRandom.end().x),
+                random->Generate(emitterData_.ranges.velocityRandom.start().y, emitterData_.ranges.velocityRandom.end().y),
+                random->Generate(emitterData_.ranges.velocityRandom.start().z, emitterData_.ranges.velocityRandom.end().z)
+            );
+        }
+        else if (emitterData_.flags.velocityDistribution == VelocityDistribution::Sphere)
+        {
+            // 球面上のランダムなベクトルを生成
+            Vector3 randomDirection = RandomUnitSphere();
+            float speed = random->Generate(emitterData_.ranges.velocityRandomSphere.start(), emitterData_.ranges.velocityRandomSphere.end());
+            datum.velocity_ = randomDirection * speed;
+        }
     }
     else
     {
@@ -205,6 +216,20 @@ void ParticleEmitter::EmitParticle()
     datum.collisionFloor_ = emitterData_.collisionFloor;
 
     aabb_->SetMinMax(emitterData_.ranges.position.start(), emitterData_.ranges.position.end());
+}
+
+Vector3 ParticleEmitter::RandomUnitSphere()
+{
+    RandomGenerator* random = RandomGenerator::GetInstance();
+    float u = random->Generate(0.0f, 1.0f);
+    float v = random->Generate(0.0f, 1.0f);
+    float theta = 2.0f * std::numbers::pi_v<float> * u;
+    float phi = std::acos(2.0f * v - 1.0f);
+
+    float x = std::sin(phi) * std::cos(theta);
+    float y = std::sin(phi) * std::sin(theta);
+    float z = std::cos(phi);
+    return Vector3(x, y, z);
 }
 
 void ParticleEmitter::DebugWindow()
@@ -374,13 +399,40 @@ void ParticleEmitter::DebugWindow()
         ImGui::Spacing();
     }
 
+    static const char* velocityDistributionTypes[] = { "Box", "Sphere" };
+    int selectedVelocityDistribution = static_cast<int>(fromJsonData_.flags.velocityDistribution);
+
     if (ImGui::CollapsingHeader("速度"))
     {
         ImGui::Checkbox("速度のランダマイズ", &fromJsonData_.flags.enableRandomVelocity);
+        const char* preview = velocityDistributionTypes[selectedVelocityDistribution];
+        if (ImGui::BeginCombo("速度の方向分布タイプ", preview))
+        {
+            for (int n = 0; n < IM_ARRAYSIZE(velocityDistributionTypes); n++)
+            {
+                const bool is_selected = (selectedVelocityDistribution == n);
+                if (ImGui::Selectable(velocityDistributionTypes[n], is_selected))
+                    fromJsonData_.flags.velocityDistribution = static_cast<Type::ParticleEmitter::VelocityDistribution>(n);
+
+                // Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
+                if (is_selected)
+                    ImGui::SetItemDefaultFocus();
+            }
+            ImGui::EndCombo();
+        }
+        bool isSphere = (fromJsonData_.flags.velocityDistribution == Type::ParticleEmitter::VelocityDistribution::Sphere);
         if (fromJsonData_.flags.enableRandomVelocity)
         {
-            ImGui::DragFloat3("速度ランダム範囲-開始", &fromJsonData_.ranges.velocityRandom.start().x, 0.01f);
-            ImGui::DragFloat3("速度ランダム範囲-終了", &fromJsonData_.ranges.velocityRandom.end().x, 0.01f);
+            if (isSphere)
+            {
+                ImGui::DragFloat("速度ランダム範囲-球面開始", &fromJsonData_.ranges.velocityRandomSphere.start(), 0.01f);
+                ImGui::DragFloat("速度ランダム範囲-球面終了", &fromJsonData_.ranges.velocityRandomSphere.end(), 0.01f);
+            }
+            else
+            {
+                ImGui::DragFloat3("速度ランダム範囲-開始", &fromJsonData_.ranges.velocityRandom.start().x, 0.01f);
+                ImGui::DragFloat3("速度ランダム範囲-終了", &fromJsonData_.ranges.velocityRandom.end().x, 0.01f);
+            }
         }
         else
         {

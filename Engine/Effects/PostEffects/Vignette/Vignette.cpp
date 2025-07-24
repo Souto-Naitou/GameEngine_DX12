@@ -9,6 +9,7 @@
 #include <Core/DirectX12/BlendDesc.h>
 #include <Core/DirectX12/StaticSamplerDesc/StaticSamplerDesc.h>
 #include <Core/DirectX12/RootParameters/RootParameters.h>
+#include <DebugTools/Logger/Logger.h>
 
 void Vignette::Initialize()
 {
@@ -55,6 +56,16 @@ D3D12_GPU_DESCRIPTOR_HANDLE Vignette::GetOutputTextureHandle() const
 const std::string& Vignette::GetName() const
 {
     return name_;
+}
+
+Vignette::VignetteOption& Vignette::GetOption()
+{
+    return *pOption_;
+}
+
+const Vignette::VignetteOption& Vignette::GetOption() const
+{
+    return *pOption_;
 }
 
 void Vignette::Apply()

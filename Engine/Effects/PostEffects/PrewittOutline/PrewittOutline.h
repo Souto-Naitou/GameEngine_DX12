@@ -26,8 +26,6 @@ public:
     void    Enable(bool _flag) override;
     bool    Enabled() const override;
 
-private:
-    // PostEffectクラスがアクセスする
     void    Apply() override;
     void    Setting() override;
     void    OnResizeBefore() override;
@@ -38,9 +36,14 @@ private:
     // Setters
     void    SetInputTextureHandle(D3D12_GPU_DESCRIPTOR_HANDLE _gpuHandle) override;
 
-    // Getters
+    // =============================================
+    // [Getter Begin]
     D3D12_GPU_DESCRIPTOR_HANDLE     GetOutputTextureHandle() const override;
     const std::string&              GetName() const override;
+    PrewittOutlineOption&           GetOption();
+    const PrewittOutlineOption&     GetOption() const;
+    // [Getter End]
+    // =============================================
 
 private:
     ID3D12Device*                                       device_                 = nullptr;

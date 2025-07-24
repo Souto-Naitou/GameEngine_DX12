@@ -225,8 +225,10 @@
     <ClCompile Include="Effects\PostEffects\BoxFilter\BoxFilter.cpp" />
     <ClCompile Include="Effects\PostEffects\DepthBasedOutline\DepthBasedOutline.cpp" />
     <ClCompile Include="Effects\PostEffects\Dissolve\Dissolve.cpp" />
+    <ClCompile Include="Effects\PostEffects\GaussianBloom\GaussianBloom.cpp" />
     <ClCompile Include="Effects\PostEffects\GaussianFilter\GaussianFilter.cpp" />
     <ClCompile Include="Effects\PostEffects\Grayscale\Grayscale.cpp" />
+    <ClCompile Include="Effects\PostEffects\LuminanceOutput\LuminanceOutput.cpp" />
     <ClCompile Include="Effects\PostEffects\PrewittOutline\PrewittOutline.cpp" />
     <ClCompile Include="Effects\PostEffects\RadialBlur\RadialBlur.cpp" />
     <ClCompile Include="Effects\PostEffects\RandomFilter\RandomFilter.cpp" />
@@ -325,8 +327,10 @@
     <ClInclude Include="Effects\PostEffects\BoxFilter\BoxFilter.h" />
     <ClInclude Include="Effects\PostEffects\DepthBasedOutline\DepthBasedOutline.h" />
     <ClInclude Include="Effects\PostEffects\Dissolve\Dissolve.h" />
+    <ClInclude Include="Effects\PostEffects\GaussianBloom\GaussianBloom.h" />
     <ClInclude Include="Effects\PostEffects\GaussianFilter\GaussianFilter.h" />
     <ClInclude Include="Effects\PostEffects\Grayscale\Grayscale.h" />
+    <ClInclude Include="Effects\PostEffects\LuminanceOutput\LuminanceOutput.h" />
     <ClInclude Include="Effects\PostEffects\PrewittOutline\PrewittOutline.h" />
     <ClInclude Include="Effects\PostEffects\RadialBlur\RadialBlur.h" />
     <ClInclude Include="Effects\PostEffects\RandomFilter\RandomFilter.h" />
@@ -491,6 +495,16 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug_ASAN|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </FxCompile>
+    <FxCompile Include="EngineResources\Shaders\GaussianBloom.PS.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug_ASAN|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="EngineResources\Shaders\GaussianBloom.VS.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug_ASAN|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </FxCompile>
     <FxCompile Include="EngineResources\Shaders\GaussianFilter.PS.hlsl">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug_ASAN|x64'">true</ExcludedFromBuild>
@@ -522,6 +536,16 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </FxCompile>
     <FxCompile Include="..\SampleProject\EngineResources\Shaders\Sprite.VS.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug_ASAN|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="EngineResources\Shaders\LuminanceOutput.PS.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug_ASAN|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="EngineResources\Shaders\LuminanceOutput.VS.hlsl">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug_ASAN|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>

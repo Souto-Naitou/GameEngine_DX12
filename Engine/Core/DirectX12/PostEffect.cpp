@@ -60,14 +60,8 @@ void PostEffectExecuter::ApplyPostEffects()
 
         if (!postEffect->Enabled()) continue;
 
-        if (it == postEffects_.begin())
-        {
-            postEffect->SetInputTextureHandle(rtvHandleGpu_);
-        }
-        else
-        {
-            postEffect->SetInputTextureHandle(outputHandleGpu_);
-        }
+        // 適用前テクスチャの設定
+        postEffect->SetInputTextureHandle(outputHandleGpu_);
 
         // 1. PostEffectの設定 (PSOなど)
         postEffect->Setting();
@@ -342,12 +336,7 @@ void PostEffectExecuter::CreateRootSignature()
     HRESULT hr = D3D12SerializeRootSignature(&descriptionRootSignature, D3D_ROOT_SIGNATURE_VERSION_1, &signatureBlob, &errorBlob);
     if (FAILED(hr))
     {
-        Logger::GetInstance()->LogError(
-            "Object3dSystem",
-            "CreateRootSignature",
-            reinterpret_cast<char*>(errorBlob->GetBufferPointer())
-        );
-
+        Logger::GetInstance()->LogError(__FILE__, __FUNCTION__, reinterpret_cast<char*>(errorBlob->GetBufferPointer()));
         assert(false);
     }
     // バイナリをもとに生成
@@ -401,7 +390,7 @@ void PostEffectExecuter::CreatePipelineState()
     graphicsPipelineStateDesc.RasterizerState = rasterizerDesc_;    // RasterizerState
     // 書き込むRTVの情報
     graphicsPipelineStateDesc.NumRenderTargets = 1;
-    graphicsPipelineStateDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM;
+    graphicsPipelineStateDesc.RTVFormats[0] = DirectX12::kRenderTargetFormat_;
     // 利用するトポロジ（形状）のタイプ。三角形
     graphicsPipelineStateDesc.PrimitiveTopologyType =
         D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
@@ -415,11 +404,7 @@ void PostEffectExecuter::CreatePipelineState()
     HRESULT hr = device->CreateGraphicsPipelineState(&graphicsPipelineStateDesc, IID_PPV_ARGS(&pso_));
     if (FAILED(hr))
     {
-        Logger::GetInstance()->LogError(
-            "PostEffect",
-            "CreatePipelineState",
-            "Failed to create pipeline state"
-        );
+        Logger::GetInstance()->LogError(__FILE__, __FUNCTION__, "Failed to create pipeline state");
         assert(false);
     }
 

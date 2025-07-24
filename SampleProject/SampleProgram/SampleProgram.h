@@ -36,7 +36,6 @@ public:
 
 
 private: /// ゲーム内オブジェクト
-    TimeMeasurer globalTimer_;     // !< グローバルタイマー
     std::unique_ptr<IModelLoader> pModelLoader_ = nullptr; // !< モデルローダー
     std::unique_ptr<ModelStorage> pModelStorage_ = nullptr; // !< モデルストレージ
     std::unique_ptr<ModelManager> pModelManager_ = nullptr; // !< モデルマネージャー

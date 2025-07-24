@@ -6,7 +6,7 @@
 
 void Helper::CreateRenderTexture(DirectX12* _pDx12, ID3D12Device* _pDevice, ResourceStateTracker& _resource, D3D12_CPU_DESCRIPTOR_HANDLE& _rtvHandle, uint32_t& _rtvHeapIndex)
 {
-    const auto kFormat = DXGI_FORMAT_R8G8B8A8_UNORM;
+    const auto kFormat = DirectX12::kRenderTargetFormat_;
 
     _resource.resource = DX12Helper::CreateRenderTextureResource(
         _pDevice,
@@ -45,7 +45,7 @@ void Helper::CreateSRV(ResourceStateTracker& _resource, D3D12_GPU_DESCRIPTOR_HAN
     pSRVManager->CreateForTexture2D(
         _srvHeapIndex,
         _resource.resource.Get(),
-        DXGI_FORMAT_R8G8B8A8_UNORM,
+        DirectX12::kRenderTargetFormat_,
         1
     );
 

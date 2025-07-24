@@ -1,5 +1,8 @@
 #include "FreeLookEye.h"
 #include <imgui.h>
+#include <list>
+#include <string>
+#include <utility>
 
 FreeLookEye::FreeLookEye()
 {
@@ -83,7 +86,40 @@ void FreeLookEye::CatchRotateCommands()
 
 void FreeLookEye::DebugWindow()
 {
+    static const std::list<std::pair<std::string, std::string>> controlExplainList = 
+    {
+        { "マウス右ボタン", "カメラ移動の有効化" },
+        { "マウスカーソルの移動", "視点移動"},
+        { "マウスホイール", "移動速度変更" },
+        { "W", "前進" },
+        { "S", "後退" },
+        { "A", "左移動" },
+        { "D", "右移動" },
+        { "Q", "下移動" },
+        { "E", "上移動" },
+    };
+
     #ifdef _DEBUG
+    if (ImGui::CollapsingHeader("操作方法"))
+    {
+        ImGuiTableFlags flag = ImGuiTableFlags_Borders | ImGuiTableFlags_Resizable | ImGuiTableFlags_RowBg;
+        bool isTableOpen = ImGui::BeginTable("HowToUseTable", 2, flag);
+        if (!isTableOpen) return;
+
+        ImGui::TableSetupColumn("操作", ImGuiTableColumnFlags_WidthStretch);
+        ImGui::TableSetupColumn("説明", ImGuiTableColumnFlags_WidthStretch);
+        ImGui::TableHeadersRow();
+        for (const auto& [key, value] : controlExplainList)
+        {
+            ImGui::TableNextRow();
+            ImGui::TableSetColumnIndex(0);
+            ImGui::Text("%s", key.c_str());
+            ImGui::TableSetColumnIndex(1);
+            ImGui::Text("%s", value.c_str());
+        }
+        ImGui::EndTable();
+        
+    }
     ImGui::Text("MoveSpeed: %.3f", moveSpeed_);
     #endif //_DEBUG
 }

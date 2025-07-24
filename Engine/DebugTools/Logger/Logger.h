@@ -18,7 +18,7 @@ private:
         std::string date;
         std::string time;
         std::string status;
-        std::string className;
+        std::string filename;
         std::string action;
         std::string message;
     };
@@ -48,19 +48,19 @@ public:
 
 public:
     void LogError(
-        const std::string& _className,
+        const std::string& _filename,
         const std::string& _action,
         const std::string& _message
     );
     
     void LogWarning(
-        const std::string& _className,
+        const std::string& _filename,
         const std::string& _action,
         const std::string& _message
     );
 
     void LogInfo(
-        const std::string& _className,
+        const std::string& _filename,
         const std::string& _action,
         const std::string& _message
     );
@@ -71,7 +71,7 @@ public:
 private:
     void Log(
         const std::string& _status,
-        const std::string& _className,
+        const std::string& _filename,
         const std::string& _action,
         const std::string& _message
     );
@@ -79,7 +79,7 @@ private:
         const std::string& _date,
         const std::string& _time,
         const std::string& _status,
-        const std::string& _className,
+        const std::string& _filename,
         const std::string& _action,
         const std::string& _message
     );

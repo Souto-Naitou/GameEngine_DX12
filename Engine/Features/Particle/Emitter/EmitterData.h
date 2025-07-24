@@ -13,6 +13,12 @@ namespace Type
 {
     namespace ParticleEmitter
     {
+        enum class VelocityDistribution
+        {
+            Box,
+            Sphere
+        };
+
         namespace v1
         {
             struct Data;
@@ -36,6 +42,7 @@ namespace Type
         namespace v3
         {
             struct Common;
+            struct RangeData;
             struct Flags;
             struct PhysicsData;
             struct CollisionFloor;
@@ -134,6 +141,11 @@ struct Type::ParticleEmitter::v3::Common : public v2::Common
     float           radius                      = 0.0f;
 };
 
+struct Type::ParticleEmitter::v3::RangeData : public v2::RangeData
+{
+    Range<float>    velocityRandomSphere        = {};                 // SphereVelocityDistribution用のランダム範囲
+};
+
 struct Type::ParticleEmitter::v3::PhysicsData : public v2::PhysicsData
 {
     float           frictionCoef                = 0.0f;                 // 摩擦
@@ -142,6 +154,7 @@ struct Type::ParticleEmitter::v3::PhysicsData : public v2::PhysicsData
 struct Type::ParticleEmitter::v3::Flags : v2::Flags
 {
     bool            enableCollisionFloor        = {};                   // 衝突床
+    VelocityDistribution velocityDistribution   = VelocityDistribution::Box; // 速度分布タイプ
 };
 
 struct Type::ParticleEmitter::v3::CollisionFloor
@@ -159,9 +172,8 @@ struct Type::ParticleEmitter::v3::Data
     static constexpr uint32_t version           = 3;                    // バージョン番号
     std::string     name                        = {};
     Common          common                      = {};
-    v2::RangeData   ranges                      = {};
+    RangeData       ranges                      = {};
     PhysicsData     physics                     = {};
     Flags           flags                       = {};
     CollisionFloor  collisionFloor              = {};                   // 衝突床データ
 };
-

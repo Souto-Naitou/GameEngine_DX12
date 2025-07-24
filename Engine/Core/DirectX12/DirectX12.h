@@ -31,6 +31,13 @@ class SRVManager;
 class DirectX12
 {
 public:
+    // スワップチェーン用
+    constexpr static DXGI_FORMAT kRenderTargetFormat_ = DXGI_FORMAT_R8G8B8A8_UNORM;
+
+    // ポストエフェクトや合成用
+    constexpr static DXGI_FORMAT kHDRFormat_ = DXGI_FORMAT_R16G16B16A16_FLOAT;
+
+public:
     DirectX12() = default;
     ~DirectX12();
 

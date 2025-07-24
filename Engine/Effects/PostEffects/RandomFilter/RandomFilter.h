@@ -34,8 +34,6 @@ public:
     void    SetOpacity(float _opacity);
     void    SetSeed(float _seed);
 
-private:
-    // PostEffectクラスがアクセスする
     void    Apply() override;
     void    Setting() override;
     void    OnResizeBefore() override;
@@ -49,6 +47,8 @@ private:
     // Getters
     D3D12_GPU_DESCRIPTOR_HANDLE     GetOutputTextureHandle() const override;
     const std::string&              GetName() const override;
+    RandomFilterOption&             GetOption();
+    const RandomFilterOption&       GetOption() const;
 
 private:
     ID3D12Device*                                       device_                 = nullptr;

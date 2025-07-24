@@ -61,7 +61,7 @@ ModelData ModelLoaderAssimp::_LoadModelByAssimp(const std::string& _path)
     std::string parentPath = utl::filesystem::get_parent_path_string(_path);
 
     // 三角形の並びを反転させ、UV座標を反転させるフラグを設定
-    uint32_t flags = aiProcess_FlipWindingOrder | aiProcess_FlipUVs | aiProcess_Triangulate;
+    uint32_t flags = aiProcess_FlipWindingOrder | aiProcess_FlipUVs | aiProcess_Triangulate | aiProcess_FixInfacingNormals ;
 
     const aiScene* scene = importer.ReadFile(_path.c_str(), flags);
 
@@ -78,10 +78,10 @@ ModelData ModelLoaderAssimp::_LoadModelByAssimp(const std::string& _path)
         {
             throw std::runtime_error("Mesh does not have normals: " + _path);
         }
-        if (!mesh->HasTextureCoords(0)) [[unlikely]]
-        {
-            throw std::runtime_error("Mesh does not have texture coordinates: " + _path);
-        }
+        //if (!mesh->HasTextureCoords(0)) [[unlikely]]
+        //{
+        //    throw std::runtime_error("Mesh does not have texture coordinates: " + _path);
+        //}
 
         result.vertices.reserve(mesh->mNumVertices);
 
@@ -108,7 +108,17 @@ ModelData ModelLoaderAssimp::_LoadModelByAssimp(const std::string& _path)
         {
             const aiVector3D& position = mesh->mVertices[vertexIndex];
             const aiVector3D& normal = mesh->mNormals[vertexIndex];
-            const aiVector3D& texcoord = mesh->mTextureCoords[0][vertexIndex];
+            aiVector3D texcoord = {};
+
+            if (mesh->HasTextureCoords(0))
+            {
+                texcoord = mesh->mTextureCoords[0][vertexIndex];
+            }
+            else
+            {
+                // テクスチャ座標がない場合はデフォルト値を設定
+                texcoord = aiVector3D(0.0f, 0.0f, 0.0f);
+            }
 
             VertexData vertex;
             vertex.position = Vector4(position.x, position.y, position.z, 1.0f);

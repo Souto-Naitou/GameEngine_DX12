@@ -61,7 +61,7 @@ private:
 
 private:
     void EmitParticle();
-
+    Vector3 RandomUnitSphere();
 
 private:
     void DebugWindow();

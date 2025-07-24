@@ -316,6 +316,12 @@
     <Filter Include="Effect\PostEffect\SeparatedGaussianFilter">
       <UniqueIdentifier>{9fb29472-52fe-4435-a648-0459a076ef41}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Effect\PostEffect\GaussianBloom">
+      <UniqueIdentifier>{1421dd41-0025-4cbf-8888-7716f040598f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Effect\PostEffect\LuminanceOutput">
+      <UniqueIdentifier>{f3f4df73-a540-41f0-82c0-b75a0541deb5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DebugTools\DebugManager\DebugManager.cpp">
@@ -594,6 +600,12 @@
     <ClCompile Include="Features\Model\GltfModelSystem.cpp" />
     <ClCompile Include="Effects\PostEffects\SeparatedGaussianFilter\SeparatedGaussianFilter.cpp">
       <Filter>Effect\PostEffect\SeparatedGaussianFilter</Filter>
+    </ClCompile>
+    <ClCompile Include="Effects\PostEffects\GaussianBloom\GaussianBloom.cpp">
+      <Filter>Effect\PostEffect\GaussianBloom</Filter>
+    </ClCompile>
+    <ClCompile Include="Effects\PostEffects\LuminanceOutput\LuminanceOutput.cpp">
+      <Filter>Effect\PostEffect\LuminanceOutput</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -951,6 +963,12 @@
     <ClInclude Include="Math\Functions.hpp">
       <Filter>Math</Filter>
     </ClInclude>
+    <ClInclude Include="Effects\PostEffects\GaussianBloom\GaussianBloom.h">
+      <Filter>Effect\PostEffect\GaussianBloom</Filter>
+    </ClInclude>
+    <ClInclude Include="Effects\PostEffects\LuminanceOutput\LuminanceOutput.h">
+      <Filter>Effect\PostEffect\LuminanceOutput</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include=".editorconfig" />
@@ -1079,6 +1097,18 @@
       <Filter>HLSL\PostEffect</Filter>
     </FxCompile>
     <FxCompile Include="EngineResources\Shaders\SeparatedGaussianFilter.VS.hlsl">
+      <Filter>HLSL\PostEffect</Filter>
+    </FxCompile>
+    <FxCompile Include="EngineResources\Shaders\GaussianBloom.VS.hlsl">
+      <Filter>HLSL\PostEffect</Filter>
+    </FxCompile>
+    <FxCompile Include="EngineResources\Shaders\GaussianBloom.PS.hlsl">
+      <Filter>HLSL\PostEffect</Filter>
+    </FxCompile>
+    <FxCompile Include="EngineResources\Shaders\LuminanceOutput.PS.hlsl">
+      <Filter>HLSL\PostEffect</Filter>
+    </FxCompile>
+    <FxCompile Include="EngineResources\Shaders\LuminanceOutput.VS.hlsl">
       <Filter>HLSL\PostEffect</Filter>
     </FxCompile>
   </ItemGroup>

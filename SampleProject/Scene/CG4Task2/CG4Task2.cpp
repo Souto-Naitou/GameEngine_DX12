@@ -26,7 +26,7 @@ void CG4Task2::Initialize()
     /// システムにデフォルトのゲームカメラを設定
     Object3dSystem::GetInstance()->SetGlobalEye(pGameEye_.get());
     ParticleSystem::GetInstance()->SetGlobalEye(pGameEye_.get());
-    LineSystem::GetInstance()->SetGlobalEye(pGameEye_.get());
+    pLineSystem_->SetGlobalEye(pGameEye_.get());
 
     // モデルの初期化
     auto pSrc = pModelManager_->Load("Human/Walk.gltf");

@@ -205,7 +205,7 @@ namespace Type::ParticleEmitter::v3
     {
         name = _rv.name;
         common.v2::Common::operator=(_rv.common);
-        ranges = _rv.ranges;
+        ranges.v2::RangeData::operator=(_rv.ranges);
         physics.v2::PhysicsData::operator=(_rv.physics);
         flags.v2::Flags::operator=(_rv.flags);
     }
@@ -242,6 +242,7 @@ namespace Type::ParticleEmitter::v3
         utl::json::try_assign(j_range, "color", d_range.color);
         utl::json::try_assign(j_range, "velocityRandom", d_range.velocityRandom);
         utl::json::try_assign(j_range, "rotationRandom", d_range.rotationRandom);
+        utl::json::try_assign(j_range, "velocityRandomSphere", d_range.velocityRandomSphere);
 
         auto& d_phys = _data.physics;
 
@@ -257,6 +258,7 @@ namespace Type::ParticleEmitter::v3
         utl::json::try_assign(j_flag, "enableRandomScale", d_flag.enableRandomScale);
         utl::json::try_assign(j_flag, "enableScaleTransition", d_flag.enableScaleTransition);
         utl::json::try_assign(j_flag, "enableCollisionFloor", d_flag.enableCollisionFloor);
+        utl::json::try_assign(j_flag, "velocityDistribution", d_flag.velocityDistribution);
 
         auto& d_colFloor = _data.collisionFloor;
 
@@ -291,6 +293,7 @@ namespace Type::ParticleEmitter::v3
         j_ranges["color"]                       = d_ranges.color;
         j_ranges["velocityRandom"]              = d_ranges.velocityRandom;
         j_ranges["rotationRandom"]              = d_ranges.rotationRandom;
+        j_ranges["velocityRandomSphere"]        = d_ranges.velocityRandomSphere;
 
         auto& j_phys = _j["physics"];
         auto& d_phys = _data.physics;
@@ -308,6 +311,7 @@ namespace Type::ParticleEmitter::v3
         j_flag["enableRandomScale"]             = d_flag.enableRandomScale;
         j_flag["enableScaleTransition"]         = d_flag.enableScaleTransition;
         j_flag["enableCollisionFloor"]          = d_flag.enableCollisionFloor;
+        j_flag["velocityDistribution"]          = d_flag.velocityDistribution;
 
         auto& j_colflo = _j["collisionFloor"];
         auto& d_colflo = _data.collisionFloor;
