@@ -186,6 +186,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Scene\GameScene\GameScene.cpp" />
     <ClCompile Include="Scene\InstancingScene\InstancingScene.cpp" />
     <ClCompile Include="Scene\PG3PT1\PG3PT1.cpp" />
+    <ClCompile Include="Scene\TL1Task1\TL1Task1.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Engine\Engine.vcxproj">
@@ -210,6 +211,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Scene\GameScene\GameScene.h" />
     <ClInclude Include="Scene\InstancingScene\InstancingScene.h" />
     <ClInclude Include="Scene\PG3PT1\PG3PT1.h" />
+    <ClInclude Include="Scene\TL1Task1\TL1Task1.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

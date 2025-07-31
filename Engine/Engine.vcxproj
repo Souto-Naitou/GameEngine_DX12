@@ -246,6 +246,9 @@
     <ClCompile Include="Features\GameEye\FreeLook\FreeLookEye.cpp" />
     <ClCompile Include="Features\GameEye\GameEye.cpp" />
     <ClCompile Include="Features\Input\Input.cpp" />
+    <ClCompile Include="Features\LevelLoader\LevelData.cpp" />
+    <ClCompile Include="Features\LevelLoader\LevelHelper.cpp" />
+    <ClCompile Include="Features\LevelLoader\SceneObjects.cpp" />
     <ClCompile Include="Features\Lighting\Manager\LightingManager.cpp" />
     <ClCompile Include="Features\Lighting\PointLight\PointLight.cpp" />
     <ClCompile Include="Features\Line\Line.cpp" />
@@ -289,7 +292,7 @@
     <ClCompile Include="Type\Color.cpp" />
     <ClCompile Include="Utility\Debug\dbgutl.cpp" />
     <ClCompile Include="Utility\FileSystem\fsutl.cpp" />
-    <ClCompile Include="Utility\JSONIO\JSONIO.cpp" />
+    <ClCompile Include="Utility\JSONIO\jsonio.cpp" />
     <ClCompile Include="Utility\PathResolver\PathResolver.cpp" />
     <ClCompile Include="Utility\String\strutl.cpp" />
   </ItemGroup>
@@ -351,6 +354,10 @@
     <ClInclude Include="Features\IContainer\ListContainer.h" />
     <ClInclude Include="Features\IContainer\VectorContainer.h" />
     <ClInclude Include="Features\Input\Input.h" />
+    <ClInclude Include="Features\LevelLoader\ISceneObjects.h" />
+    <ClInclude Include="Features\LevelLoader\LevelData.h" />
+    <ClInclude Include="Features\LevelLoader\LevelHelper.h" />
+    <ClInclude Include="Features\LevelLoader\SceneObjects.h" />
     <ClInclude Include="Features\Lighting\Manager\LightingManager.h" />
     <ClInclude Include="Features\Lighting\PointLight\PointLight.h" />
     <ClInclude Include="Features\Line\Line.h" />
@@ -410,7 +417,7 @@
     <ClInclude Include="Utility\DIContainer\DIContainer.h" />
     <ClInclude Include="Utility\FileSystem\fsutl.h" />
     <ClInclude Include="Utility\JSONConvTypeFuncs\JSONConvTypeFuncs.h" />
-    <ClInclude Include="Utility\JSONIO\JSONIO.h" />
+    <ClInclude Include="Utility\JSONIO\jsonio.h" />
     <ClInclude Include="Utility\JSON\jsonutl.h" />
     <ClInclude Include="Utility\PathResolver\PathResolver.h" />
     <ClInclude Include="Utility\String\strutl.h" />

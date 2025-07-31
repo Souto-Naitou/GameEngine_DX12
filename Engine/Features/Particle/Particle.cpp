@@ -1,11 +1,10 @@
 #include "Particle.h"
 #include <Core/DirectX12/Helper/DX12Helper.h>
-#include <Features/Model/ModelManager.h>
 #include <Core/DirectX12/SRVManager.h>
 #include <numbers>
 #include <Common/define.h>
 
-#if defined(_DEBUG) && defined(DEBUG_ENGINE)
+#if defined _DEBUG
 #include <imgui.h>
 #include <DebugTools/DebugManager/DebugManager.h>
 #include <DebugTools/ImGuiTemplates/ImGuiTemplates.h>
@@ -15,11 +14,11 @@ using namespace Type::ParticleEmitter;
 
 void Particle::Initialize(IModel* _pModel)
 {
-#if defined(_DEBUG) && defined(DEBUG_ENGINE)
+#if defined _DEBUG
     std::stringstream ss;
     ss << "instance##0x" << std::hex << this;
     name_ = ss.str();
-    DebugManager::GetInstance()->SetComponent("Particle", name_, std::bind(&Particle::DebugWindow, this));
+    RegisterDebugWindowC("Particle", name_, Particle::DebugWindow, false);
 #endif
 
     /// 必要なインスタンスを取得
@@ -97,17 +96,14 @@ void Particle::Update()
 
 void Particle::Finalize()
 {
-#if defined(_DEBUG) && defined(DEBUG_ENGINE)
-
+#if defined _DEBUG
     DebugManager::GetInstance()->DeleteComponent("Particle", name_.c_str());
-
 #endif
 
     /// リソースの解放
     instancingResource_.Reset();
     SRVManager::GetInstance()->Deallocate(srvIndex_);
     return;
-
 }
 
 void Particle::Draw()
@@ -301,7 +297,7 @@ void Particle::ParticleDataUpdate(std::vector<ParticleData>::iterator& _itr)
 
 void Particle::DebugWindow()
 {
-#if defined(_DEBUG) && defined(DEBUG_ENGINE)
+#if defined _DEBUG
 
     ImGui::Checkbox("Enable Billboard", &enableBillboard_);
 

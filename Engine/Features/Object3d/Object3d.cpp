@@ -2,18 +2,15 @@
 
 #include <Matrix4x4.h>
 #include <Common/structs.h>
-#include <Core/Win32/WinSystem.h>
 #include <Core/DirectX12/DirectX12.h>
 #include <Core/DirectX12/Helper/DX12Helper.h>
-#include <Core/DirectX12/TextureManager.h>
-#include <Features/Model/ModelManager.h>
 #include <Utility/Debug/dbgutl.h>
 
 
-#if defined (DEBUG_ENGINE) && (_DEBUG)
+#if defined _DEBUG
 #include <DebugTools/DebugManager/DebugManager.h>
 #include <imgui.h>
-#endif // DEBUG_ENGINE && _DEBUG
+#endif // _DEBUG
 
 
 void Object3d::Initialize(bool _enableDebugWindow)
@@ -26,14 +23,14 @@ void Object3d::Initialize(bool _enableDebugWindow)
 
     isEnableDebugWindow_ = _enableDebugWindow;
 
-#if defined (DEBUG_ENGINE) && (_DEBUG)
+#if defined _DEBUG
     if (isEnableDebugWindow_)
     {
         pDebugManager_ = DebugManager::GetInstance();
         name_ = utl::debug::generate_name_default(this);
-        pDebugManager_->SetComponent("Object3d", name_, std::bind(&Object3d::DebugWindow, this));
+        RegisterDebugWindowC("Object3d", name_, Object3d::DebugWindow, false);
     }
-#endif // DEBUG_ENGINE && _DEBUG
+#endif // _DEBUG
 
     transform_.scale = Vector3(1.0f, 1.0f, 1.0f);
     transform_.rotate = Vector3(0.0f, 0.0f, 0.0f);
@@ -96,19 +93,14 @@ void Object3d::Update()
     /// 平行光源データを更新
     if (directionalLight_)
     {
-        directionalLightData_->color = directionalLight_->color;
-        directionalLightData_->direction = directionalLight_->direction;
-        directionalLightData_->intensity = directionalLight_->intensity;
+        *directionalLightData_ = *directionalLight_;
     }
 
 
     /// ポイントライトデータを更新
     if (pointLight_)
     {
-        pointLightData_->enablePointLight = pointLight_->enablePointLight;
-        pointLightData_->color = pointLight_->color;
-        pointLightData_->position = pointLight_->position;
-        pointLightData_->intensity = pointLight_->intensity;
+        *pointLightData_ = pointLight_->GetDataForGPU();
     }
 
 
@@ -121,8 +113,6 @@ void Object3d::Update()
     {
         cameraForGPU_->worldPosition = (*ppSystemGameEye_)->GetTransform().translate;
     }
-
-
 }
 
 void Object3d::Draw()
@@ -142,12 +132,12 @@ void Object3d::Draw()
     pSystem_->AddCommandListData(data);
 }
 
-void Object3d::Finalize()
+void Object3d::Finalize() const
 {
-#if defined (DEBUG_ENGINE) && (_DEBUG)
+#if defined _DEBUG
     if (isEnableDebugWindow_)
     {
-        pDebugManager_->DeleteComponent("Object3d", name_.c_str());
+        UnregisterDebugWindowC("Object3d", name_);
     }
 #endif // DEBUG_ENGINE && _DEBUG
 }
@@ -200,7 +190,7 @@ void Object3d::CreateLightingResource()
 
 void Object3d::CreatePointLightResource()
 {
-    pointLightResource_ = DX12Helper::CreateBufferResource(device_, sizeof(PointLight));
+    pointLightResource_ = DX12Helper::CreateBufferResource(device_, sizeof(PointLightForGPU));
     pointLightResource_->Map(0, nullptr, reinterpret_cast<void**>(&pointLightData_));
     pointLightData_->enablePointLight = 0;
     pointLightData_->color = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
@@ -219,7 +209,6 @@ void Object3d::CreateMaterialResource()
     materialData_->shininess = 1.0f;
 }
 
-#ifdef DEBUG_ENGINE
 void Object3d::DebugWindow()
 {
 #ifdef _DEBUG
@@ -281,14 +270,14 @@ void Object3d::DebugWindow()
         ImGui::PushID("POINT_LIGHT");
         if (pointLight_)
         {
-            bool enablePointLight = pointLight_->enablePointLight;
+            bool enablePointLight = pointLight_->IsEnable();
             if (ImGui::Checkbox("Enable PointLight", &enablePointLight))
             {
-                pointLight_->enablePointLight = enablePointLight;
+                pointLight_->IsEnable() = true;
             }
-            ImGui::ColorEdit4("Color", &pointLight_->color.x);
-            ImGui::DragFloat3("Position", &pointLight_->position.x, 0.01f);
-            ImGui::DragFloat("Intensity", &pointLight_->intensity, 0.01f);
+            ImGui::ColorEdit4("Color", &pointLight_->GetColor().x);
+            ImGui::DragFloat3("Position", &pointLight_->GetPosition().x, 0.01f);
+            ImGui::DragFloat("Intensity", &pointLight_->GetIntensity(), 0.01f);
         }
         ImGui::PopID();
     }
@@ -305,4 +294,3 @@ void Object3d::DebugWindow()
 
 #endif // _DEBUG
 }
-#endif // DEBUG_ENGINE

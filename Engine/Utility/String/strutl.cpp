@@ -23,3 +23,8 @@ std::string utl::string::to_lower(const std::string& _str)
 
     return lowerStr;
 }
+
+std::string operator""_s(const char* _str, size_t _len)
+{
+    return std::string(_str, _len);
+}

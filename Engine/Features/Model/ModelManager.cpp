@@ -89,7 +89,7 @@ IModel* ModelManager::Load(const std::string& _path)
 
     if (model == nullptr)
     {
-        throw std::runtime_error("Failed to load model from path: " + resolvedPath);
+        throw std::runtime_error("Failed to load model from path: " + resolvedPath.empty() ? "(empty)"_s : resolvedPath);
     }
 
     return pModelStorage_->AddModel(resolvedPath, std::move(model));

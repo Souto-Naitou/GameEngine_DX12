@@ -168,7 +168,7 @@ void DebugManager::SetComponent(const std::string& _name, const std::function<vo
 {
     ComponentData data = {};
     data.id_ptr = &_name;
-    data.id_cpy = _name;
+    data.id_cpy = "Id is registered as a pointer.";
     data.function = _component;
     data.isEnabled = false;
     data.isWindow = isWindowMode;
@@ -191,7 +191,7 @@ void DebugManager::SetComponent(const std::string& _category, const std::string&
     ComponentData data = {};
     data.categoryId = _category;
     data.id_ptr = &_name;
-    data.id_cpy = _name;
+    data.id_cpy = "Id is registered as a pointer";
     data.function = _component;
     data.isEnabled = false;
     data.isWindow = isWindowMode;
@@ -212,31 +212,65 @@ void DebugManager::SetComponent(const std::string& _category, const std::string&
 
 void DebugManager::DeleteComponent(const std::string& _name)
 {
-    componentList_.remove_if([_name](const ComponentData& component)
+    try
     {
-        bool result = false;
-        if (!component.categoryId.has_value())
+        componentList_.remove_if([_name](const ComponentData& component)
         {
-            std::string id = component.id_ptr ? *component.id_ptr : component.id_cpy;
-            result = id.compare(_name) == 0;
-        }
-        return result;
-    });
+            bool result = false;
+            if (!component.categoryId.has_value())
+            {
+                std::string id = component.id_ptr ? *component.id_ptr : component.id_cpy;
+                result = id.compare(_name) == 0;
+            }
+            return result;
+        });
+    }
+    catch (const std::exception& e)
+    {
+        // エラー処理: 例外をログに記録するなど
+        Logger::GetInstance()->LogError(__FILE__, __FUNCTION__, e.what());
+        assert(false && "mismatch categoryID or name");
+    }
 }
 
 void DebugManager::DeleteComponent(const std::string& _categoryID, const std::string& _name)
 {
-    componentList_.remove_if([_categoryID, _name](const ComponentData& component)
+    try
     {
-        bool result = false;
-        if (component.categoryId.has_value())
+        const std::string* id_ptr = &_name;
+        componentList_.remove_if([_categoryID, id_ptr](const ComponentData& component)
         {
+            if (!component.categoryId || !component.id_ptr) return false;
+            return component.categoryId->compare(_categoryID) == 0 && component.id_ptr == id_ptr;
+        });
+    }
+    catch (const std::exception& e)
+    {
+        // エラー処理: 例外をログに記録するなど
+        Logger::GetInstance()->LogError(__FILE__, __FUNCTION__, e.what());
+        assert(false && "mismatch categoryID or name");
+    }
+}
+
+void DebugManager::DeleteComponent(const std::string& _category, const std::string&& _name)
+{
+    try
+    {
+        componentList_.remove_if([_category, _name](const ComponentData& component)
+        {
+            if (!component.categoryId) return false;
+
             std::string parentId = component.categoryId.value();
-            std::string childId = component.id_ptr ? *component.id_ptr : component.id_cpy;
-            result = parentId.compare(_categoryID) == 0 && childId.compare(_name) == 0;
-        }
-        return result;
-    });
+            std::string childId = component.id_cpy;
+            return parentId.compare(_category) == 0 && childId.compare(_name) == 0;
+        });
+    }
+    catch (const std::exception& e)
+    {
+        // エラー処理: 例外をログに記録するなど
+        Logger::GetInstance()->LogError(__FILE__, __FUNCTION__, e.what());
+        assert(false && "mismatch categoryID or name");
+    }
 }
 
 void DebugManager::Update()

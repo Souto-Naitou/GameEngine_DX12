@@ -35,7 +35,18 @@ void PointLight::Finalize()
     pIcon_->Finalize();
 }
 
-void PointLight::SetIconModel(IModel* pModel)
+PointLight& PointLight::SetIconModel(IModel* pModel)
 {
     pIconModel_ = pModel;
+    return *this;
+}
+
+PointLightForGPU PointLight::GetDataForGPU() const
+{
+    PointLightForGPU data;
+    data.enablePointLight = enable_ ? 1 : 0;
+    data.color = color;
+    data.position = position;
+    data.intensity = intensity;
+    return data;
 }

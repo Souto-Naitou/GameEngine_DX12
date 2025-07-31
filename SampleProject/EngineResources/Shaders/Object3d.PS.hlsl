@@ -72,7 +72,7 @@ PixelShaderOutput main(VertexShaderOutput input)
         float cos;
         if (gLighting.lightingType == 0)
         {
-            cos = saturate(dot(normalize(input.normal), -gDirectionalLight.direction));
+            cos = saturate(dot(input.normal, -gDirectionalLight.direction));
         }
         else if (gLighting.lightingType == 1)
         {

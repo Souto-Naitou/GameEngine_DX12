@@ -1,0 +1,74 @@
+{
+    "name": "scene",
+    "objects": [
+        {
+            "type": "CAMERA",
+            "name": "Camera",
+            "transform": {
+                "translation": [
+                    0.0,
+                    -10.0,
+                    1.0
+                ],
+                "rotation": [
+                    1.570796251296997,
+                    -1.6083994580640137e-08,
+                    -0.3839724063873291
+                ],
+                "scales": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            }
+        },
+        {
+            "type": "MESH",
+            "name": "Cube",
+            "transform": {
+                "translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.9279829859733582,
+                    -0.20675374567508698,
+                    2.8740592002868652
+                ],
+                "scales": [
+                    0.9999999403953552,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "L-Shelf/L-Shelf.obj"
+        },
+        {
+            "type": "MESH",
+            "name": "平面",
+            "transform": {
+                "translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "rotation": [
+                    1.5707964897155762,
+                    -0.0,
+                    3.141592502593994
+                ],
+                "scales": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "Grid_v4/Grid_v4.obj",
+            "uv_tiling": [
+                100.0,
+                100.0
+            ]
+        }
+    ]
+}

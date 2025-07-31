@@ -4,6 +4,8 @@
 #include <cstdio>
 #include <cstdint>
 
+std::string operator"" _s(const char* _str, size_t _len);
+
 namespace utl::string
 {
     template <typename T>

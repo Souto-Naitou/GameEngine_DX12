@@ -17,13 +17,15 @@ GameEye::GameEye()
     , pMatrix_(Matrix4x4::PerspectiveFovMatrix(fovY_, aspectRatio_, nearClip_, farClip_))
     , vpMatrix_(vMatrix_* pMatrix_)
 {
-    DebugManager::GetInstance()->SetComponent("GameEye", name_, std::bind(&GameEye::DebugWindow, this));
+    std::string* ptr = &name_; ptr;
+
+    RegisterDebugWindowC("GameEye", name_, GameEye::DebugWindow, false);
     pRandomGenerator_ = RandomGenerator::GetInstance();
 }
 
 GameEye::~GameEye()
 {
-    DebugManager::GetInstance()->DeleteComponent("GameEye", name_.c_str());
+    DebugManager::GetInstance()->DeleteComponent("GameEye", name_);
 }
 
 void GameEye::Update()
@@ -34,6 +36,19 @@ void GameEye::Update()
     vpMatrix_ = vMatrix_ * pMatrix_;
 
     shakePositon_ = Vector3();
+}
+
+void GameEye::_UpdateFovFromFocalLength()
+{
+    if (focalLength_ > 0.0f && sensorHeight_ > 0.0f)
+    {
+        float fovRadians = 2.0f * std::atan(sensorHeight_ / (2.0f * focalLength_));
+        fovY_ = fovRadians;
+    }
+    else
+    {
+        fovY_ = 0.45f; // デフォルト値
+    }
 }
 
 void GameEye::DebugWindow()
@@ -74,4 +89,10 @@ void GameEye::Shake(float _power)
         pRandomGenerator_->Generate(-_power, _power),
         pRandomGenerator_->Generate(-_power, _power)
     );
+}
+
+void GameEye::SetFocalLength(float _focalLength)
+{
+    focalLength_ = _focalLength;
+    _UpdateFovFromFocalLength();
 }

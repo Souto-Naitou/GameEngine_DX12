@@ -33,6 +33,7 @@ public: /// Setter
     void SetNearClip(float _near)                           { nearClip_ = _near; }
     void SetFarClip(float _far)                             { farClip_ = _far; }
     void SetName(const std::string& _name)                  { name_ = _name; }
+    void SetFocalLength(float _focalLength);
 
 private: /// メンバ変数
     std::string         name_           = "unnamed";
@@ -43,10 +44,14 @@ private: /// メンバ変数
     Matrix4x4           pMatrix_        = {};       // プロジェクション行列
     Matrix4x4           vpMatrix_       = {};       // ビュープロジェクション行列
     float               fovY_           = 0.0f;
+    float               focalLength_    = 0.0f;
+    float               sensorHeight_   = 36.0f;     // センサーの高さ
     float               aspectRatio_    = 0.0f;
     float               nearClip_       = 0.0f;
     float               farClip_        = 0.0f;
     Vector3             shakePositon_   = {};
+
+    void _UpdateFovFromFocalLength();
 
 protected:
     virtual void DebugWindow();

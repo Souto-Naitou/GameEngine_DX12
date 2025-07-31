@@ -11,6 +11,11 @@
 #include <array>
 #include <optional>
 
+#define RegisterDebugWindowC(category, name, func, windowMode)      DebugManager::GetInstance()->SetComponent(category, name, std::bind(&func, this), windowMode)
+#define RegisterDebugWindowS(name, func, windowMode)                DebugManager::GetInstance()->SetComponent(name, std::bind(&func, this), windowMode)
+#define UnregisterDebugWindowC(category, name)                      DebugManager::GetInstance()->DeleteComponent(category, name)
+#define UnregisterDebugWindowS(name)                                DebugManager::GetInstance()->DeleteComponent(name)
+
 class DebugManager : public EngineFeature
 {
     struct ComponentData
@@ -44,6 +49,7 @@ public:
 
     void    DeleteComponent(const std::string& _name);
     void    DeleteComponent(const std::string& _category, const std::string& _name);
+    void    DeleteComponent(const std::string& _category, const std::string&& _name);
 
     void    Update();
     void    DrawUI();

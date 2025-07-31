@@ -3,15 +3,15 @@
 
 void ParticleManager::Update()
 {
-    deleteParticles_.remove_if([&](Particle* _particle)
+    size_t numDelete = deleteParticles_.size();
+    for (size_t i = 0; i < numDelete; ++i)
     {
-        if (_particle->IsAbleDelete())
+        deleteParticles_.remove_if([&](Particle* _particle)
         {
             ReleaseParticle(_particle);
             return true;
-        }
-        return false;
-    });
+        });
+    }
 
     for (auto& particle : particles_)
     {

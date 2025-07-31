@@ -49,6 +49,9 @@
     <Filter Include="Game\Scene\CG5Task1">
       <UniqueIdentifier>{8877e688-0af5-4bbb-9f61-04cb52801a6c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game\Scene\TL1Task1">
+      <UniqueIdentifier>{b9c7f1db-d66c-4da3-a97c-04f9b04567f7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -85,7 +88,10 @@
       <Filter>Game\Scene\CG4Task2</Filter>
     </ClCompile>
     <ClCompile Include="Scene\CG5Task1\CG5Task1.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>Game\Scene\CG5Task1</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\TL1Task1\TL1Task1.cpp">
+      <Filter>Game\Scene\TL1Task1</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -121,6 +127,9 @@
     </ClInclude>
     <ClInclude Include="Scene\CG5Task1\CG5Task1.h">
       <Filter>Game\Scene\CG5Task1</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\TL1Task1\TL1Task1.h">
+      <Filter>Game\Scene\TL1Task1</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

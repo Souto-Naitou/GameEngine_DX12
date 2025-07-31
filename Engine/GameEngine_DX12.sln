@@ -15,6 +15,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "VecMat", "Externals\VectorM
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NiGui", "Externals\NiGui\NiGui.vcxproj", "{E3E0F431-57AB-47BD-9CAD-DB622644B99C}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Tests", "..\Tests\Tests.vcxproj", "{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug_ASAN|x64 = Debug_ASAN|x64
@@ -58,6 +60,12 @@ Global
 		{E3E0F431-57AB-47BD-9CAD-DB622644B99C}.Debug|x64.Build.0 = Debug|x64
 		{E3E0F431-57AB-47BD-9CAD-DB622644B99C}.Release|x64.ActiveCfg = Release|x64
 		{E3E0F431-57AB-47BD-9CAD-DB622644B99C}.Release|x64.Build.0 = Release|x64
+		{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}.Debug_ASAN|x64.ActiveCfg = Debug_ASAN|x64
+		{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}.Debug_ASAN|x64.Build.0 = Debug_ASAN|x64
+		{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}.Debug|x64.ActiveCfg = Debug|x64
+		{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}.Debug|x64.Build.0 = Debug|x64
+		{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}.Release|x64.ActiveCfg = Release|x64
+		{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

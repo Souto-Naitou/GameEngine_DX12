@@ -19,7 +19,7 @@ Sprite::Sprite()
 
 Sprite::~Sprite()
 {
-#if defined (_DEBUG) && defined (DEBUG_ENGINE)
+#if defined _DEBUG
 
     DebugManager::GetInstance()->DeleteComponent("Sprite", name_.c_str());
 
@@ -33,7 +33,7 @@ void Sprite::Initialize(std::string _filepath)
     pDx12_ = pSpriteSystem_->GetDirectX12();
     device_ = pDx12_->GetDevice();
 
-#if defined (_DEBUG) && defined (DEBUG_ENGINE)
+#if defined _DEBUG
     DebugManager::GetInstance()->SetComponent("Sprite", name_, std::bind(&Sprite::DebugWindow, this));
 #endif // _DEBUG && DEBUG_ENGINE
 
@@ -272,7 +272,7 @@ void Sprite::AdjustSpriteSize()
 
 void Sprite::DebugWindow()
 {
-#if defined (_DEBUG) && defined (DEBUG_ENGINE)
+#if defined _DEBUG
 
     thumbnailSize_.x = ImGui::GetContentRegionAvail().x - 16;
     thumbnailSize_.y = thumbnailSize_.x / aspectRatio_;

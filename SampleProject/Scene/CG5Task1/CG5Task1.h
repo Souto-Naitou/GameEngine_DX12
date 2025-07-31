@@ -75,7 +75,7 @@ private:
 
     // パーティクル
     std::unique_ptr<ParticleEmitter>            pEmitter_Spark_     = nullptr;
-    std::unique_ptr<ParticleEmitter>            pEmitter_Firework_     = nullptr;
+    std::unique_ptr<ParticleEmitter>            pEmitter_Firework_  = nullptr;
     std::unique_ptr<ParticleEmitter>            pEmitter_Test1_     = nullptr;
 
 

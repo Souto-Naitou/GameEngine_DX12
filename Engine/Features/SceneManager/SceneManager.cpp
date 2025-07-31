@@ -90,7 +90,7 @@ void SceneManager::Finalize()
         pCurrentScene_->Finalize();
     }
 
-    DebugManager::GetInstance()->DeleteComponent("#Window", name_.c_str());
+    DebugManager::GetInstance()->DeleteComponent("Core", name_);
 }
 
 void SceneManager::ChangeScene()

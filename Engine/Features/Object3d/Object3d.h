@@ -12,13 +12,9 @@
 #include <Features/Lighting/PointLight/PointLight.h>
 
 /// 前方宣言
-struct DirectionalLight;
-
-class DirectX12;
-
-#ifdef DEBUG_ENGINE
-class DebugManager;
-#endif // DEBUG_ENGINE
+struct  DirectionalLight;
+class   DirectX12;
+class   DebugManager;
 
 /// <summary>
 /// 3Dオブジェクト
@@ -44,7 +40,7 @@ public:
     /// <summary>
     /// 終了処理
     /// </summary>
-    void Finalize();
+    void Finalize() const;
 
 
 public: /// Getter
@@ -52,6 +48,7 @@ public: /// Getter
     const Vector3& GetRotate() const                            { return transform_.rotate; }
     const Vector3& GetTranslate() const                         { return transform_.translate; }
     const Matrix4x4& GetRotateMatrix() const                    { return rotateMatrix_; }
+    const std::string& GetName() const                          { return name_; }
 
 
 public: /// Setter
@@ -88,10 +85,10 @@ private: /// メンバ変数
     Microsoft::WRL::ComPtr<ID3D12Resource>          materialResource_               = nullptr;
 
     TransformationMatrix*                           transformationMatrixData_       = nullptr;
-    DirectionalLight*                               directionalLight_               = nullptr;
     DirectionalLight*                               directionalLightData_           = nullptr;
+    DirectionalLight*                               directionalLight_               = nullptr;
+    PointLightForGPU*                               pointLightData_                 = nullptr;
     PointLight*                                     pointLight_                     = nullptr;
-    PointLight*                                     pointLightData_                 = nullptr;
     TilingData*                                     tilingData_                     = nullptr;
     CameraForGPU*                                   cameraForGPU_                   = nullptr;
     Lighting*                                       lightingData_                   = nullptr;
@@ -115,9 +112,7 @@ private: /// 非公開メンバ関数
     void CreateMaterialResource();
 
 
-#ifdef DEBUG_ENGINE
     void DebugWindow();
-#endif // DEBUG_ENGINE
 
 
 private: /// 他クラスが所持するインスタンスへのポインタ
@@ -125,7 +120,5 @@ private: /// 他クラスが所持するインスタンスへのポインタ
     ID3D12Device*   device_         = nullptr;
     Object3dSystem* pSystem_        = nullptr;
 
-#ifdef DEBUG_ENGINE
     DebugManager*   pDebugManager_  = nullptr;
-#endif // DEBUG_ENGINE
 };

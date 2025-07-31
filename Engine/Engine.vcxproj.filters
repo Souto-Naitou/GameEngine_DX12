@@ -322,6 +322,9 @@
     <Filter Include="Effect\PostEffect\LuminanceOutput">
       <UniqueIdentifier>{f3f4df73-a540-41f0-82c0-b75a0541deb5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Feature\LevelLoader">
+      <UniqueIdentifier>{eb43caa4-c991-4307-af62-48f06e59afba}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DebugTools\DebugManager\DebugManager.cpp">
@@ -492,7 +495,7 @@
     <ClCompile Include="DebugTools\EventTimer\EventTimer.cpp">
       <Filter>DebugTools\EventTimer</Filter>
     </ClCompile>
-    <ClCompile Include="Utility\JSONIO\JSONIO.cpp">
+    <ClCompile Include="Utility\JSONIO\jsonio.cpp">
       <Filter>Utility\JSONIO</Filter>
     </ClCompile>
     <ClCompile Include="Type\Color.cpp">
@@ -597,7 +600,6 @@
     <ClCompile Include="BaseClasses\ObjectSystemBaseMT.cpp">
       <Filter>BaseClass</Filter>
     </ClCompile>
-    <ClCompile Include="Features\Model\GltfModelSystem.cpp" />
     <ClCompile Include="Effects\PostEffects\SeparatedGaussianFilter\SeparatedGaussianFilter.cpp">
       <Filter>Effect\PostEffect\SeparatedGaussianFilter</Filter>
     </ClCompile>
@@ -606,6 +608,18 @@
     </ClCompile>
     <ClCompile Include="Effects\PostEffects\LuminanceOutput\LuminanceOutput.cpp">
       <Filter>Effect\PostEffect\LuminanceOutput</Filter>
+    </ClCompile>
+    <ClCompile Include="Features\Model\GltfModelSystem.cpp">
+      <Filter>Feature\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Features\LevelLoader\LevelHelper.cpp">
+      <Filter>Feature\LevelLoader</Filter>
+    </ClCompile>
+    <ClCompile Include="Features\LevelLoader\LevelData.cpp">
+      <Filter>Feature\LevelLoader</Filter>
+    </ClCompile>
+    <ClCompile Include="Features\LevelLoader\SceneObjects.cpp">
+      <Filter>Feature\LevelLoader</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -813,7 +827,7 @@
     <ClInclude Include="Utility\JSONConvTypeFuncs\JSONConvTypeFuncs.h">
       <Filter>Utility\JSONConvTypeFuncs</Filter>
     </ClInclude>
-    <ClInclude Include="Utility\JSONIO\JSONIO.h">
+    <ClInclude Include="Utility\JSONIO\jsonio.h">
       <Filter>Utility\JSONIO</Filter>
     </ClInclude>
     <ClInclude Include="Type\Color.h">
@@ -968,6 +982,18 @@
     </ClInclude>
     <ClInclude Include="Effects\PostEffects\LuminanceOutput\LuminanceOutput.h">
       <Filter>Effect\PostEffect\LuminanceOutput</Filter>
+    </ClInclude>
+    <ClInclude Include="Features\LevelLoader\LevelHelper.h">
+      <Filter>Feature\LevelLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="Features\LevelLoader\LevelData.h">
+      <Filter>Feature\LevelLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="Features\LevelLoader\ISceneObjects.h">
+      <Filter>Feature\LevelLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="Features\LevelLoader\SceneObjects.h">
+      <Filter>Feature\LevelLoader</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -52,10 +52,10 @@ void CG3PT2::Initialize()
 
     /// 点光源
     pointLight_.Initialize();
-    pointLight_.enablePointLight = 1;
-    pointLight_.position = { -1.5f, 0.25f, 2.0f };
-    pointLight_.color = { 1.0f, 1.0f, 1.0f, 1.0f };
-    pointLight_.intensity = 0.08f;
+    pointLight_.IsEnable() = 1;
+    pointLight_.GetPosition() = { -1.5f, 0.25f, 2.0f };
+    pointLight_.GetColor() = { 1.0f, 1.0f, 1.0f, 1.0f };
+    pointLight_.GetIntensity() = 0.08f;
 
     pMonsterBall_->SetPointLight(&pointLight_);
     pGrid_->SetPointLight(&pointLight_);

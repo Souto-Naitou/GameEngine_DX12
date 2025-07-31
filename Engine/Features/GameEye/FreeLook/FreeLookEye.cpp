@@ -86,6 +86,8 @@ void FreeLookEye::CatchRotateCommands()
 
 void FreeLookEye::DebugWindow()
 {
+    GameEye::DebugWindow();
+
     static const std::list<std::pair<std::string, std::string>> controlExplainList = 
     {
         { "マウス右ボタン", "カメラ移動の有効化" },
