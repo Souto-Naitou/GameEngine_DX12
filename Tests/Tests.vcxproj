@@ -59,7 +59,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\Engine;$(ProjectDir)..\Engine\Externals;$(ProjectDir)..\Engine\Externals\VectorMatrix\math;$(ProjectDir)..\Engine\Externals\googletest\googletest\include;$(ProjectDir)..\Engine\Externals\googletest\googlemock\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\Engine;$(ProjectDir)..\Engine\Externals;$(ProjectDir)..\Engine\Externals\googletest\googletest\include;$(ProjectDir)..\Engine\Externals\googletest\googlemock\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
@@ -69,6 +69,9 @@
       <AdditionalLibraryDirectories>$(ProjectDir)..\Engine\Bin\Debug;$(ProjectDir)..\Engine\Externals\googletest\build\lib\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>Engine.lib;gtest.lib;gtest_main.lib;gmock.lib;gmock_main.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PreBuildEvent>
+      <Command>call ../build_gtest.bat</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -90,6 +93,10 @@
       <AdditionalLibraryDirectories>$(ProjectDir)..\Engine\Bin\Release;$(ProjectDir)..\Engine\Externals\googletest\build\lib\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>Engine.lib;gtest.lib;gtest_main.lib;gmock.lib;gmock_main.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PreBuildEvent>
+      <Command>
+      </Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -99,6 +106,9 @@
   <ItemGroup>
     <ProjectReference Include="..\Engine\Engine.vcxproj">
       <Project>{9FD2D32D-DAB0-40A1-B430-CBC12517B87C}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Engine\Externals\VectorMatrix\Project\VecMat.vcxproj">
+      <Project>{a87ad77f-cc08-4788-8630-68470354fcd3}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
