@@ -23,6 +23,7 @@
 #include <Features/Viewport/Viewport.h>
 #include <Features/NiGui/NiGuiDrawer.h>
 #include <Features/NiGui/NiGuiDebug.h>
+#include <Features/Cubemap/CubemapSystem.h>
 #include <DebugTools/EventTimer/EventTimer.h>
 
 #include <memory> /// std::unique_ptr
@@ -58,6 +59,7 @@ protected:
     std::unique_ptr<NiGuiDrawer>        pDrawer_                    = nullptr;
     std::unique_ptr<NiGuiDebug>         pNiGuiDebug_                = nullptr;
     std::unique_ptr<GltfModelSystem>    pGltfModelSystem_           = nullptr;
+    std::unique_ptr<CubemapSystem>      pCubemapSystem_             = nullptr;
 
     #ifdef _DEBUG
     std::unique_ptr<ImGuiManager>   pImGuiManager_              = nullptr;

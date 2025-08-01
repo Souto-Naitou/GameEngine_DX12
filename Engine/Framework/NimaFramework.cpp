@@ -158,6 +158,11 @@ void NimaFramework::Initialize()
     pGltfModelSystem_ = std::make_unique<GltfModelSystem>();
     pGltfModelSystem_->SetDirectX12(pDirectX_.get());
     pGltfModelSystem_->Initialize();
+    
+    // Cubemapシステムの初期化
+    pCubemapSystem_ = std::make_unique<CubemapSystem>();
+    pCubemapSystem_->SetDirectX12(pDirectX_.get());
+    pCubemapSystem_->Initialize();
 
     /// ポストエフェクトの初期化
     pPostEffectExecuter_->SetDirectX12(pDirectX_.get());
@@ -182,7 +187,8 @@ void NimaFramework::Initialize()
         .AddInitialArg("LineSystem", pLineSystem_)
         .AddInitialArg("ParticleManager", pParticleManager_)
         .AddInitialArg("AudioManager", pAudioManager_)
-        .AddInitialArg("GltfModelSystem", pGltfModelSystem_.get());
+        .AddInitialArg("GltfModelSystem", pGltfModelSystem_.get())
+        .AddInitialArg("CubemapSystem", pCubemapSystem_.get());
 }
 
 void NimaFramework::Finalize()
@@ -347,4 +353,5 @@ void NimaFramework::PostProcess()
     pParticleSystem_->PostDraw();
     pLineSystem_->PostDraw();
     pPostEffectExecuter_->PostDraw();
+    pTextureManager_->ReleaseIntermediateResources();
 }

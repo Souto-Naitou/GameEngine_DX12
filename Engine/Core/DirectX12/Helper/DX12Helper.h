@@ -86,32 +86,17 @@ namespace DX12Helper
     ComPtr<ID3D12Resource> CreateBufferResource(const ComPtr<ID3D12Device>& _device, size_t _sizeInBytes);
     ComPtr<ID3D12Resource> CreateBufferResource(const ComPtr<ID3D12Device>& _device, size_t _sizeInBytes, D3D12_RESOURCE_FLAGS _flag);
 
-    /// <summary>
-    /// テクスチャリソースを生成
-    /// </summary>
-    /// <param name="_filePath">ファイルパス</param>
-    DirectX::ScratchImage LoadTexture(const std::string& _filePath);
-
     ComPtr<ID3D12Resource> CreateTextureResource(const ComPtr<ID3D12Device>& _device, const DirectX::TexMetadata& _metadata);
-    void UploadTextureData(const ComPtr<ID3D12Resource>& _texture, const DirectX::ScratchImage& _mipImages);
+    
+    [[nodiscard]]
+    ComPtr<ID3D12Resource> UploadTextureData(
+        const ComPtr<ID3D12Resource>& _texture,
+        const DirectX::ScratchImage& _mipImages,
+        const ComPtr<ID3D12Device>& _device,
+        const ComPtr<ID3D12GraphicsCommandList>& _commandList
+    );
     D3D12_CPU_DESCRIPTOR_HANDLE GetCPUDescriptorHandle(const ComPtr<ID3D12DescriptorHeap>& _descriptorHeap, uint32_t _descriptorSize, uint32_t _index);
     D3D12_GPU_DESCRIPTOR_HANDLE GetGPUDescriptorHandle(const ComPtr<ID3D12DescriptorHeap>& _descriptorHeap, uint32_t _descriptorSize, uint32_t _index);
-
-
-    /// <summary>
-    /// テクスチャリソースを生成
-    /// </summary>
-    /// <param name="_device">デバイス</param>
-    /// <param name="_srvDescriptorHeap">SRVディスクリプタヒープ</param>
-    /// <param name="_kDescriptorSizeSRV">SRVディスクリプタサイズ</param>
-    /// <param name="_path">ファイルパス</param>
-    /// <param name="_textureResources">テクスチャリソース</param>
-    /// <returns></returns>
-    void CreateNewTexture(DirectX12* _pDx12,
-        const ComPtr<ID3D12DescriptorHeap>& _srvDescriptorHeap,
-        const uint32_t _kDescriptorSizeSRV,
-        const char* _path,
-        std::vector<ComPtr<ID3D12Resource>>& _textureResources);
 
     /// <summary>
     /// 頂点リソースを生成

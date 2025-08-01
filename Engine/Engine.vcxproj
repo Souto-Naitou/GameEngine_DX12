@@ -239,6 +239,8 @@
     <ClCompile Include="Features\Collision\Collider\Collider.cpp" />
     <ClCompile Include="Features\Collision\Manager\CollisionManager.cpp" />
     <ClCompile Include="Features\CSV\CSVLoader.cpp" />
+    <ClCompile Include="Features\Cubemap\CubemapSystem.cpp" />
+    <ClCompile Include="Features\Cubemap\Skybox.cpp" />
     <ClCompile Include="Features\DeltaTimeManager\DeltaTimeManager.cpp" />
     <ClCompile Include="Features\Easing\Easing.cpp" />
     <ClCompile Include="Features\Easing\Easing_impl.cpp" />
@@ -346,6 +348,8 @@
     <ClInclude Include="Features\Collision\Shape.h" />
     <ClInclude Include="Features\CSV\CSVLoader.h" />
     <ClInclude Include="Features\CSV\csvStructure\CSVData.h" />
+    <ClInclude Include="Features\Cubemap\CubemapSystem.h" />
+    <ClInclude Include="Features\Cubemap\Skybox.h" />
     <ClInclude Include="Features\DeltaTimeManager\DeltaTimeManager.h" />
     <ClInclude Include="Features\Easing\Easing.h" />
     <ClInclude Include="Features\Easing\Manager\EasingManager.h" />
@@ -447,6 +451,11 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </None>
     <None Include="EngineResources\Shaders\Particle.hlsli">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug_ASAN|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </None>
+    <None Include="EngineResources\Shaders\Skybox.hlsli">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug_ASAN|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
@@ -638,6 +647,16 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </FxCompile>
     <FxCompile Include="EngineResources\Shaders\SkinningObject3d.VS.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug_ASAN|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="EngineResources\Shaders\Skybox.PS.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug_ASAN|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="EngineResources\Shaders\Skybox.VS.hlsl">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug_ASAN|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
