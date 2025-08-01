@@ -8,6 +8,8 @@
 #include <unordered_map>
 #include <Utility/PathResolver/PathResolver.h>
 #include <Core/DirectX12/TextureResource/TextureResource.h>
+#include <list>
+#include <wrl/client.h>
 
 class TextureManager : public EngineFeature
 {
@@ -20,6 +22,8 @@ public:
     static TextureManager* GetInstance() { static TextureManager instance; return &instance;}
 
     void Initialize(SRVManager* _srvManager);
+
+    void ReleaseIntermediateResources();
 
     /// <summary>
     /// テクスチャファイルの読み込み
@@ -45,10 +49,22 @@ private:
         TextureResource textureResource = {};
     };
 
+    enum class TextureType
+    {
+        kUnknown,
+        kWIC,      // Windows Imaging Component
+        kDDS,      // DirectDraw Surface
+    };
+
+    TextureType GetTextureType(const std::wstring& _filePath) const;
+    HRESULT LoadImageFromFile(TextureType _type, const std::wstring& _filepath, DirectX::ScratchImage& _image);
+    void CreateSRV(TextureType _type, const TextureData& _textureData);
+
     std::unordered_map<std::string, TextureData> textureDataMap_;
     PathResolver pathResolver_ = {};
+    std::list<Microsoft::WRL::ComPtr<ID3D12Resource>> resourcesIntermediate_;
 
-private:
+    // Pointers
     SRVManager* srvManager_ = nullptr;
 
 private:

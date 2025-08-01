@@ -10,6 +10,7 @@ struct Material
     float4 color;
     float4x4 uvTransform;
     float shininess;
+    float environmentCoefficient;
 };
 
 struct Lighting
@@ -52,11 +53,13 @@ struct PixelShaderOutput
 
 Texture2D<float4> gTexture : register(t0);
 SamplerState gSampler : register(s0);
+TextureCube<float4> gEnvironmentTexture : register(t1);
 
 [earlydepthstencil]
 PixelShaderOutput main(VertexShaderOutput input)
 {
     PixelShaderOutput output;
+    output.color = float4(0.0f, 0.0f, 0.0f, 0.0f);
 
     float4 transformedUV = mul(float4(input.texcoord, 0.0f, 1.0f), gMaterial.uvTransform);
 
@@ -66,7 +69,10 @@ PixelShaderOutput main(VertexShaderOutput input)
     
     float3 pointLightDir = normalize(gPointLight.position - input.worldPosition);
 
-
+    float3 cameraToPosition = normalize(input.worldPosition - gCamera.worldPosition);
+    float3 reflectedVector = reflect(cameraToPosition, normalize(input.normal));
+    float4 environmentColor = gEnvironmentTexture.Sample(gSampler, reflectedVector);
+    
     if (gLighting.enableLighting != 0)
     {
         float cos;
@@ -116,6 +122,8 @@ PixelShaderOutput main(VertexShaderOutput input)
     //{
     //    discard;
     //}
+    
+    output.color.rgb += environmentColor.rgb * gMaterial.environmentCoefficient;
 
     return output;
 }

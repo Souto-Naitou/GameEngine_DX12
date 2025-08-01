@@ -7,6 +7,7 @@
 #include <Scene/PG3PT1/PG3PT1.h>
 #include <Scene/CG4Task1/CG4Task1.h>
 #include <Scene/CG4Task2/CG4Task2.h>
+#include <Scene/CG4Task3/CG4Task3.h>
 #include <Scene/CG5Task1/CG5Task1.h>
 #include <Scene/TL1Task1/TL1Task1.h>
 
@@ -25,6 +26,7 @@ std::unique_ptr<SceneBase> SceneFactory::CreateScene(const std::string & _sceneN
     else JUDGE_SCENE(CG4Task2, _pArgs)
     else JUDGE_SCENE(CG5Task1, _pArgs)
     else JUDGE_SCENE(TL1Task1, _pArgs)
+    else JUDGE_SCENE(CG4Task3, _pArgs)
 
     assert(false && "シーンの生成に失敗しました");
 

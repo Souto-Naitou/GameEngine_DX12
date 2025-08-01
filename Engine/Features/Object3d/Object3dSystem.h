@@ -13,11 +13,13 @@
 #include <Features/Model/IModel.h>
 #include <Core/DirectX12/RootParameters/RootParameters.h>
 
-struct Material // TODO: Rename to MaterialForGPU
+struct alignas(16) Material // TODO: Rename to MaterialForGPU
 {
     Vector4 color;
     Matrix4x4 uvTransform;
     float shininess;
+    float environmentCoefficient; // Environment coefficient for lighting
+    float padding1[2]; // Padding to align to 16 bytes
 };
 
 struct Lighting
@@ -65,9 +67,11 @@ public:
 
     // Setter
     void    AddCommandListData(CommandListData& _data);
+    void    SetEnvironmentTexture(D3D12_GPU_DESCRIPTOR_HANDLE _handle);
 
     // Getter
-    RootParameters<8> GetRootParameters() const {return rootParameters_;}
+    RootParameters<9> GetRootParameters() const {return rootParameters_;}
+    D3D12_GPU_DESCRIPTOR_HANDLE GetEnvironmentTextureSrvHandleGpu() const { return environmentTextureSrvHandleGpu_; }
 
 private:
     // Ctor
@@ -87,8 +91,9 @@ private:
     ComPtr<IDxcBlob>                vertexShaderBlob_       = nullptr;  // Blob of vertex shader
     ComPtr<IDxcBlob>                pixelShaderBlob_        = nullptr;  // Blob of pixel shader
     std::list<CommandListData>      commandListDatas_       = {};       // Container for draw settings
-    RootParameters<8>               rootParameters_         = {};       // Root parameters for root signature
+    RootParameters<9>               rootParameters_         = {};       // Root parameters for root signature
     D3D12_INPUT_ELEMENT_DESC        inputElementDescs_[3]   = {};
     D3D12_INPUT_LAYOUT_DESC         inputLayoutDesc_        = {};
     D3D12_RASTERIZER_DESC           rasterizerDesc_         = {};
+    D3D12_GPU_DESCRIPTOR_HANDLE     environmentTextureSrvHandleGpu_ = {}; // Environment texture SRV handle
 };

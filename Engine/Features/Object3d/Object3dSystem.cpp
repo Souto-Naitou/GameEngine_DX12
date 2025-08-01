@@ -75,6 +75,9 @@ void Object3dSystem::DrawCall()
                 auto& [key, value] = cbuffer;
                 _commandList->SetGraphicsRootConstantBufferView(key, value->GetGPUVirtualAddress());
             }
+
+            _commandList->SetGraphicsRootDescriptorTable(8, environmentTextureSrvHandleGpu_);
+
             data.model->Draw(_commandList);
         }
 
@@ -102,6 +105,8 @@ void Object3dSystem::DrawCall()
                 _commandList->SetGraphicsRootConstantBufferView(key, value->GetGPUVirtualAddress());
             }
 
+            _commandList->SetGraphicsRootDescriptorTable(8, environmentTextureSrvHandleGpu_);
+
             data.model->Draw(_commandList);
         }
 
@@ -123,6 +128,11 @@ void Object3dSystem::AddCommandListData(CommandListData& _data)
     commandListDatas_.emplace_back(_data);
 }
 
+void Object3dSystem::SetEnvironmentTexture(D3D12_GPU_DESCRIPTOR_HANDLE _handle)
+{
+    environmentTextureSrvHandleGpu_ = _handle;
+}
+
 void Object3dSystem::CreateRootSignature()
 {
     ID3D12Device* device = pDx12_->GetDevice();
@@ -140,7 +150,8 @@ void Object3dSystem::CreateRootSignature()
         .SetParameter(4, "b2", D3D12_SHADER_VISIBILITY_PIXEL)
         .SetParameter(5, "b3", D3D12_SHADER_VISIBILITY_PIXEL)
         .SetParameter(6, "b4", D3D12_SHADER_VISIBILITY_PIXEL)   // Lighting
-        .SetParameter(7, "b5", D3D12_SHADER_VISIBILITY_PIXEL);  // PointLight
+        .SetParameter(7, "b5", D3D12_SHADER_VISIBILITY_PIXEL)   // PointLight
+        .SetParameter(8, "t1", D3D12_SHADER_VISIBILITY_PIXEL);  // EnvironmentTexture
 
     descriptionRootSignature.pParameters = rootParameters_.GetParams();      // ルートパラメータ配列へのポインタ
     descriptionRootSignature.NumParameters = rootParameters_.GetSize();      // 配列の長さ

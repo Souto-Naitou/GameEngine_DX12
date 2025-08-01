@@ -4,7 +4,6 @@
 #include <Utility/ConvertString/ConvertString.h>
 #include <Core/ConfigManager/ConfigManager.h>
 
-
 void TextureManager::Initialize(SRVManager* _srvManager)
 {
     srvManager_ = _srvManager;
@@ -15,6 +14,11 @@ void TextureManager::Initialize(SRVManager* _srvManager)
     {
         this->AddSearchPath(path);
     }
+}
+
+void TextureManager::ReleaseIntermediateResources()
+{
+    resourcesIntermediate_.clear();
 }
 
 void TextureManager::LoadTexture(const std::string& _filePath)
@@ -31,9 +35,12 @@ void TextureManager::LoadTexture(const std::string& _filePath)
 
     TextureData& textureData = textureDataMap_[fullPath];
 
+    // ファイルから画像を読み込む
     DirectX::ScratchImage image{};
     std::wstring filePathW = ConvertString(fullPath);
-    HRESULT hr = DirectX::LoadFromWICFile(filePathW.c_str(), DirectX::WIC_FLAGS_FORCE_SRGB, nullptr, image);
+    TextureType textureType = this->GetTextureType(filePathW);
+    HRESULT hr = this->LoadImageFromFile(textureType, filePathW, image);
+
     assert(SUCCEEDED(hr));
 
     DirectX::TexMetadata metadata = image.GetMetadata();
@@ -47,15 +54,26 @@ void TextureManager::LoadTexture(const std::string& _filePath)
     if (metadata.width > 32 && metadata.height > 32)
     {
         DirectX::ScratchImage mipChain = {};
-        hr = DirectX::GenerateMipMaps(image.GetImages(), image.GetImageCount(), image.GetMetadata(), DirectX::TEX_FILTER_SRGB, 0, mipChain);
+        hr = DirectX::GenerateMipMaps(image.GetImages(), image.GetImageCount(), image.GetMetadata(), DirectX::TEX_FILTER_SRGB, 4, mipChain);
         image = std::move(mipChain);
         metadata = image.GetMetadata();
         assert(SUCCEEDED(hr));
     }
 
+    auto pDevice = pDx12_->GetDevice();
+    auto cl = pDx12_->GetCommandList();
+
     textureData.metadata = metadata;
     textureData.textureResource.SetResource(DX12Helper::CreateTextureResource(pDx12_->GetDevice(), textureData.metadata));
-    DX12Helper::UploadTextureData(textureData.textureResource.GetResource(), image);
+    
+    resourcesIntermediate_.push_back(
+        DX12Helper::UploadTextureData(
+            textureData.textureResource.GetResource(),
+            image, 
+            pDevice,
+            cl
+        )
+    );
 
     uint32_t srvIndex = srvManager_->Allocate();
     auto srvHandleCPU = srvManager_->GetCPUDescriptorHandle(srvIndex);
@@ -67,7 +85,8 @@ void TextureManager::LoadTexture(const std::string& _filePath)
         srvHandleGPU
     );
 
-    srvManager_->CreateForTexture2D(srvIndex, textureData.textureResource.GetResource(), textureData.metadata.format, static_cast<UINT>(textureData.metadata.mipLevels));
+    // Typeに応じてSRVを作成
+    this->CreateSRV(textureType, textureData);
 }
 
 D3D12_GPU_DESCRIPTOR_HANDLE TextureManager::GetSrvHandleGPU(const std::string& _filePath)
@@ -82,6 +101,60 @@ const TextureResource& TextureManager::GetTextureResource(const std::string& _fi
     std::string fullPath = pathResolver_.GetFilePath(_filePath);
     const TextureData& textureData = textureDataMap_[fullPath];
     return textureData.textureResource;
+}
+
+TextureManager::TextureType TextureManager::GetTextureType(const std::wstring& _filePath) const
+{
+    if (_filePath.ends_with(L".dds"))
+    {
+        return TextureType::kDDS;
+    }
+    else if (_filePath.ends_with(L".png") || _filePath.ends_with(L".jpg") || _filePath.ends_with(L".jpeg"))
+    {
+        return TextureType::kWIC;
+    }
+    else
+    {
+        return TextureType::kUnknown;
+    }
+}
+
+HRESULT TextureManager::LoadImageFromFile(TextureType _type, const std::wstring& _filepath, DirectX::ScratchImage& _image)
+{
+    switch (_type)
+    {
+        case TextureType::kDDS:
+            return DirectX::LoadFromDDSFile(_filepath.c_str(), DirectX::DDS_FLAGS_NONE, nullptr, _image);
+        case TextureType::kWIC:
+            return DirectX::LoadFromWICFile(_filepath.c_str(), DirectX::WIC_FLAGS_NONE, nullptr, _image);
+    }
+    return E_FAIL; // Unknown type
+}
+
+void TextureManager::CreateSRV(TextureType _type, const TextureData& _textureData)
+{
+    switch (_type)
+    {
+        case TextureType::kDDS:
+            srvManager_->CreateForCubemap(
+                _textureData.textureResource.GetSRVIndex(),
+                _textureData.textureResource.GetResource(),
+                _textureData.metadata.format,
+                UINT32_MAX
+            );
+            break;
+        case TextureType::kWIC:
+            srvManager_->CreateForTexture2D(
+                _textureData.textureResource.GetSRVIndex(),
+                _textureData.textureResource.GetResource(),
+                _textureData.metadata.format,
+                static_cast<UINT>(_textureData.metadata.mipLevels)
+            );
+            break;
+        default:
+            assert(false && "Unsupported texture type");
+            break;
+    }
 }
 
 const DirectX::TexMetadata& TextureManager::GetMetaData(const std::string& _filePath)

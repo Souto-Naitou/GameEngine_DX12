@@ -207,6 +207,7 @@ void Object3d::CreateMaterialResource()
     materialData_->color = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
     materialData_->uvTransform = Matrix4x4::Identity();
     materialData_->shininess = 1.0f;
+    materialData_->environmentCoefficient = 1.0f; // 環境係数を初期化
 }
 
 void Object3d::DebugWindow()
@@ -235,6 +236,8 @@ void Object3d::DebugWindow()
         ImGui::ColorEdit4("Color", &materialData_->color.x);
         ImGui::DragFloat2("UV Offset", &materialData_->uvTransform.m[3][0], 0.01f);
         ImGui::DragFloat2("UV Tiling", &materialData_->uvTransform.m[0][0], 0.01f);
+        ImGui::DragFloat("Shininess", &materialData_->shininess, 0.01f);
+        ImGui::SliderFloat("Environment Coefficient", &materialData_->environmentCoefficient, 0.0f, 1.0f);
         ImGui::PopID();
     }
 

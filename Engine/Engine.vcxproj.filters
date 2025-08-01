@@ -325,6 +325,9 @@
     <Filter Include="Feature\LevelLoader">
       <UniqueIdentifier>{eb43caa4-c991-4307-af62-48f06e59afba}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Feature\Cubemap">
+      <UniqueIdentifier>{172e37dc-77d9-42b5-bd65-180bbcca8673}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DebugTools\DebugManager\DebugManager.cpp">
@@ -620,6 +623,12 @@
     </ClCompile>
     <ClCompile Include="Features\LevelLoader\SceneObjects.cpp">
       <Filter>Feature\LevelLoader</Filter>
+    </ClCompile>
+    <ClCompile Include="Features\Cubemap\CubemapSystem.cpp">
+      <Filter>Feature\Cubemap</Filter>
+    </ClCompile>
+    <ClCompile Include="Features\Cubemap\Skybox.cpp">
+      <Filter>Feature\Cubemap</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -995,6 +1004,12 @@
     <ClInclude Include="Features\LevelLoader\SceneObjects.h">
       <Filter>Feature\LevelLoader</Filter>
     </ClInclude>
+    <ClInclude Include="Features\Cubemap\CubemapSystem.h">
+      <Filter>Feature\Cubemap</Filter>
+    </ClInclude>
+    <ClInclude Include="Features\Cubemap\Skybox.h">
+      <Filter>Feature\Cubemap</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include=".editorconfig" />
@@ -1017,6 +1032,9 @@
     <None Include="ClassDiagram.cd" />
     <None Include="Core\DirectX12\RootParameters\RootParameters.inl">
       <Filter>Core\DirectX12\RootParameters</Filter>
+    </None>
+    <None Include="EngineResources\Shaders\Skybox.hlsli">
+      <Filter>HLSL</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -1136,6 +1154,12 @@
     </FxCompile>
     <FxCompile Include="EngineResources\Shaders\LuminanceOutput.VS.hlsl">
       <Filter>HLSL\PostEffect</Filter>
+    </FxCompile>
+    <FxCompile Include="EngineResources\Shaders\Skybox.PS.hlsl">
+      <Filter>HLSL</Filter>
+    </FxCompile>
+    <FxCompile Include="EngineResources\Shaders\Skybox.VS.hlsl">
+      <Filter>HLSL</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

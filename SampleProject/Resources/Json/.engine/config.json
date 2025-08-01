@@ -2,7 +2,7 @@
     "settings": {
         "common": {
             "window_title": "Nima Engine",
-            "start_scene" : "TL1Task1",
+            "start_scene" : "CG4Task3",
             "screen_width": 1600,
             "screen_height": 900
         },

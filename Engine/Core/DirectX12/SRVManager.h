@@ -30,6 +30,7 @@ public:
     bool IsFull() const { return currentIndex_ >= kMaxSRVCount_; }
 
     void CreateForTexture2D(uint32_t _index, ID3D12Resource* _pTexture, DXGI_FORMAT _format, UINT _mipLevels);
+    void CreateForCubemap(uint32_t _index, ID3D12Resource* _pTexture, DXGI_FORMAT _format, UINT _mipLevels);
     void CreateForStructuredBuffer(uint32_t _index, ID3D12Resource* _pBuffer, UINT _numElements, UINT _stride);
     void CreateUAV(uint32_t _index, ID3D12Resource* _pTexture, DXGI_FORMAT _format);
     void CreateUAV4Buffer(uint32_t _index, ID3D12Resource* _pTexture, DXGI_FORMAT _format, uint32_t _numElements, uint32_t _structureByteStride);
