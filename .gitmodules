@@ -7,3 +7,6 @@
 [submodule "Engine/Externals/NiGui"]
 	path = Engine/Externals/NiGui
 	url = https://github.com/Souto-Naitou/NiGui.git
+[submodule "Engine/Externals/googletest"]
+	path = Engine/Externals/googletest
+	url = https://github.com/google/googletest.git
