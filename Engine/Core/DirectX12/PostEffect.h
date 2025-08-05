@@ -115,8 +115,6 @@ private:
     ID3D12Device*                           pDevice_            = nullptr;
     SRVManager*                             pSRVManager_        = nullptr;
     ID3D12GraphicsCommandList*              commandListMain_    = nullptr;
-    D3D12_VIEWPORT                          viewport_           = {};
-    D3D12_RECT                              scissorRect_        = {};
     ID3D12DescriptorHeap*                   dsvHeap_            = {};
     ID3D12DescriptorHeap*                   rtvHeap_            = {};
     D3D12_CPU_DESCRIPTOR_HANDLE             rtvHandleSwapChain_ = {};

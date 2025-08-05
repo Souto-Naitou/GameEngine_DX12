@@ -16,6 +16,9 @@ GltfModel::~GltfModel()
 
 void GltfModel::Initialize()
 {
+    #ifdef _DEBUG
+    is_called_finalize_ = false;
+    #endif // _DEBUG
     isOverwroteTexture_ = false;
     timer_.Reset();
     timer_.Start();

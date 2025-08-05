@@ -544,6 +544,9 @@ void DirectX12::ResizeBuffers()
     scissorRect_.right  = static_cast<LONG>(WinSystem::clientWidth);
     scissorRect_.bottom = static_cast<LONG>(WinSystem::clientHeight);
 
+    commandList_->RSSetViewports(1, &viewport_);
+    commandList_->RSSetScissorRects(1, &scissorRect_);
+
     CreateDSVAndSettingState();
     CreateD3D11Device();
     CreateID2D1DeviceContext();

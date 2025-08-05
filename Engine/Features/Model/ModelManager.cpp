@@ -85,6 +85,12 @@ int ModelManager::LoadAll()
 IModel* ModelManager::Load(const std::string& _path)
 {
     auto resolvedPath = pathResolver_.GetFilePath(_path);
+    if (pModelStorage_->IsLoaded(resolvedPath))
+    {
+        // If the model is already loaded, return it
+        return pModelStorage_->FindModel(resolvedPath);
+    }
+
     auto model = pModelLoader_->LoadModel(resolvedPath);
 
     if (model == nullptr)
@@ -92,5 +98,5 @@ IModel* ModelManager::Load(const std::string& _path)
         throw std::runtime_error("Failed to load model from path: " + resolvedPath.empty() ? "(empty)"_s : resolvedPath);
     }
 
-    return pModelStorage_->AddModel(resolvedPath, std::move(model));
+    return pModelStorage_->AddModel(resolvedPath, model);
 }

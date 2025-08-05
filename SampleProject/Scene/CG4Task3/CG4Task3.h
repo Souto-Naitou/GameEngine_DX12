@@ -28,6 +28,13 @@ public:
     void DrawTexts() override;
 
 private:
+    void _ImGui();
+    void _ReloadTexture();
+
+    // For Debug
+    const std::string name_ = "CG4Task3";
+    bool requestReloadTexture_ = false;
+
     // Resources
     std::unique_ptr<GameEye>            pGameEye_           = nullptr;
     std::unique_ptr<Object3d>           pGrid_              = nullptr;

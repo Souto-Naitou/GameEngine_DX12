@@ -97,7 +97,7 @@
       <Filter>Game\Scene\TL1Task1</Filter>
     </ClCompile>
     <ClCompile Include="Scene\CG4Task3\CG4Task3.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>Game\Scene\CG4Task3</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -140,5 +140,8 @@
     <ClInclude Include="Scene\CG4Task3\CG4Task3.h">
       <Filter>Game\Scene\CG4Task3</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Json\.engine\config.json" />
   </ItemGroup>
 </Project>

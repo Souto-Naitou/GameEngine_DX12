@@ -94,7 +94,7 @@ void SRVManager::CreateForTexture2D(uint32_t _index, ID3D12Resource* _pTexture, 
 void SRVManager::CreateForCubemap(uint32_t _index, ID3D12Resource* _pTexture, DXGI_FORMAT _format, UINT _mipLevels)
 {
     D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
-    srvDesc.Format                      = DXGI_FORMAT_UNKNOWN;
+    srvDesc.Format                      = _format;
     srvDesc.Shader4ComponentMapping     = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
     srvDesc.ViewDimension               = D3D12_SRV_DIMENSION_TEXTURECUBE;
     srvDesc.TextureCube.MostDetailedMip = 0;

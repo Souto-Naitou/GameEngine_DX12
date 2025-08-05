@@ -64,7 +64,7 @@ private:
     SRVManager*                             srvManager_                 = nullptr;  //< SRVマネージャー
     
     #ifdef _DEBUG
-    bool    is_called_finalize_    = false;     //< Finalizeが呼ばれたかどうか
+    bool    is_called_finalize_    = true;     //< Finalizeが呼ばれたかどうか
     #endif // _DEBUG
 
     // Internal functions

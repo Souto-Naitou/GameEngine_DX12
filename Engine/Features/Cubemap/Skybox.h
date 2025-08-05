@@ -7,6 +7,7 @@
 #include <Common/structs.h>
 #include <Features/GameEye/GameEye.h>
 #include "CubemapSystem.h"
+#include <Math/Transform.h>
 
 class Skybox
 {
@@ -14,7 +15,7 @@ public:
     Skybox() = default;
     ~Skybox() = default;
     void Initialize(CubemapSystem* _cms);
-    void Finalize();
+    void Finalize() const;
     void Update();
     void Draw() const;
     void SetSkyboxTexture(D3D12_GPU_DESCRIPTOR_HANDLE _handle);
@@ -26,13 +27,16 @@ private:
     void _CreateIndexResource();
     void _CreateTransformationMatrixResource();
     void _CreateMaterialResource();
+    void _ImGui();
 
     Microsoft::WRL::ComPtr<ID3D12Resource>  vertexResource_         = nullptr;
     Microsoft::WRL::ComPtr<ID3D12Resource>  indexResource_          = nullptr;  //< インデックスバッファリソース
     D3D12_VERTEX_BUFFER_VIEW                vertexBufferView_       = {};
     D3D12_INDEX_BUFFER_VIEW                 indexBufferView_        = {};
-    Vector4* mappedVertices_ = nullptr;  //< 頂点データのポインタ
-    uint32_t* mappedIndices_ = nullptr;  //< インデックスデータのポインタ
+    Vector4*                                mappedVertices_         = nullptr;  //< 頂点データのポインタ
+    uint32_t*                               mappedIndices_          = nullptr;  //< インデックスデータのポインタ
+    EulerTransform                          transformation_         = {};  //< Skyboxの変形情報 
+    std::string                             name_                   = "Skybox";
 
     D3D12_GPU_DESCRIPTOR_HANDLE             skyboxTextureSrvHandleGpu_ = {};
     

@@ -40,14 +40,14 @@ void TL1Task1::DrawTexts()
 
 void TL1Task1::ImGui()
 {
-    #ifdef DEBUG
+    #ifdef _DEBUG
 
     if (ImGui::Button("Reload Level"))
     {
         this->_ReloadLevel();
     }
 
-    #endif // DEBUG
+    #endif // _DEBUG
 }
 
 void TL1Task1::_LoadLevel()

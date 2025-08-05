@@ -84,7 +84,7 @@ public: /// Getter
     ID2D1Factory3*                                          GetD2D1Factory()                            { return d2dFactory_.Get(); }
     ID2D1Device2*                                           GetDirect2dDevice()                         { return d2dDevice_.Get(); }
     ID2D1DeviceContext2*                                    GetDirect2dDeviceContext()                  { return d2dDeviceContext_.Get(); }
-    D3D12_VIEWPORT                                          GetViewport() const                         { return viewport_; }
+    const D3D12_VIEWPORT&                                   GetViewport() const                         { return viewport_; }
     uint32_t                                                GetGameWndSRVIndex() const                  { return gameWndSrvIndex_; }
     uint32_t                                                GetBackBufferIndex() const                  { return backBufferIndex_; }
     ID3D11Resource*                                         GetD3D11WrappedBackBuffer(uint32_t _index)  { return d3d11WrappedBackBuffers_[_index].Get(); }
@@ -93,7 +93,7 @@ public: /// Getter
     ID3D11DeviceContext*                                    GetD3D11On12DeviceContext()                 { return d3d11On12DeviceContext_.Get(); }
     ResourceStateTracker*                                   GetGameScreenResource()                     { return &gameScreenResource_; }
     ResourceStateTracker*                                   GetGameScreenComputed()                     { return &gameScreenComputed_; }
-    D3D12_RECT                                              GetScissorRect() const                      { return scissorRect_; }
+    const D3D12_RECT&                                       GetScissorRect() const                      { return scissorRect_; }
     const Vector4&                                          GetEditorBGColor() const                    { return editorBG_; }
     ResourceStateTracker*                                   GetDepthStencilResource()                   { return &depthStencilResource_; }
 

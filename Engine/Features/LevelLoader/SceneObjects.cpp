@@ -69,17 +69,20 @@ std::string SceneObjects::GetName() const
 #ifdef DEBUG
 void ImGuiTextTransform(const EulerTransform& _tf)
 {
-
+    #ifdef _DEBUG
     const auto& [scale, rotate, translate] = _tf;
     ImGui::Text("Scale: (%.2f, %.2f, %.2f)", scale.x, scale.y, scale.z);
     ImGui::Text("Rotate: (%.2f, %.2f, %.2f)", rotate.x, rotate.y, rotate.z);
     ImGui::Text("Translate: (%.2f, %.2f, %.2f)", translate.x, translate.y, translate.z);
+    #else 
+    _tf;
+    #endif // _DEBUG
 }
 #endif // DEBUG
 
 void SceneObjects::ImGui()
 {
-    #ifdef DEBUG
+    #ifdef _DEBUG
 
     if (objects_.empty()) return;
 
@@ -102,8 +105,8 @@ void SceneObjects::ImGui()
             ImGui::TreePop();
         }
     }
-
-    #endif // DEBUG
+  
+    #endif // _DEBUG
 }
 
 void SceneObjects::SetLevelData(const BlenderLevel::LevelData& _levelData)

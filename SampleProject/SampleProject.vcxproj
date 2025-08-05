@@ -215,6 +215,9 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Scene\PG3PT1\PG3PT1.h" />
     <ClInclude Include="Scene\TL1Task1\TL1Task1.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Json\.engine\config.json" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
