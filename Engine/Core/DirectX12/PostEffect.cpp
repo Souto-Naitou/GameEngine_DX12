@@ -103,8 +103,8 @@ void PostEffectExecuter::NewFrame()
     commandListMain_->ClearDepthStencilView(dsvHandle, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
 
     // 描画先のビューを設定
-    commandListMain_->RSSetViewports(1, &viewport_);
-    commandListMain_->RSSetScissorRects(1, &scissorRect_);
+    commandListMain_->RSSetViewports(1, &pDx12_->GetViewport());
+    commandListMain_->RSSetScissorRects(1, &pDx12_->GetScissorRect());
 }
 
 void PostEffectExecuter::PostDraw()
@@ -281,8 +281,6 @@ void PostEffectExecuter::ObtainInstances()
     pDevice_ = pDx12_->GetDevice();
     pSRVManager_ = SRVManager::GetInstance();
     commandListMain_ = pDx12_->GetCommandList();
-    viewport_ = pDx12_->GetViewport();
-    scissorRect_ = pDx12_->GetScissorRect();
     dsvHeap_ = pDx12_->GetDSVDescriptorHeap();
     rtvHeap_ = pDx12_->GetRTVDescriptorHeap();
     editorBG_ = pDx12_->GetEditorBGColor();

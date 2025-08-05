@@ -89,6 +89,25 @@ void TextureManager::LoadTexture(const std::string& _filePath)
     this->CreateSRV(textureType, textureData);
 }
 
+void TextureManager::UnloadTexture(const std::string& _filePath)
+{
+    std::string fullPath = pathResolver_.GetFilePath(_filePath);
+    auto it = textureDataMap_.find(fullPath);
+    if (it == textureDataMap_.end())
+    {
+        return; // テクスチャが見つからない場合は何もしない
+    }
+    const TextureData& textureData = it->second;
+    // SRVを解放
+    srvManager_->Deallocate(textureData.textureResource.GetSRVIndex());
+    // リソースを解放
+    if (textureData.textureResource.GetResource())
+    {
+        resourcesIntermediate_.remove(textureData.textureResource.GetResource());
+    }
+    textureDataMap_.erase(it); // マップから削除
+}
+
 D3D12_GPU_DESCRIPTOR_HANDLE TextureManager::GetSrvHandleGPU(const std::string& _filePath)
 {
     std::string fullPath = pathResolver_.GetFilePath(_filePath);

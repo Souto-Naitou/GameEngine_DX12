@@ -57,6 +57,6 @@ IModel* ModelStorage::AddModel(const std::filesystem::path& _path, std::shared_p
         // すでに登録されていたら登録済みを返す
         return models_.at(fsPath).get();
     }
-    auto itrPair =  models_.emplace(fsPath, std::move(_model));
+    auto itrPair =  models_.emplace(fsPath, _model);
     return itrPair.first->second.get();
 }

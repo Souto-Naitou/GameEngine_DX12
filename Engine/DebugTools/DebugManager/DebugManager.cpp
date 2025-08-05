@@ -134,16 +134,15 @@ void DebugManager::Window_ObjectList()
         }
 
         // 未カテゴリのコンポーネント
-        for (auto& component : uncategorizedComponents)
+        if (!uncategorizedComponents.empty() && ImGui::TreeNodeEx(lang_common_.uncategorized.c_str(), treeNodeFlags))
         {
-            std::string id = component->id_cpy;
-            if (component->id_ptr) id = *component->id_ptr;
-
-            if (ImGui::TreeNodeEx(lang_common_.uncategorized.c_str(), treeNodeFlags))
+            for (auto& component : uncategorizedComponents)
             {
+                std::string id = component->id_cpy;
+                if (component->id_ptr) id = *component->id_ptr;
                 ImGui::Selectable(id.c_str(), &component->isEnabled);
-                ImGui::TreePop();
             }
+            ImGui::TreePop();
         }
     }
     ImGui::End();

@@ -1,5 +1,7 @@
 #include "Skybox.h"
 #include <cstring>
+#include <imgui.h>
+#include <DebugTools/DebugManager/DebugManager.h>
 
 void Skybox::Initialize(CubemapSystem* _cms)
 {
@@ -8,15 +10,17 @@ void Skybox::Initialize(CubemapSystem* _cms)
     device_ = pDx12_->GetDevice();
     ppGlobalEye_ = pCubemapSystem_->GetGlobalEye();
 
+    RegisterDebugWindowS(name_, Skybox::_ImGui, false);
+
     this->_CreateVertexResource();
     this->_CreateIndexResource();
     this->_CreateTransformationMatrixResource();
     this->_CreateMaterialResource();
 }
 
-void Skybox::Finalize()
+void Skybox::Finalize() const
 {
-    // Release any resources allocated for the skybox here.
+    UnregisterDebugWindowS(name_);
 }
 
 void Skybox::Update()
@@ -139,10 +143,12 @@ void Skybox::_CreateTransformationMatrixResource()
     resourceTransformationMatrix_ = DX12Helper::CreateBufferResource(device_, sizeof(TransformationMatrix));
     resourceTransformationMatrix_->Map(0, nullptr, reinterpret_cast<void**>(&mappedTransformationMatrix_));
 
+    transformation_.scale = Vector3(500.0f, 500.0f, 500.0f);
+
     mappedTransformationMatrix_->world = Matrix4x4::AffineMatrix(
-        Vector3(300.0f, 300.0f, 300.0f), 
-        Vector3(0.0f, 0.0f, 0.0f), 
-        Vector3(0.0f, 0.0f, 0.0f)
+        transformation_.scale,
+        transformation_.rotate,
+        transformation_.translate
     );
     mappedTransformationMatrix_->wvp = Matrix4x4::Identity();
 }
@@ -154,4 +160,26 @@ void Skybox::_CreateMaterialResource()
 
     // Initialize material data
     *mappedMaterial_ = Vector4(1.0f, 1.0f, 1.0f, 1.0f); // Default color
+}
+
+void Skybox::_ImGui()
+{
+    #ifdef _DEBUG
+
+    bool isChangedTransformation = false;
+    ImGui::SeparatorText("Transformation");
+    isChangedTransformation |= ImGui::DragFloat3("Scale", &transformation_.scale.x, 0.01f);
+    isChangedTransformation |= ImGui::DragFloat3("Rotation", &transformation_.rotate.x, 0.01f);
+    isChangedTransformation |= ImGui::DragFloat3("Translation", &transformation_.translate.x, 0.01f);
+
+    if (isChangedTransformation)
+    {
+        mappedTransformationMatrix_->world = Matrix4x4::AffineMatrix(
+            transformation_.scale,
+            transformation_.rotate,
+            transformation_.translate
+        );
+        mappedTransformationMatrix_->wvp = mappedTransformationMatrix_->world * (*ppGlobalEye_)->GetViewProjectionMatrix();
+    }
+    #endif
 }

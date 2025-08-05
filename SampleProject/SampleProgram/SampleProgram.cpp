@@ -30,9 +30,6 @@ void SampleProgram::Initialize()
     pModelManager_->SetModelStorage(pModelStorage_.get());
 
     pSceneManager_->SetModelManager(pModelManager_.get());
-
-    /// モデルを全てロード
-    pTextureManager_->LoadTexture("noise0.png");
 }
 
 void SampleProgram::Finalize()

@@ -5,9 +5,13 @@
 #include <Features/Model/ObjModel.h>
 #include <Core/DirectX12/TextureManager.h>
 #include <Features/Model/Helper/ModelHelper.h>
+#include <imgui.h>
+#include <DebugTools/DebugManager/DebugManager.h>
 
 void CG4Task3::Initialize()
 {
+    RegisterDebugWindowS(name_, CG4Task3::_ImGui, false);
+
     pModelManager_ = std::any_cast<ModelManager*>(pArgs_->Get("ModelManager"));
     pGltfModelSystem_ = std::any_cast<GltfModelSystem*>(pArgs_->Get("GltfModelSystem"));
     pLineSystem_ = std::any_cast<LineSystem*>(pArgs_->Get("LineSystem"));
@@ -66,11 +70,19 @@ void CG4Task3::Finalize()
     pGrid_->Finalize();
     pModelSimple_->Finalize();
     pModelGrid_->Finalize();
+    UnregisterDebugWindowS(name_);
 }
 
 void CG4Task3::Update()
 {
-    pSkybox_->Update();
+    { // Skybox
+        if (requestReloadTexture_)
+        {
+            _ReloadTexture();
+            requestReloadTexture_ = false;
+        }
+        pSkybox_->Update();
+    }
     pGameEye_->Update();
     pGrid_->Update();
     pSimple_->Update();
@@ -93,4 +105,22 @@ void CG4Task3::Draw()
 
 void CG4Task3::DrawTexts()
 {
+}
+
+void CG4Task3::_ImGui()
+{
+    #ifdef _DEBUG
+
+    requestReloadTexture_ = ImGui::Button("Reload Texture");
+
+    #endif // _DEBUG
+}
+
+void CG4Task3::_ReloadTexture()
+{
+    auto pTm = TextureManager::GetInstance();
+    pTm->ReloadTexture("rostock_laage_airport_4k.dds");
+    auto envTex = pTm->GetSrvHandleGPU("rostock_laage_airport_4k.dds");
+    pSkybox_->SetSkyboxTexture(envTex);
+    Object3dSystem::GetInstance()->SetEnvironmentTexture(envTex);
 }

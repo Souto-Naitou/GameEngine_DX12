@@ -31,6 +31,22 @@ public:
     /// <param name="_filePath">テクスチャファイルのパス</param>
     void LoadTexture(const std::string& _filePath);
 
+    /// <summary>
+    /// 指定されたファイルパスのテクスチャをアンロードします。
+    /// </summary>
+    /// <param name="_filePath">アンロードするテクスチャのファイルパス。</param>
+    void UnloadTexture(const std::string& _filePath);
+
+    /// <summary>
+    /// 指定されたファイルパスのテクスチャを再読み込みします。
+    /// </summary>
+    /// <param name="_filePath">再読み込みするテクスチャファイルのパス。</param>
+    inline void ReloadTexture(const std::string& _filePath)
+    {
+        UnloadTexture(_filePath);
+        LoadTexture(_filePath);
+    }
+
 
 public: /// Setter
     void AddSearchPath(const std::string& _path) { pathResolver_.AddSearchPath(_path); }

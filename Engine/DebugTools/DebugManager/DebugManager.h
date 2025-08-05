@@ -11,10 +11,17 @@
 #include <array>
 #include <optional>
 
+#ifdef _DEBUG
 #define RegisterDebugWindowC(category, name, func, windowMode)      DebugManager::GetInstance()->SetComponent(category, name, std::bind(&func, this), windowMode)
 #define RegisterDebugWindowS(name, func, windowMode)                DebugManager::GetInstance()->SetComponent(name, std::bind(&func, this), windowMode)
 #define UnregisterDebugWindowC(category, name)                      DebugManager::GetInstance()->DeleteComponent(category, name)
 #define UnregisterDebugWindowS(name)                                DebugManager::GetInstance()->DeleteComponent(name)
+#else
+#define RegisterDebugWindowC(category, name, func, windowMode)      
+#define RegisterDebugWindowS(name, func, windowMode)                
+#define UnregisterDebugWindowC(category, name)                      
+#define UnregisterDebugWindowS(name)                                
+#endif // _DEBUG
 
 class DebugManager : public EngineFeature
 {
