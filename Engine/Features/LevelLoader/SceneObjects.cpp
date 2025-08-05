@@ -66,6 +66,7 @@ std::string SceneObjects::GetName() const
     return levelData_.name.empty() ? "Unnamed Scene" : levelData_.name;
 }
 
+#ifdef DEBUG
 void ImGuiTextTransform(const EulerTransform& _tf)
 {
     #ifdef _DEBUG
@@ -77,10 +78,12 @@ void ImGuiTextTransform(const EulerTransform& _tf)
     _tf;
     #endif // _DEBUG
 }
+#endif // DEBUG
 
 void SceneObjects::ImGui()
 {
     #ifdef _DEBUG
+
     if (objects_.empty()) return;
 
     ImGui::Spacing();
@@ -102,6 +105,7 @@ void SceneObjects::ImGui()
             ImGui::TreePop();
         }
     }
+  
     #endif // _DEBUG
 }
 
