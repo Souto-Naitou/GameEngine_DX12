@@ -188,3 +188,17 @@ void Helper::Model::DispatchModel(IModel* _pModel)
 
     ptr->DispatchSkinning();
 }
+
+std::unique_ptr<ModelStorage> Helper::Model::CreateStorage()
+{
+    return std::make_unique<ModelStorage>();
+}
+
+std::unique_ptr<ModelManager> Helper::Model::CreateManager(IModelLoader* _pLoader, ModelStorage* _pStorage)
+{
+    auto pModelManager = std::make_unique<ModelManager>();
+    pModelManager->Initialize();
+    pModelManager->SetModelLoader(_pLoader);
+    pModelManager->SetModelStorage(_pStorage);
+    return pModelManager;
+}

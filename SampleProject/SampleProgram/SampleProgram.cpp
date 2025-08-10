@@ -3,7 +3,7 @@
 #include <Features/SceneManager/SceneManager.h>
 #include <Scene/Factory/SceneFactory.h>
 #include <Features/Model/Loader/Assimp/ModelLoaderAssimp.h>
-#include <Features/Model/Loader/ModelLoaderLegacy.h>
+#include <Features/Model/Helper/ModelHelper.h>
 
 
 void SampleProgram::Initialize()
@@ -19,15 +19,9 @@ void SampleProgram::Initialize()
     pSceneFactory_ = std::make_unique<SceneFactory>();
     pSceneManager_->SetSceneFactory(pSceneFactory_.get());
 
-    pModelLoader_ = std::make_unique<ModelLoaderAssimp>();
-    pModelLoader_->Initialize();
-    pModelLoader_->SetDirectX12(pDirectX_.get());
-    pModelStorage_ = std::make_unique<ModelStorage>();
-
-    pModelManager_ = std::make_unique<ModelManager>();
-    pModelManager_->Initialize();
-    pModelManager_->SetModelLoader(pModelLoader_.get());
-    pModelManager_->SetModelStorage(pModelStorage_.get());
+    pModelLoader_ = Helper::Model::CreateLoader<ModelLoaderAssimp>(pDirectX_.get());
+    pModelStorage_ = Helper::Model::CreateStorage();
+    pModelManager_ = Helper::Model::CreateManager(pModelLoader_.get(), pModelStorage_.get());
 
     pSceneManager_->SetModelManager(pModelManager_.get());
 }
