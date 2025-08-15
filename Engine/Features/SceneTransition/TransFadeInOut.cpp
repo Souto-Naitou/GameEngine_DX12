@@ -63,7 +63,8 @@ void TransFadeInOut::Draw()
 
 void TransFadeInOut::Finalize()
 {
-    DebugManager::GetInstance()->DeleteComponent("Transition", name_.c_str());
+    UnregisterDebugWindowC("Transition", name_);
+    sprite_->Finalize();
 }
 
 void TransFadeInOut::DebugWindow()
