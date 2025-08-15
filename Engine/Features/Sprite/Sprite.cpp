@@ -19,11 +19,7 @@ Sprite::Sprite()
 
 Sprite::~Sprite()
 {
-#if defined _DEBUG
 
-    DebugManager::GetInstance()->DeleteComponent("Sprite", name_.c_str());
-
-#endif
 }
 
 
@@ -33,9 +29,8 @@ void Sprite::Initialize(std::string _filepath)
     pDx12_ = pSpriteSystem_->GetDirectX12();
     device_ = pDx12_->GetDevice();
 
-#if defined _DEBUG
-    DebugManager::GetInstance()->SetComponent("Sprite", name_, std::bind(&Sprite::DebugWindow, this));
-#endif // _DEBUG && DEBUG_ENGINE
+    // デバッグウィンドウの登録
+    RegisterDebugWindowC("Sprite", name_, Sprite::DebugWindow, false);
 
     /// Create BufferResource
     // 頂点リソースを作成する
@@ -164,7 +159,8 @@ void Sprite::Draw()
 
 void Sprite::Finalize()
 {
-
+    // デバッグウィンドウの解除
+    UnregisterDebugWindowC("Sprite", name_);
 }
 
 void Sprite::SetSizeMultiply(float _multiply)
@@ -210,7 +206,6 @@ void Sprite::CreateIndexBufferView()
     indexBufferView_.SizeInBytes = sizeof(uint32_t) * 6;
     // インデックスはint32_tとする
     indexBufferView_.Format = DXGI_FORMAT_R32_UINT;
-
 }
 
 

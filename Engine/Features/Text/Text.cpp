@@ -17,7 +17,7 @@ void Text::Initialize()
     pViewport_ = pTextSystem_->GetViewport();
 
 #ifdef _DEBUG
-    DebugManager::GetInstance()->SetComponent("Text", name_, std::bind(&Text::DebugWindow, this));
+    RegisterDebugWindowC("Text", name_, Text::DebugWindow, false);
 #endif // _DEBUG
 
     fontFamily_ = "Bahnschrift";
@@ -60,7 +60,7 @@ void Text::Draw()
 void Text::Finalize()
 {
 #ifdef _DEBUG
-    DebugManager::GetInstance()->DeleteComponent("Text", name_.c_str());
+    UnregisterDebugWindowC("Text", name_);
 #endif // _DEBUG
 }
 
