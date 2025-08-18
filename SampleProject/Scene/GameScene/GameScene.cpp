@@ -9,6 +9,7 @@
 #include <NiGui/NiGui.h>
 #include <Features/Audio/AudioManager.h>
 #include <Features/Model/ModelManager.h>
+#include <Presets/Object3d/Grid/Preset_Grid.h>
 
 
 void GameScene::Initialize()
@@ -40,16 +41,10 @@ void GameScene::Initialize()
     pSkydome_->Initialize();
     pSkydome_->SetScale({ 1.0f, 1.0f, 1.0f });
     pSkydome_->SetName("Skydome");
-    pSkydome_->SetEnableLighting(false);
     pSkydome_->SetModel(pModelSkydome_);
+    pSkydome_->GetOption().lightingData->enableLighting = false;
 
-    pGrid_ = std::make_unique<Object3d>();
-    pGrid_->Initialize();
-    pGrid_->SetScale({ 1.0f, 1.0f, 1.0f });
-    pGrid_->SetName("Grid");
-    pGrid_->SetTilingMultiply({ 100.0f, 100.0f });
-    pGrid_->SetEnableLighting(false);
-    pGrid_->SetModel(pModelGrid_);
+    pGrid_ = presets::grid::Create(pModelGrid_);
 
     // ガイド用のスプライトを生成
     pGuideSprite_ = std::make_unique<Sprite>();

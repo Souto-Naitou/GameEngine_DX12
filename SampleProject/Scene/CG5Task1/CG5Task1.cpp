@@ -2,6 +2,7 @@
 #include <Features/Model/ObjModel.h>
 #include <Features/GameEye/FreeLook/FreeLookEye.h>
 #include <Features/Particle/ParticleSystem.h>
+#include <Presets/Object3d/Grid/Preset_Grid.h>
 
 void CG5Task1::Initialize()
 {
@@ -223,14 +224,7 @@ void CG5Task1::_InitializeModels()
 /// Object3dの初期化
 void CG5Task1::_InitializeObject3d()
 {
-    pGrid_ = std::make_unique<Object3d>();
-    pGrid_->Initialize();
-    pGrid_->SetScale({ 1.0f, 1.0f, 1.0f });
-    pGrid_->SetName("Grid");
-    pGrid_->SetTilingMultiply({ 100.0f, 100.0f });
-    pGrid_->SetEnableLighting(false);
-    pGrid_->SetColor({ 1.0f, 1.0f, 1.0f, 0.3f });
-    pGrid_->SetModel(pModelGrid_.get());
+    pGrid_ = presets::grid::Create(pModelGrid_.get());
 
     pShelf_ = std::make_unique<Object3d>();
     pShelf_->Initialize();
@@ -238,7 +232,6 @@ void CG5Task1::_InitializeObject3d()
     pShelf_->SetRotate({ 0.0f, -3.14f, 0.0f });
     pShelf_->SetTranslate({ -6.26f, 0.0f, 8.81f });
     pShelf_->SetName("Shelf");
-    pShelf_->SetColor({ 1.0f, 1.0f, 1.0f, 1.0f });
     pShelf_->SetModel(pModelShelf_.get());
 
     pBench_ = std::make_unique<Object3d>();

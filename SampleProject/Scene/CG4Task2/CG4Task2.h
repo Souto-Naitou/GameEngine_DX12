@@ -38,4 +38,6 @@ private:
     ModelManager* pModelManager_ = nullptr;
     GltfModelSystem* pGltfModelSystem_ = nullptr;
     LineSystem* pLineSystem_ = nullptr;
+
+    void UpdateController();
 };

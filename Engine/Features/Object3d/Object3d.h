@@ -22,6 +22,15 @@ class   DebugManager;
 class Object3d
 {
 public:
+    struct Option
+    {
+        EulerTransform  transform      = {};
+        Material*       materialData   = nullptr;
+        TilingData*     tilingData     = nullptr;
+        Lighting*       lightingData   = nullptr;
+    };
+
+public:
     /// <summary>
     /// 初期化
     /// </summary>
@@ -44,31 +53,28 @@ public:
 
 
 public: /// Getter
-    const Vector3& GetScale() const                             { return transform_.scale; }
-    const Vector3& GetRotate() const                            { return transform_.rotate; }
-    const Vector3& GetTranslate() const                         { return transform_.translate; }
+    const Vector3& GetScale() const                             { return option_.transform.scale; }
+    const Vector3& GetRotate() const                            { return option_.transform.rotate; }
+    const Vector3& GetTranslate() const                         { return option_.transform.translate; }
     const Matrix4x4& GetRotateMatrix() const                    { return rotateMatrix_; }
     const std::string& GetName() const                          { return name_; }
+    const Option& GetOption() const                             { return option_; }
+    Option& GetOption()                                         { return option_; }
 
 
 public: /// Setter
-    void SetScale(const Vector3& _scale)                        { transform_.scale = _scale; }
-    void SetRotate(const Vector3& _rotate)                      { transform_.rotate = _rotate; }
-    void SetTranslate(const Vector3& _translate)                { transform_.translate = _translate; }
-    void SetColor(const Vector4& _color)                        { materialData_->color = _color; }
+    void SetScale(const Vector3& _scale)                        { option_.transform.scale = _scale; }
+    void SetRotate(const Vector3& _rotate)                      { option_.transform.rotate = _rotate; }
+    void SetTranslate(const Vector3& _translate)                { option_.transform.translate = _translate; }
     void SetGameEye(GameEye* _pGameEye)                         { pGameEye_ = _pGameEye; }
     void SetName(const std::string& _name)                      { name_ = _name; }
-    void SetTilingMultiply(const Vector2& _tilingMultiply)      { tilingData_->tilingMultiply = _tilingMultiply; }
     void SetDirectionalLight(DirectionalLight* _light)          { directionalLight_ = _light; }
-    void SetEnableLighting(bool _flag)                          { lightingData_->enableLighting = _flag; }
-    void SetLightingType(LightingType _type)                    { lightingData_->lightingType = _type; }
     void SetPointLight(PointLight* _light)                      { pointLight_ = _light; }
-    void SetShininess(float _shininess)                         { materialData_->shininess = _shininess; }
     void SetModel(IModel* _pModel)                              { pModel_ = _pModel; }
 
 
 private: /// メンバ変数
-    EulerTransform                                  transform_                      = {};
+    
     Matrix4x4                                       rotateMatrix_                   = {};
     std::string                                     name_                           = {};
 
@@ -84,15 +90,13 @@ private: /// メンバ変数
     Microsoft::WRL::ComPtr<ID3D12Resource>          pointLightResource_             = nullptr;
     Microsoft::WRL::ComPtr<ID3D12Resource>          materialResource_               = nullptr;
 
+    Option                                          option_                         = {};
     TransformationMatrix*                           transformationMatrixData_       = nullptr;
     DirectionalLight*                               directionalLightData_           = nullptr;
     DirectionalLight*                               directionalLight_               = nullptr;
     PointLightForGPU*                               pointLightData_                 = nullptr;
     PointLight*                                     pointLight_                     = nullptr;
-    TilingData*                                     tilingData_                     = nullptr;
     CameraForGPU*                                   cameraForGPU_                   = nullptr;
-    Lighting*                                       lightingData_                   = nullptr;
-    Material*                                       materialData_                   = nullptr;
 
     bool                                            isEnableLighting_               = true;
 

@@ -3,6 +3,7 @@
 #include <imgui.h>
 #include <Features/Audio/AudioManager.h>
 #include <Features/Input/Input.h>
+#include <Presets/Object3d/Grid/Preset_Grid.h>
 
 #ifdef _DEBUG
 #include <DebugTools/DebugManager/DebugManager.h>
@@ -30,17 +31,15 @@ void CG3PT2::Initialize()
     pMonsterBall_->SetRotate({ 0.0f, -3.14f / 2.0f, 0.0f });
     pMonsterBall_->SetTranslate({ 0.0f, 1.f, 0.0f });
     pMonsterBall_->SetName("MonsterBall");
-    pMonsterBall_->SetEnableLighting(true);
-    pMonsterBall_->SetShininess(12.f);
     pMonsterBall_->SetModel(pModelMonsterBall_);
+    {
+        auto& option = pMonsterBall_->GetOption();
+        option.lightingData->enableLighting = true;
+        option.materialData->shininess = 12.0f;
+    }
 
-    pGrid_ = std::make_unique<Object3d>();
-    pGrid_->Initialize(pModelManager_->Load("Grid_v3.obj"));
-    pGrid_->SetScale({ 1.0f, 1.0f, 1.0f });
-    pGrid_->SetName("Grid");
-    pGrid_->SetTilingMultiply({ 100.0f, 100.0f });
-    pGrid_->SetEnableLighting(true);
-    pGrid_->SetModel(pModelGrid_);
+    // グリッドの初期化
+    pGrid_ = presets::grid::Create(pModelGrid_);
 
     /// 平行光源
     directionalLight_.direction = { 0.0f, -1.0f, 0.0f };

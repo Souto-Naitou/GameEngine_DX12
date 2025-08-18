@@ -52,6 +52,8 @@ public:
 
 
 protected: 
+    static constexpr char kEnvTexturePathDefault[] = "white32x32.dds";
+
     /// システムクラスのインスタンス
     std::unique_ptr<DirectX12>          pDirectX_                   = nullptr;
     std::unique_ptr<ISceneFactory>      pSceneFactory_              = nullptr;
@@ -86,6 +88,9 @@ protected:
     PostEffectExecuter*             pPostEffectExecuter_        = nullptr;
 
     bool                                isExitProgram_          = false;
+
+private:
+    void InitializeObject3dSystem();
 };
 
 #define CREATE_APPLICATION(class) \
