@@ -9,6 +9,7 @@
 #include <Features/Model/ObjModel.h>
 #include <Features/Model/GltfModel.h>
 #include <Features/Model/Helper/ModelHelper.h>
+#include <Presets/Object3d/Grid/Preset_Grid.h>
 
 
 void CG4Task2::Initialize()
@@ -20,7 +21,7 @@ void CG4Task2::Initialize()
 
     pGameEye_ = std::make_unique<FreeLookEye>();
     pGameEye_->SetRotate({ 0.1f, 0.0f, 0.0f });
-    pGameEye_->SetTranslate({ 0.0f, 0.2f, -5.0f });
+    pGameEye_->SetTranslate({ 0.0f, 1.5f, -12.0f });
     pGameEye_->SetName("MainCamera");
 
     /// システムにデフォルトのゲームカメラを設定
@@ -37,20 +38,14 @@ void CG4Task2::Initialize()
     // グリッドの初期化
     pModelGrid_ = std::make_unique<ObjModel>();
     pModelGrid_->Clone(pModelManager_->Load("Grid_v4/Grid_v4.obj"));
-    pGrid_ = std::make_unique<Object3d>();
-    pGrid_->Initialize();
-    pGrid_->SetScale({ 1.0f, 1.0f, 1.0f });
-    pGrid_->SetName("Grid");
-    pGrid_->SetTilingMultiply({ 100.0f, 100.0f });
-    pGrid_->SetEnableLighting(false);
-    pGrid_->SetColor({ 1.0f, 1.0f, 1.0f, 0.3f });
-    pGrid_->SetModel(pModelGrid_.get());
+    pGrid_ = presets::grid::Create(pModelGrid_.get());
 
     pSimple_ = std::make_unique<Object3d>();
     pSimple_->Initialize();
     pSimple_->SetScale({ 1.0f, 1.0f, 1.0f });
     pSimple_->SetName("sneakWalk");
     pSimple_->SetModel(pModelSimple_.get());
+    pSimple_->GetOption().materialData->environmentCoefficient = 0.0f;
 
     pText_ = std::make_unique<Text>();
     pText_->Initialize();
@@ -75,6 +70,8 @@ void CG4Task2::Finalize()
 void CG4Task2::Update()
 {
     /// 更新処理
+    this->UpdateController();
+
     pGameEye_->Update();
 
     pModelGrid_->Update();
@@ -117,9 +114,9 @@ void CG4Task2::Draw()
     // ==============================
     // [DrawLine Begin]
 
-    pLineSystem_->PresentDraw();
-    auto ptr = dynamic_cast<GltfModel*>(pModelSimple_.get());
-    ptr->GetSkeleton()->DrawLine();
+    //pLineSystem_->PresentDraw();
+    //auto ptr = dynamic_cast<GltfModel*>(pModelSimple_.get());
+    //ptr->GetSkeleton()->DrawLine();
 
     // [DrawLine End]
     // ==============================
@@ -128,4 +125,15 @@ void CG4Task2::Draw()
 void CG4Task2::DrawTexts()
 {
     pText_->Draw();
+}
+
+void CG4Task2::UpdateController()
+{
+    auto pInput = Input::GetInstance();
+    auto left = pInput->GetLeftStickPosition();
+
+    const auto& kPos = pSimple_->GetTranslate();
+    const Vector3 kDeltaPos = Vector3(left.x, 0.0f, -left.y) * 0.02f;
+
+    pSimple_->SetTranslate(kPos + kDeltaPos);
 }

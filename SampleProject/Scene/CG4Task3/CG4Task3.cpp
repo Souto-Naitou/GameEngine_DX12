@@ -7,6 +7,7 @@
 #include <Features/Model/Helper/ModelHelper.h>
 #include <imgui.h>
 #include <DebugTools/DebugManager/DebugManager.h>
+#include <Presets/Object3d/Grid/Preset_Grid.h>
 
 void CG4Task3::Initialize()
 {
@@ -34,17 +35,12 @@ void CG4Task3::Initialize()
     pModelSimple_->Initialize();
     pModelSimple_->Clone(pSrc);
 
-    // グリッドの初期化
+    // モデルの初期化
     pModelGrid_ = std::make_unique<ObjModel>();
     pModelGrid_->Clone(pModelManager_->Load("Grid_v4/Grid_v4.obj"));
-    pGrid_ = std::make_unique<Object3d>();
-    pGrid_->Initialize();
-    pGrid_->SetScale({ 1.0f, 1.0f, 1.0f });
-    pGrid_->SetName("Grid");
-    pGrid_->SetTilingMultiply({ 100.0f, 100.0f });
-    pGrid_->SetEnableLighting(false);
-    pGrid_->SetColor({ 1.0f, 1.0f, 1.0f, 0.3f });
-    pGrid_->SetModel(pModelGrid_.get());
+
+    // グリッドの初期化
+    pGrid_ = presets::grid::Create(pModelGrid_.get());
 
     pSimple_ = std::make_unique<Object3d>();
     pSimple_->Initialize();

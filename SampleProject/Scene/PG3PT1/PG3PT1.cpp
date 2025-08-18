@@ -20,14 +20,20 @@ void PG3PT1::Initialize()
     pGameEye_->SetTranslate({ 0.0f, 0.0f, -5.0f });
     pGameEye_->SetRotate({ 0.0f, 0.0f, 0.0f });
 
-    pBunny_->Initialize();
-    pBunny_->SetTranslate({ 0.0f, -0.7f, 0.0f });
-    pBunny_->SetRotate({ 0.0f, 0.0f, 0.0f });
-    pBunny_->SetScale({ 1.0f, 1.0f, 1.0f });
-    pBunny_->SetEnableLighting(true);
-    pBunny_->SetGameEye(pGameEye_.get());
-    pBunny_->SetDirectionalLight(&directionalLight_);
-    pBunny_->SetModel(pModelBunny_);
+    {
+        pBunny_->Initialize();
+        pBunny_->SetGameEye(pGameEye_.get());
+        pBunny_->SetDirectionalLight(&directionalLight_);
+        pBunny_->SetModel(pModelBunny_);
+        auto& option = pBunny_->GetOption();
+        option.transform =
+        {
+            .scale = { 1.0f, 1.0f, 1.0f },
+            .rotate = { 0.0f, 0.0f, 0.0f },
+            .translate = { 0.0f, -0.7f, 0.0f }
+        };
+        option.lightingData->enableLighting = true;
+    }
 }
 
 void PG3PT1::Finalize()

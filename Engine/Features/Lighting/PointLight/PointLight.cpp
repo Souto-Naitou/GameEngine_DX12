@@ -9,9 +9,11 @@ void PointLight::Initialize()
     pIcon_ = std::make_unique<Object3d>();
     pIcon_->Initialize();
     pIcon_->SetScale({ 0.05f, 0.05f, 0.05f });
-    pIcon_->SetEnableLighting(true);
     pIcon_->SetPointLight(this);
     pIcon_->SetModel(pIconModel_);
+
+    auto& option = pIcon_->GetOption();
+    option.lightingData->enableLighting = false;
 
     std::stringstream ss;
     ss << "PointLight##0x" << std::hex << this;
@@ -20,8 +22,8 @@ void PointLight::Initialize()
 
 void PointLight::Update()
 {
-    pIcon_->SetEnableLighting(false);
-    pIcon_->SetTranslate(position);
+    auto& option = pIcon_->GetOption();
+    option.transform.translate = position;
     pIcon_->Update();
 }
 

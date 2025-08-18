@@ -32,10 +32,12 @@ void Object3d::Initialize(bool _enableDebugWindow)
     }
 #endif // _DEBUG
 
-    transform_.scale = Vector3(1.0f, 1.0f, 1.0f);
-    transform_.rotate = Vector3(0.0f, 0.0f, 0.0f);
-    transform_.translate = Vector3(0.0f, 0.0f, 0.0f);
-
+    option_.transform =
+    {
+        .scale      = Vector3(1.0f, 1.0f, 1.0f),
+        .rotate     = Vector3(0.0f, 0.0f, 0.0f),
+        .translate  = Vector3(0.0f, 0.0f, 0.0f),
+    };
 
     /// 座標変換行列リソースを作成
     CreateTransformationMatrixResource();
@@ -63,8 +65,15 @@ void Object3d::Update()
 {
     if (!isUpdate_) return;
 
-    rotateMatrix_ = Matrix4x4::RotateXMatrix(transform_.rotate.x) * (Matrix4x4::RotateYMatrix(transform_.rotate.y) * Matrix4x4::RotateZMatrix(transform_.rotate.z));
-    Matrix4x4 wMatrix = Matrix4x4::AffineMatrix(transform_.scale, transform_.rotate, transform_.translate);
+    /// 回転行列の更新
+    {
+        auto xMat = Matrix4x4::RotateXMatrix(option_.transform.rotate.x);
+        auto yMat = Matrix4x4::RotateYMatrix(option_.transform.rotate.y);
+        auto zMat = Matrix4x4::RotateZMatrix(option_.transform.rotate.z);
+        rotateMatrix_ = xMat * yMat * zMat;
+    }
+
+    Matrix4x4 wMatrix = Matrix4x4::AffineMatrix(option_.transform.scale, option_.transform.rotate, option_.transform.translate);
     Matrix4x4 wvpMatrix = {};
 
     /// カメラの行列計算
@@ -168,9 +177,9 @@ void Object3d::CreateTilingResource()
 {
     /// テクスチャのタイリングリソースを作成
     tilingResource_ = DX12Helper::CreateBufferResource(device_, sizeof(TilingData));
-    tilingResource_->Map(0, nullptr, reinterpret_cast<void**>(&tilingData_));
+    tilingResource_->Map(0, nullptr, reinterpret_cast<void**>(&option_.tilingData));
     /// タイリングデータを初期化
-    tilingData_->tilingMultiply = Vector2(1.0f, 1.0f);
+    option_.tilingData->tilingMultiply = Vector2(1.0f, 1.0f);
 }
 
 void Object3d::CreateCameraForGPUResource()
@@ -183,9 +192,9 @@ void Object3d::CreateCameraForGPUResource()
 void Object3d::CreateLightingResource()
 {
     lightingResource_ = DX12Helper::CreateBufferResource(device_, sizeof(Lighting));
-    lightingResource_->Map(0, nullptr, reinterpret_cast<void**>(&lightingData_));
-    lightingData_->enableLighting = 1;
-    lightingData_->lightingType = LightingType::HarfLambert;
+    lightingResource_->Map(0, nullptr, reinterpret_cast<void**>(&option_.lightingData));
+    option_.lightingData->enableLighting = 1;
+    option_.lightingData->lightingType = LightingType::HarfLambert;
 }
 
 void Object3d::CreatePointLightResource()
@@ -202,12 +211,12 @@ void Object3d::CreateMaterialResource()
 {
     /// マテリアルリソースを作成
     materialResource_ = DX12Helper::CreateBufferResource(device_, sizeof(Material));
-    materialResource_->Map(0, nullptr, reinterpret_cast<void**>(&materialData_));
+    materialResource_->Map(0, nullptr, reinterpret_cast<void**>(&option_.materialData));
     /// マテリアルデータを初期化
-    materialData_->color = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
-    materialData_->uvTransform = Matrix4x4::Identity();
-    materialData_->shininess = 1.0f;
-    materialData_->environmentCoefficient = 1.0f; // 環境係数を初期化
+    option_.materialData->color = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+    option_.materialData->uvTransform = Matrix4x4::Identity();
+    option_.materialData->shininess = 1.0f;
+    option_.materialData->environmentCoefficient = 1.0f; // 環境係数を初期化
 }
 
 void Object3d::DebugWindow()
@@ -222,9 +231,10 @@ void Object3d::DebugWindow()
     ImGui::SeparatorText("Transform");
     {
         ImGui::PushID("TRANSFORM");
-        ImGui::DragFloat3("Scale", &transform_.scale.x, 0.01f);
-        ImGui::DragFloat3("Rotate", &transform_.rotate.x, 0.01f);
-        ImGui::DragFloat3("Translate", &transform_.translate.x, 0.01f);
+        auto& tf = option_.transform;
+        ImGui::DragFloat3("Scale", &tf.scale.x, 0.01f);
+        ImGui::DragFloat3("Rotate", &tf.rotate.x, 0.01f);
+        ImGui::DragFloat3("Translate", &tf.translate.x, 0.01f);
         ImGui::PopID();
     }
 
@@ -233,11 +243,12 @@ void Object3d::DebugWindow()
     ImGui::SeparatorText("Material");
     {
         ImGui::PushID("MATERIAL");
-        ImGui::ColorEdit4("Color", &materialData_->color.x);
-        ImGui::DragFloat2("UV Offset", &materialData_->uvTransform.m[3][0], 0.01f);
-        ImGui::DragFloat2("UV Tiling", &materialData_->uvTransform.m[0][0], 0.01f);
-        ImGui::DragFloat("Shininess", &materialData_->shininess, 0.01f);
-        ImGui::SliderFloat("Environment Coefficient", &materialData_->environmentCoefficient, 0.0f, 1.0f);
+        auto& material = option_.materialData;
+        ImGui::ColorEdit4("Color", &material->color.x);
+        ImGui::DragFloat2("UV Offset", &material->uvTransform.m[3][0], 0.01f);
+        ImGui::DragFloat2("UV Tiling", &material->uvTransform.m[0][0], 0.01f);
+        ImGui::DragFloat("Shininess", &material->shininess, 0.01f);
+        ImGui::SliderFloat("Environment Coefficient", &material->environmentCoefficient, 0.0f, 1.0f);
         ImGui::PopID();
     }
 
@@ -245,20 +256,21 @@ void Object3d::DebugWindow()
     /// 平行光源
     ImGui::SeparatorText("Directional Light");
     {
+        auto& lightingData = option_.lightingData;
         ImGui::PushID("DIRECTIONAL_LIGHT");
         if (ImGui::Checkbox("Enable Lighting", &isEnableLighting_))
         {
-            lightingData_->enableLighting = isEnableLighting_;
+            lightingData->enableLighting = isEnableLighting_;
         }
 
         ImGui::SameLine();
 
         const char* items[] = { "Lambertian Reflectance", "Harf Lambert" };
-        ImGui::Combo("##Lighting Type", reinterpret_cast<int*>(&lightingData_->lightingType), items, 2);
+        ImGui::Combo("##Lighting Type", reinterpret_cast<int*>(&lightingData->lightingType), items, 2);
 
         if (directionalLight_)
         {
-            ImGui::DragFloat("Shininess", &materialData_->shininess, 0.01f);
+            ImGui::DragFloat("Shininess", &option_.materialData->shininess, 0.01f);
             ImGui::ColorEdit4("Color", &directionalLight_->color.x);
             ImGui::DragFloat3("Direction", &directionalLight_->direction.x, 0.01f);
             ImGui::DragFloat("Intensity", &directionalLight_->intensity, 0.01f);
@@ -290,7 +302,7 @@ void Object3d::DebugWindow()
     ImGui::SeparatorText("Tiling");
     {
         ImGui::PushID("TILING");
-        ImGui::DragFloat2("Tiling Multiply", &tilingData_->tilingMultiply.x, 0.01f);
+        ImGui::DragFloat2("Tiling Multiply", &option_.tilingData->tilingMultiply.x, 0.01f);
         ImGui::PopID();
     }
 

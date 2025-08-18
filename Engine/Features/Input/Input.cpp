@@ -1,6 +1,7 @@
 #include "Input.h"
 
 #include <cassert>
+#include <stdexcept>
 
 #pragma comment(lib, "dinput8.lib")
 #pragma comment(lib, "dxguid.lib")
@@ -26,6 +27,9 @@ void Input::Initialize(HINSTANCE _hInstance, HWND _hwnd)
     );
     assert(SUCCEEDED(hr));
 
+    // キーボード情報の取得開始
+    keyboard_->Acquire();
+
     // マウスデバイスの生成
     hr = directInput_->CreateDevice(GUID_SysMouse, &mouse_, NULL);
     assert(SUCCEEDED(hr));
@@ -38,25 +42,30 @@ void Input::Initialize(HINSTANCE _hInstance, HWND _hwnd)
     hr = mouse_->SetCooperativeLevel(
         _hwnd, DISCL_FOREGROUND | DISCL_NONEXCLUSIVE
     );
-    assert(SUCCEEDED(hr));
-}
-
-void Input::Update()
-{
-    // キーボード情報の取得開始
-    keyboard_->Acquire();
-
-    // 配列をコピー
-    memcpy(keyPre_, key_, 256);
-
-    // 全キーの入力情報を取得
-    keyboard_->GetDeviceState(sizeof(key_), key_);
 
     // マウス情報の取得開始
     mouse_->Acquire();
 
+    assert(SUCCEEDED(hr));
+
+    this->InitializePad(_hwnd);
+}
+
+void Input::Update()
+{
+    // 配列をコピー
+    memcpy(keyPre_, key_, 256);
+
+    this->UpdateDeviceState(keyboard_.Get(), key_, sizeof(key_));
+
     // マウスの入力情報を取得
-    mouse_->GetDeviceState(sizeof(DIMOUSESTATE2), &mouseState_);
+    this->UpdateDeviceState(mouse_.Get(), &mouseState_, sizeof(mouseState_));
+
+    // マウスの状態を更新
+    this->UpdateDeviceState(pad_.Get(), &padState_, sizeof(padState_));
+
+    // ゲームパッドの更新
+    this->UpdatePad();
 
     // デシリアライズ
     this->MapInputData();
@@ -109,6 +118,16 @@ bool Input::TriggerKeyC(char _key) const
     }
 
     return false;
+}
+
+Vector2 Input::GetLeftStickPosition() const
+{
+    return leftStickPosition_;
+}
+
+Vector2 Input::GetRightStickPosition() const
+{
+    return rightStickPosition_;
 }
 
 bool Input::PushMouse(MouseNum _mouseNum) const
@@ -196,4 +215,114 @@ void Input::MapInputData()
     }
 
     wheelDelta_ = mouseState_.lZ;
+}
+
+void Input::InitializePad(HWND hwnd)
+{
+    HRESULT hr = directInput_->EnumDevices(
+        DI8DEVTYPE_GAMEPAD, EnumJoystickCallback, (void*)this, DIEDFL_ATTACHEDONLY
+    );
+    assert(SUCCEEDED(hr));
+
+    if (!pad_) return;
+
+    hr = pad_->SetDataFormat(&c_dfDIJoystick2);
+    assert(SUCCEEDED(hr));
+
+    // 軸を絶対値モードに設定
+    {
+        DIPROPDWORD prop;
+        ZeroMemory(&prop, sizeof(prop));
+        prop.diph.dwSize = sizeof(prop);
+        prop.diph.dwHeaderSize = sizeof(prop.diph);
+        prop.diph.dwHow = DIPH_DEVICE;
+        prop.diph.dwObj = 0;
+        prop.dwData = DIPROPAXISMODE_ABS;
+        hr = pad_->SetProperty(DIPROP_AXISMODE, &prop.diph);
+    }
+    assert(SUCCEEDED(hr));
+
+    // ジョイスティックの範囲を設定
+    {
+        DIPROPRANGE prop;
+        ZeroMemory(&prop, sizeof(prop));
+        prop.diph.dwSize = sizeof(prop);
+        prop.diph.dwHeaderSize = sizeof(prop.diph);
+        prop.diph.dwHow = DIPH_BYOFFSET;
+        prop.diph.dwObj = DIJOFS_X;
+        prop.lMin = -kStickRange;
+        prop.lMax = kStickRange;
+        hr = pad_->SetProperty(DIPROP_RANGE, &prop.diph);
+        // Y軸の範囲も同様に設定
+        prop.diph.dwObj = DIJOFS_Y;
+        hr = pad_->SetProperty(DIPROP_RANGE, &prop.diph);
+    }
+    assert(SUCCEEDED(hr));
+
+    // ジョイスティックの排他制御レベルを設定
+    hr = pad_->SetCooperativeLevel(
+        hwnd, DISCL_BACKGROUND | DISCL_NONEXCLUSIVE
+    );
+    assert(SUCCEEDED(hr));
+
+    // ジョイスティックの情報の取得を開始
+    hr = pad_->Acquire();
+    assert(SUCCEEDED(hr));
+}
+
+void Input::UpdatePad()
+{
+    if (!pad_) return;
+    leftStickPosition_.x = padState_.lX / static_cast<float>(kStickRange); // X軸の値を-1.0fから1.0fに変換
+    leftStickPosition_.y = padState_.lY / static_cast<float>(kStickRange); // Y軸の値を-1.0fから1.0fに変換
+    rightStickPosition_.x = padState_.lRx / static_cast<float>(kStickRange); // 右スティックX軸
+    rightStickPosition_.y = padState_.lRy / static_cast<float>(kStickRange); // 右スティックY軸
+
+    // ボタンの状態を更新
+    for (int i = 0; i < 32; ++i)
+    {
+        if (padState_.rgbButtons[i] & 0x80)
+        {
+            buttons_[i] = true; // ボタンが押されている
+        }
+        else
+        {
+            buttons_[i] = false; // ボタンが離されている
+        }
+    }
+}
+
+void Input::UpdateDeviceState(IDirectInputDevice8* pDevice, LPVOID out_state, size_t sizeState)
+{
+    if (!pDevice) return;
+
+    // デバイスの状態
+    HRESULT hr = pDevice->Poll();
+
+    if (FAILED(hr))
+    {
+        // デバイスが応答しない場合は再取得
+        hr = pDevice->Acquire();
+        hr = pDevice->Poll();
+    }
+
+    if (FAILED(hr)) return;
+    
+    hr = pDevice->GetDeviceState(static_cast<int>(sizeState), out_state);
+    if (FAILED(hr))
+    {
+        throw std::runtime_error("Failed to get device state.");
+    }
+}
+
+int Input::EnumJoystickCallback(const DIDEVICEINSTANCE* pdidInstance, void* context)
+{
+    auto pInput = static_cast<Input*>(context);
+    auto directInput = pInput->GetDirectInput();
+    
+    if (FAILED(directInput->CreateDevice(pdidInstance->guidInstance, pInput->GetPad(), NULL)))
+    {
+        return DIENUM_CONTINUE; // エラーが発生した場合は次のデバイスへ
+    }
+    return DIENUM_STOP; // ジョイスティックが見つかったので列挙を停止
 }

@@ -92,8 +92,7 @@ void NimaFramework::Initialize()
     pSpriteSystem_->Initialize();
 
     /// 3Dオブジェクト基盤の初期化
-    pObject3dSystem_->SetDirectX12(pDirectX_.get());
-    pObject3dSystem_->Initialize();
+    this->InitializeObject3dSystem();
 
     /// パーティクル基盤の初期化
     pParticleSystem_->SetDirectX12(pDirectX_.get());
@@ -354,4 +353,17 @@ void NimaFramework::PostProcess()
     pLineSystem_->PostDraw();
     pPostEffectExecuter_->PostDraw();
     pTextureManager_->ReleaseIntermediateResources();
+}
+
+void NimaFramework::InitializeObject3dSystem()
+{
+    pObject3dSystem_->SetDirectX12(pDirectX_.get());
+    pObject3dSystem_->Initialize();
+
+    // デフォルトの環境テクスチャを読み込み
+    pTextureManager_->LoadTexture(kEnvTexturePathDefault);
+    auto envTexture = pTextureManager_->GetSrvHandleGPU(kEnvTexturePathDefault);
+
+    // 環境テクスチャを設定
+    pObject3dSystem_->SetEnvironmentTexture(envTexture);
 }

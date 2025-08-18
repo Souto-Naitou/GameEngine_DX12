@@ -328,6 +328,15 @@
     <Filter Include="Feature\Cubemap">
       <UniqueIdentifier>{172e37dc-77d9-42b5-bd65-180bbcca8673}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Preset">
+      <UniqueIdentifier>{24ac3fb2-898d-435b-ba40-ee217908c748}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Preset\Object3d">
+      <UniqueIdentifier>{7b20b9f7-076c-433d-8702-4f2f5e6376f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Preset\Object3d\Grid">
+      <UniqueIdentifier>{b301e74a-e41d-4a55-b4bc-e3567fa912d8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DebugTools\DebugManager\DebugManager.cpp">
@@ -629,6 +638,9 @@
     </ClCompile>
     <ClCompile Include="Features\Cubemap\Skybox.cpp">
       <Filter>Feature\Cubemap</Filter>
+    </ClCompile>
+    <ClCompile Include="Presets\Object3d\Grid\Preset_Grid.cpp">
+      <Filter>Preset\Object3d\Grid</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1009,6 +1021,9 @@
     </ClInclude>
     <ClInclude Include="Features\Cubemap\Skybox.h">
       <Filter>Feature\Cubemap</Filter>
+    </ClInclude>
+    <ClInclude Include="Presets\Object3d\Grid\Preset_Grid.h">
+      <Filter>Preset\Object3d\Grid</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

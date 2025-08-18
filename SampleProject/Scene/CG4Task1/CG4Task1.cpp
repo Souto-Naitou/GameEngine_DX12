@@ -9,6 +9,7 @@
 #include <DebugTools/DebugManager/DebugManager.h>
 #include <Core/DirectX12/TextureManager.h>
 #include <Features/Model/ObjModel.h>
+#include <Presets/Object3d/Grid/Preset_Grid.h>
 
 
 void CG4Task1::Initialize()
@@ -26,17 +27,12 @@ void CG4Task1::Initialize()
     ParticleSystem::GetInstance()->SetGlobalEye(pGameEye_.get());
     LineSystem::GetInstance()->SetGlobalEye(pGameEye_.get());
 
-    // グリッドの初期化
+    // グリッドモデルのクローン
     pModelGrid_ = std::make_unique<ObjModel>();
     pModelGrid_->Clone(pModelManager_->Load("Grid_v4/Grid_v4.obj"));
-    pGrid_ = std::make_unique<Object3d>();
-    pGrid_->Initialize();
-    pGrid_->SetScale({ 1.0f, 1.0f, 1.0f });
-    pGrid_->SetName("Grid");
-    pGrid_->SetTilingMultiply({ 100.0f, 100.0f });
-    pGrid_->SetEnableLighting(false);
-    pGrid_->SetColor({ 1.0f, 1.0f, 1.0f, 0.3f });
-    pGrid_->SetModel(pModelGrid_.get());
+
+    // グリッドの初期化
+    pGrid_ = presets::grid::Create(pModelGrid_.get());
 
     // テクスチャの読み込み
     auto tm = TextureManager::GetInstance();

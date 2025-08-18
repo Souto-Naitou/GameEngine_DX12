@@ -289,6 +289,7 @@
     <ClCompile Include="Features\TimeMeasurer\TimeMeasurer.cpp" />
     <ClCompile Include="Features\Viewport\Viewport.cpp" />
     <ClCompile Include="Framework\NimaFramework.cpp" />
+    <ClCompile Include="Presets\Object3d\Grid\Preset_Grid.cpp" />
     <ClCompile Include="Scene\Args\SceneArgs.cpp" />
     <ClCompile Include="Scene\SceneBase.cpp" />
     <ClCompile Include="Type\Color.cpp" />
@@ -413,6 +414,7 @@
     <ClInclude Include="Interfaces\ISceneFactory.h" />
     <ClInclude Include="Math\Functions.hpp" />
     <ClInclude Include="Math\Transform.h" />
+    <ClInclude Include="Presets\Object3d\Grid\Preset_Grid.h" />
     <ClInclude Include="Scene\Args\SceneArgs.h" />
     <ClInclude Include="Scene\SceneBase.h" />
     <ClInclude Include="Type\Color.h" />

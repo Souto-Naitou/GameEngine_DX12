@@ -120,7 +120,8 @@ void SceneObjects::SetDirectionalLight(DirectionalLight* _light)
     {
         if (obj)
         {
-            obj->SetEnableLighting(true);
+            auto& option = obj->GetOption();
+            option.lightingData->enableLighting = true;
             obj->SetDirectionalLight(_light);
         }
     }
@@ -151,11 +152,10 @@ void SceneObjects::Build(ModelManager* _modelManager)
             object3d->Initialize();
             object3d->SetModel(models_.back().get());
             object3d->SetName(object.name);
-            object3d->SetScale(object.transform.scale);
-            object3d->SetRotate(object.transform.rotate);
-            object3d->SetTranslate(object.transform.translate);
-            object3d->SetTilingMultiply(object.uvScale);
-            object3d->SetEnableLighting(false);
+            auto& option = object3d->GetOption();
+            option.transform = object.transform;
+            option.tilingData->tilingMultiply = object.uvScale;
+            option.lightingData->enableLighting = false;
             objects_.emplace_back(std::move(object3d));
         }
         else if (object.type == "CAMERA")
