@@ -52,7 +52,7 @@ public:
 
 
 protected: 
-    static constexpr char kEnvTexturePathDefault[] = "white32x32.dds";
+    static constexpr char kEnvTexturePathDefault[] = "EngineResources/Textures/white32x32.dds";
 
     /// システムクラスのインスタンス
     std::unique_ptr<DirectX12>          pDirectX_                   = nullptr;
