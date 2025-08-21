@@ -7,6 +7,7 @@
 #include <wrl.h>
 #include <string>
 #include <Core/DirectX12/DirectX12.h>
+#include <memory>
 
 struct Material;
 struct VertexData;
@@ -22,6 +23,7 @@ public:
     void    Draw(ID3D12GraphicsCommandList* _cl)    override;
     void    CreateGPUResource()                     override;
     void    Clone(IModel* _src)                     override;
+    std::unique_ptr<IModel> Cloned()                override;
 
     // Getter
     ModelData*                  GetModelData()                  override;

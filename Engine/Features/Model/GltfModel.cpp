@@ -41,7 +41,7 @@ void GltfModel::Update()
         if (pCloneSrc_->IsEndLoading())
         {
             // クローン元からデータをコピー
-            this->_CopyFrom(pCloneSrc_);
+            this->CopyFrom(pCloneSrc_);
             pCloneSrc_ = nullptr; // クローン元をリセット
         }
     }
@@ -84,19 +84,19 @@ void GltfModel::ChangeTexture(D3D12_GPU_DESCRIPTOR_HANDLE _texSrvHnd)
 void GltfModel::CreateGPUResource()
 {
     /// 頂点リソースを作成
-    this->_CreateVertexResource();
+    this->CreateVertexResource();
 
     /// インデックスリソースを作成
-    this->_CreateIndexResource();
+    this->CreateIndexResource();
 
     /// テクスチャを読み込む
     this->_LoadModelTexture();
 
     /// スキニング結果を格納するリソースを作成
-    this->_CreateSkinnedResource();
+    this->CreateSkinnedResource();
 
     /// UAVの生成
-    this->_CreateUAV();
+    this->CreateUAV();
 
     // フラグを立てる
     isReadyDraw_ = true;
@@ -129,7 +129,34 @@ void GltfModel::Clone(IModel* _src)
         return;
     }
 
-    this->_CopyFrom(pSrc);
+    this->CopyFrom(pSrc);
+}
+
+std::unique_ptr<IModel> GltfModel::Cloned()
+{
+    std::unique_ptr<GltfModel> pCloned = std::make_unique<GltfModel>();
+    pCloned->isOverwroteTexture_ = false;  
+    pCloned->pDx12_ = this->pDx12_;
+    // モデルデータをコピー
+    pCloned->modelData_ = this->modelData_;
+    pCloned->animationData_ = this->animationData_;
+    // テクスチャのSRVハンドルをコピー
+    //   NOTE: クローン元のテクスチャを上書きしていない場合に限る
+    if (!isOverwroteTexture_)
+    {
+        pCloned->textureSrvHandleGPU_ = this->textureSrvHandleGPU_;
+    }
+    pCloned->skeleton_ = this->skeleton_;
+    pCloned->skinCluster_ = this->skinCluster_;
+    // リソースを作成
+    pCloned->CreateVertexResource();
+    pCloned->CreateIndexResource();
+    pCloned->CreateSkinnedResource();
+    pCloned->CreateUAV();
+
+    pCloned->isReadyDraw_ = true;
+
+    return pCloned;
 }
 
 void GltfModel::DispatchSkinning()
@@ -193,7 +220,7 @@ SkinCluster* GltfModel::GetSkinCluster()
     return &skinCluster_;
 }
 
-void GltfModel::_CreateVertexResource()
+void GltfModel::CreateVertexResource()
 {
     /// 頂点リソースを作成
     vertexResource_ = DX12Helper::CreateBufferResource(pDx12_->GetDevice(), sizeof(VertexData) * modelData_.vertices.size());
@@ -208,7 +235,7 @@ void GltfModel::_CreateVertexResource()
     srvHandleGpuInputVertex_ = srvManager_->GetGPUDescriptorHandle(srvIndexInputVertex_);
 }
 
-void GltfModel::_CreateIndexResource()
+void GltfModel::CreateIndexResource()
 {
     /// インデックスリソースを作成
     indexResource_ = DX12Helper::CreateBufferResource(pDx12_->GetDevice(), sizeof(uint32_t) * modelData_.indices.size());
@@ -223,7 +250,7 @@ void GltfModel::_CreateIndexResource()
     indexBufferView_.Format = DXGI_FORMAT_R32_UINT;
 }
 
-void GltfModel::_CreateSkinnedResource()
+void GltfModel::CreateSkinnedResource()
 {
     resourceSkinned_.resource = DX12Helper::CreateBufferResource(
         pDx12_->GetDevice(),
@@ -266,7 +293,7 @@ void GltfModel::_LoadModelTexture()
 
 }
 
-void GltfModel::_CopyFrom(GltfModel* _pCopySrc)
+void GltfModel::CopyFrom(GltfModel* _pCopySrc)
 {
     this->pDx12_ = _pCopySrc->pDx12_;
     // モデルデータをコピー
@@ -281,10 +308,10 @@ void GltfModel::_CopyFrom(GltfModel* _pCopySrc)
     this->skeleton_ = _pCopySrc->skeleton_;
     this->skinCluster_ = _pCopySrc->skinCluster_;
     // リソースを作成
-    this->_CreateVertexResource();
-    this->_CreateIndexResource();
-    this->_CreateSkinnedResource();
-    this->_CreateUAV();
+    this->CreateVertexResource();
+    this->CreateIndexResource();
+    this->CreateSkinnedResource();
+    this->CreateUAV();
 
     isReadyDraw_ = true;
 }
@@ -375,7 +402,7 @@ void GltfModel::_ApplyAnimationToSkeleton()
     }
 }
 
-void GltfModel::_CreateUAV()
+void GltfModel::CreateUAV()
 {
     srvIndexSkinned_ = srvManager_->Allocate();
     srvHandleGpuSkinned_ = srvManager_->GetGPUDescriptorHandle(srvIndexSkinned_);

@@ -63,6 +63,26 @@ void ObjModel::Clone(IModel* _src)
     this->_CopyFrom(pSrc);
 }
 
+std::unique_ptr<IModel> ObjModel::Cloned()
+{
+    std::unique_ptr<ObjModel> pCloned = std::make_unique<ObjModel>();
+
+    pCloned->pDx12_ = this->pDx12_;
+    // モデルデータをコピー
+    pCloned->modelData_ = this->modelData_;
+    // テクスチャのSRVハンドルをコピー
+    if (!isOverwroteTexture_)
+    {
+        pCloned->textureSrvHandleGPU_ = this->textureSrvHandleGPU_;
+    }
+    // 頂点リソースを作成
+    pCloned->_CreateVertexResource();
+
+    pCloned->isReadyDraw_ = true;
+
+    return pCloned;
+}
+
 void ObjModel::Draw(ID3D12GraphicsCommandList* _cl)
 {
     if (isReadyDraw_ == false) return;

@@ -15,6 +15,7 @@ public:
     virtual void CreateGPUResource() = 0;
     virtual bool IsEndLoading() const = 0;
     virtual void Clone(IModel* _src) = 0;
+    virtual std::unique_ptr<IModel> Cloned() = 0;
     
     virtual D3D12_VERTEX_BUFFER_VIEW GetVertexBufferView() const = 0;
     virtual size_t GetVertexCount() const = 0;

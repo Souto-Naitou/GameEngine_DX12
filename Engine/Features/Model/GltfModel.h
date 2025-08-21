@@ -21,6 +21,7 @@ public:
     void Draw(ID3D12GraphicsCommandList* _cl)   override;
     void CreateGPUResource()                    override;
     void Clone(IModel* _src)                    override;
+    std::unique_ptr<IModel> Cloned()            override;
     void DispatchSkinning();
 
     // Getter
@@ -68,14 +69,14 @@ private:
     #endif // _DEBUG
 
     // Internal functions
-    void    _CreateVertexResource();
-    void    _CreateIndexResource();
-    void    _CreateSkinnedResource();
+    void    CreateVertexResource();
+    void    CreateIndexResource();
+    void    CreateSkinnedResource();
     void    _LoadModelTexture();
-    void    _CopyFrom(GltfModel* _pCopySrc);
+    void    CopyFrom(GltfModel* _pCopySrc);
     void    _UpdateLocalMatrixByAnimation();
     void    _UpdateSkeleton();
     void    _UpdateSkinCluster();
     void    _ApplyAnimationToSkeleton();
-    void    _CreateUAV();
+    void    CreateUAV();
 };
