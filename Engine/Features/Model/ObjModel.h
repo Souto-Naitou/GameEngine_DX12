@@ -49,7 +49,7 @@ private: /// メンバ変数
     bool                                    isOverwroteTexture_         = false;    //< テクスチャを上書きしたかどうか
 
 private: /// 非公開メンバ関数
-    void _CreateVertexResource();
-    void _LoadModelTexture();
-    void _CopyFrom(ObjModel* pCopySrc);
+    void CreateVertexResource();
+    void LoadModelTexture();
+    void CopyFrom(ObjModel* pCopySrc);
 };
