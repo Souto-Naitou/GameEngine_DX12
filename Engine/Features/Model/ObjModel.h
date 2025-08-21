@@ -7,6 +7,7 @@
 #include <wrl.h>
 #include <string>
 #include <Core/DirectX12/DirectX12.h>
+#include <memory>
 
 struct Material;
 struct VertexData;
@@ -22,6 +23,7 @@ public:
     void    Draw(ID3D12GraphicsCommandList* _cl)    override;
     void    CreateGPUResource()                     override;
     void    Clone(IModel* _src)                     override;
+    std::unique_ptr<IModel> Cloned()                override;
 
     // Getter
     ModelData*                  GetModelData()                  override;
@@ -47,7 +49,7 @@ private: /// メンバ変数
     bool                                    isOverwroteTexture_         = false;    //< テクスチャを上書きしたかどうか
 
 private: /// 非公開メンバ関数
-    void _CreateVertexResource();
-    void _LoadModelTexture();
-    void _CopyFrom(ObjModel* pCopySrc);
+    void CreateVertexResource();
+    void LoadModelTexture();
+    void CopyFrom(ObjModel* pCopySrc);
 };
