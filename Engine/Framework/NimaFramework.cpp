@@ -286,13 +286,13 @@ void NimaFramework::Draw()
     pParticleManager_->Draw();
     pParticleSystem_->DrawCall();
 
-    /// 前景スプライトの描画
-    NiGui::DrawUI();
-    pSpriteSystem_->DrawCall();
-
     // シーンの描画 (テキスト以外)
     pSceneManager_->SceneDraw();
     pObject3dSystem_->DrawCall();
+
+    /// 前景スプライトの描画
+    NiGui::DrawUI();
+    pSpriteSystem_->DrawCall();
 
     // 同期待ち
     pObject3dSystem_->Sync();
