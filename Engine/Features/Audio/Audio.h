@@ -44,6 +44,8 @@ public:
 
     void Unload(SoundData* soundData);
     void Play();
+    void SetVolume(float volume);
+    float GetVolume() const;
 
 
 public:

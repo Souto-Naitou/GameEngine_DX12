@@ -41,3 +41,17 @@ void Audio::Play()
 
     AudioManager::GetInstance()->AddSourceVoice(pCurrentSourceVoice_);
 }
+
+void Audio::SetVolume(float volume)
+{
+    assert(pCurrentSourceVoice_ != nullptr && "SourceVoice is not initialized.");
+    hr_ = pCurrentSourceVoice_->SetVolume(volume);
+}
+
+float Audio::GetVolume() const
+{
+    assert(pCurrentSourceVoice_ != nullptr && "SourceVoice is not initialized.");
+    float volume = 0.0f;
+    pCurrentSourceVoice_->GetVolume(&volume);
+    return volume;
+}
