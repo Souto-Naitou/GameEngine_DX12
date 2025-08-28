@@ -97,7 +97,7 @@ void Particle::Update()
 void Particle::Finalize()
 {
 #if defined _DEBUG
-    DebugManager::GetInstance()->DeleteComponent("Particle", name_.c_str());
+    UnregisterDebugWindowC("Particle", name_);
 #endif
 
     /// リソースの解放

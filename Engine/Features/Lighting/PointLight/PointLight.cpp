@@ -23,7 +23,7 @@ void PointLight::Initialize()
 void PointLight::Update()
 {
     auto& option = pIcon_->GetOption();
-    option.transform.translate = position;
+    option.transform.translate = position_;
     pIcon_->Update();
 }
 
@@ -47,8 +47,8 @@ PointLightForGPU PointLight::GetDataForGPU() const
 {
     PointLightForGPU data;
     data.enablePointLight = enable_ ? 1 : 0;
-    data.color = color;
-    data.position = position;
-    data.intensity = intensity;
+    data.color = color_;
+    data.position = position_;
+    data.intensity = this->intensity_;
     return data;
 }

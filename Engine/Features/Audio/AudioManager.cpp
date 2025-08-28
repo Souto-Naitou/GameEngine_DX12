@@ -3,6 +3,7 @@
 #include <Core/ConfigManager/ConfigManager.h>
 
 #include <cassert>
+#include <utility>
 
 void AudioManager::Initialize()
 {
@@ -53,15 +54,17 @@ void AudioManager::AddSearchPath(const std::string& _path)
     pFilePathSearcher_->AddSearchPath(_path);
 }
 
-Audio* AudioManager::GetNewAudio(const std::string& _filename)
+Audio* AudioManager::GetNewAudio(const std::string& category, const std::string& filename)
 {
-    auto& soundData = LoadWave(pFilePathSearcher_->GetFilePath(_filename).c_str());
+    auto& soundData = LoadWave(pFilePathSearcher_->GetFilePath(filename).c_str());
 
-    /// Audioクラス生成
-    Audio* pAudio = new Audio();
-    pAudio->Initialize();
-    pAudio->SetSoundData(&soundData);
-    pAudio->SetXAudio2(pXAudio2_.Get());
+    /// Audio生成
+    auto audio = std::make_unique<Audio>(pXAudio2_.Get(), &soundData);
+    audio->Initialize();
+
+    Audio* pAudio = audio.get();
+
+    audioMap_[category].emplace_back(std::move(audio));
 
     return pAudio;
 }

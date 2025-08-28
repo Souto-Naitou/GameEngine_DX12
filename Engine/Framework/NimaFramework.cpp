@@ -135,8 +135,8 @@ void NimaFramework::Initialize()
     NiGui::SetClientSize({WinSystem::clientWidth, WinSystem::clientHeight});
     
 
-    NiGui::SetConfirmSound(pAudioManager_->GetNewAudio("ui_confirm.wav"));
-    NiGui::SetHoverSound(pAudioManager_->GetNewAudio("ui_hover.wav"));
+    NiGui::SetConfirmSound(pAudioManager_->GetNewAudio("UI", "ui_confirm.wav"));
+    NiGui::SetHoverSound(pAudioManager_->GetNewAudio("UI", "ui_hover.wav"));
 
     /// Drawerの設定
     pDrawer_ = std::make_unique<NiGuiDrawer>();
