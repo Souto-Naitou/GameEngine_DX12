@@ -76,7 +76,7 @@ private:
     std::vector<std::pair<std::string, uint32_t>> attributeList_;
     std::list<std::pair<std::string, uint32_t>> maskList_;
 
-    void DebugWindow();
+    void ImGui();
     void CheckCollisionPair(Collider* _colA, Collider* _colB);
     void ProjectShapeOnAxis(const std::vector<Vector3>* _v, const Vector3& _axis, float& _min, float& _max);
 

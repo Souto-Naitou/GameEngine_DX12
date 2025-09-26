@@ -26,9 +26,7 @@ void Object3d::Initialize(bool _enableDebugWindow)
 #if defined _DEBUG
     if (isEnableDebugWindow_)
     {
-        pDebugManager_ = DebugManager::GetInstance();
-        name_ = utl::debug::generate_name_default(this);
-        RegisterDebugWindowC("Object3d", name_, Object3d::DebugWindow, false);
+        pDebugEntry_ = std::make_unique<DebugEntry<Object3d>>("Object3d", "unnamed", this, false);
     }
 #endif // _DEBUG
 
@@ -143,12 +141,6 @@ void Object3d::Draw()
 
 void Object3d::Finalize() const
 {
-#if defined _DEBUG
-    if (isEnableDebugWindow_)
-    {
-        UnregisterDebugWindowC("Object3d", name_);
-    }
-#endif // DEBUG_ENGINE && _DEBUG
 }
 
 
@@ -219,7 +211,7 @@ void Object3d::CreateMaterialResource()
     option_.materialData->environmentCoefficient = 1.0f; // 環境係数を初期化
 }
 
-void Object3d::DebugWindow()
+void Object3d::ImGui()
 {
 #ifdef _DEBUG
 

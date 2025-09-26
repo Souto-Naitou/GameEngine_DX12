@@ -50,7 +50,7 @@ public: /// シーン動作
 private:
     SceneManager() = default;
     void ChangeScene();
-    void DebugWindow();
+    void ImGui();
     void PackSceneArgs();
 
     std::string name_ = "SceneManager";

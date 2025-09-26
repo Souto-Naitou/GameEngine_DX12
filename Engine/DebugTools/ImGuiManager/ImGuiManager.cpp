@@ -39,7 +39,7 @@ void ImGuiManager::Initialize()
 
     io_ = &ImGui::GetIO();
 
-    DebugManager::GetInstance()->SetComponent("Core", "ImGui", std::bind(&ImGuiManager::DebugWindow, this));
+    DebugManager::GetInstance()->SetComponent("Core", "ImGui", std::bind(&ImGuiManager::ImGui, this));
 }
 
 void ImGuiManager::Finalize()
@@ -109,7 +109,7 @@ void ImGuiManager::EndFrame()
     ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), commandList);
 }
 
-void ImGuiManager::DebugWindow()
+void ImGuiManager::ImGui()
 {
     bool isChange = false;
     if (ImGui::BeginCombo("Style", styleNameArray_[idx_currentStyle_].c_str()))

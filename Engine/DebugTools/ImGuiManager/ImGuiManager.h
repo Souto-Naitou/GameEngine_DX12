@@ -36,7 +36,7 @@ public:
 
 private:
     // For debug
-    void DebugWindow();
+    void ImGui();
 
     // Internal functions
     void InitializeStyleNameArray();

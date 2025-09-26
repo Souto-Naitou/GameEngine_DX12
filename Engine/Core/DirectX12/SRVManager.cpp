@@ -9,7 +9,7 @@
 void SRVManager::Initialize(DirectX12* _pDx12)
 {
 #ifdef _DEBUG
-    DebugManager::GetInstance()->SetComponent("Core", name_, std::bind(&SRVManager::DebugWindow, this), true);
+    DebugManager::GetInstance()->SetComponent("Core", name_, std::bind(&SRVManager::ImGui, this), true);
 #endif // _DEBUG
 
     name_ = "SRVManager";
@@ -141,7 +141,7 @@ void SRVManager::CreateUAV4Buffer(uint32_t _index, ID3D12Resource* _pTexture, DX
     pDx12_->GetDevice()->CreateUnorderedAccessView(_pTexture, nullptr, &uavDesc, GetCPUDescriptorHandle(_index));
 }
 
-void SRVManager::DebugWindow()
+void SRVManager::ImGui()
 {
 #ifdef _DEBUG
 

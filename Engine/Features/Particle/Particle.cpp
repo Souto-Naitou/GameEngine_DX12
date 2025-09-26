@@ -15,10 +15,7 @@ using namespace Type::ParticleEmitter;
 void Particle::Initialize(IModel* _pModel)
 {
 #if defined _DEBUG
-    std::stringstream ss;
-    ss << "instance##0x" << std::hex << this;
-    name_ = ss.str();
-    RegisterDebugWindowC("Particle", name_, Particle::DebugWindow, false);
+    pDebugEntry_ = std::make_unique<DebugEntry<Particle>>("Particle", "unnamed", this, true);
 #endif
 
     /// 必要なインスタンスを取得
@@ -96,10 +93,6 @@ void Particle::Update()
 
 void Particle::Finalize()
 {
-#if defined _DEBUG
-    UnregisterDebugWindowC("Particle", name_);
-#endif
-
     /// リソースの解放
     instancingResource_.Reset();
     SRVManager::GetInstance()->Deallocate(srvIndex_);
@@ -295,7 +288,7 @@ void Particle::ParticleDataUpdate(std::vector<ParticleData>::iterator& _itr)
     return;
 }
 
-void Particle::DebugWindow()
+void Particle::ImGui()
 {
 #if defined _DEBUG
 

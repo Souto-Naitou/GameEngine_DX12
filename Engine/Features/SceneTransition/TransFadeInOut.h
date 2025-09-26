@@ -14,7 +14,7 @@ public:
     void Update() override;
     void Draw() override;
     void Finalize() override;
-    void DebugWindow() override;
+    void ImGui() override;
 
 private:
 

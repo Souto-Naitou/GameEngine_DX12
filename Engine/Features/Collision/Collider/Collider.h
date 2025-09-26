@@ -97,6 +97,6 @@ private:
     uint32_t*                       pCollisionMask_             = nullptr;
 
 private:
-    void DebugWindow();
+    void ImGui();
 
 };

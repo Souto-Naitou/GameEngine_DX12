@@ -32,7 +32,7 @@ void PostEffectExecuter::Initialize()
 
     // デバッグウィンドウの登録
     #ifdef _DEBUG
-    DebugManager::GetInstance()->SetComponent("PostEffect", "EffectList", std::bind(&PostEffectExecuter::DebugWindow, this));
+    DebugManager::GetInstance()->SetComponent("PostEffect", "EffectList", std::bind(&PostEffectExecuter::ImGui, this));
     #endif //_DEBUG
 }
 
@@ -129,7 +129,7 @@ void PostEffectExecuter::OnResizedBuffers()
     for (auto& posteffect : postEffects_) posteffect->OnResizedBuffers();
 }
 
-void PostEffectExecuter::DebugWindow()
+void PostEffectExecuter::ImGui()
 {
     #ifdef _DEBUG
 

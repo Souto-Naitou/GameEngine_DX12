@@ -10,6 +10,8 @@
 #include <Common/define.h>
 #include <Features/GameEye/GameEye.h>
 #include <Features/Lighting/PointLight/PointLight.h>
+#include <DebugTools/DebugEntry/DebugEntry.h>
+#include <memory>
 
 /// 前方宣言
 struct  DirectionalLight;
@@ -51,13 +53,17 @@ public:
     /// </summary>
     void Finalize() const;
 
+    /// <summary>
+    /// デバッグウィンドウ
+    /// </summary>
+    void ImGui();
+
 
 public: /// Getter
     const Vector3& GetScale() const                             { return option_.transform.scale; }
     const Vector3& GetRotate() const                            { return option_.transform.rotate; }
     const Vector3& GetTranslate() const                         { return option_.transform.translate; }
     const Matrix4x4& GetRotateMatrix() const                    { return rotateMatrix_; }
-    const std::string& GetName() const                          { return name_; }
     const Option& GetOption() const                             { return option_; }
     Option& GetOption()                                         { return option_; }
 
@@ -67,16 +73,15 @@ public: /// Setter
     void SetRotate(const Vector3& _rotate)                      { option_.transform.rotate = _rotate; }
     void SetTranslate(const Vector3& _translate)                { option_.transform.translate = _translate; }
     void SetGameEye(GameEye* _pGameEye)                         { pGameEye_ = _pGameEye; }
-    void SetName(const std::string& _name)                      { name_ = _name; }
+    void SetName(const std::string& name)                       { pDebugEntry_->SetName(name); }
     void SetDirectionalLight(DirectionalLight* _light)          { directionalLight_ = _light; }
     void SetPointLight(PointLight* _light)                      { pointLight_ = _light; }
     void SetModel(IModel* _pModel)                              { pModel_ = _pModel; }
 
 
 private: /// メンバ変数
-    
+    std::unique_ptr<DebugEntry<Object3d>>           pDebugEntry_                    = nullptr;
     Matrix4x4                                       rotateMatrix_                   = {};
-    std::string                                     name_                           = {};
 
     bool                                            isUpdate_                       = true;
     bool                                            isDraw_                         = true;
@@ -114,9 +119,6 @@ private: /// 非公開メンバ関数
     void CreateLightingResource();
     void CreatePointLightResource();
     void CreateMaterialResource();
-
-
-    void DebugWindow();
 
 
 private: /// 他クラスが所持するインスタンスへのポインタ

@@ -66,5 +66,5 @@ private:
 
 
 private:
-    void DebugWindow();
+    void ImGui();
 };

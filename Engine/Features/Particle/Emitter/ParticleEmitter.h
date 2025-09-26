@@ -64,6 +64,6 @@ private:
     Vector3 RandomUnitSphere();
 
 private:
-    void DebugWindow();
+    void ImGui();
     void ModifyGameEye(GameEye** _eye);
 };

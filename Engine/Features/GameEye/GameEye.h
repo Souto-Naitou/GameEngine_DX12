@@ -54,7 +54,7 @@ private: /// メンバ変数
     void _UpdateFovFromFocalLength();
 
 protected:
-    virtual void DebugWindow();
+    virtual void ImGui();
 
 
 private:
