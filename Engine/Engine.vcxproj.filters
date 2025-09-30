@@ -1025,6 +1025,12 @@
     <ClInclude Include="..\..\..\..\..\CG\GameEngine_DX12\Engine\Features\Animation\AnimationTween.hpp">
       <Filter>Feature\Animation</Filter>
     </ClInclude>
+    <ClInclude Include="Interfaces\IEntityStats.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\SingletonPattern.h">
+      <Filter>Common</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include=".editorconfig" />

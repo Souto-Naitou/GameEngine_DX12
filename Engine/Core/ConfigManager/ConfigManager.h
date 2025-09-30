@@ -1,12 +1,12 @@
 #pragma once
 
 #include "./ConfigType.h"
-#include <ClassStyles/SingletonStyle.h>
+#include <Common/SingletonPattern.h>
 #include <string>
 
-class ConfigManager : public SingletonStyle<ConfigManager>
+class ConfigManager : public SingletonPattern<ConfigManager>
 {
-    friend class SingletonStyle<ConfigManager>;
+    friend class SingletonPattern<ConfigManager>;
 public:
     // Common functions
     void Initialize(const std::string& _cfgPath);

@@ -24,7 +24,8 @@ public:
     void DrawArea();
 
 public: /// Getter
-    inline  const void*                 GetOwner()                  const       { return owner_; }
+    template <typename T>
+    inline  const T*                    GetOwner()                  const       { return static_cast<T*>(owner_); }
 
     inline  const AABB*                 GetAABB()                   const       { return std::get<AABB*>(shapeData_); }
     inline  const OBB*                  GetOBB()                    const       { return std::get<OBB*>(shapeData_); }

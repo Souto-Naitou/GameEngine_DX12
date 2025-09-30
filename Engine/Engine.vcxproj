@@ -304,6 +304,7 @@
     <ClInclude Include="BaseClasses\ObjectSystemBaseMT.h" />
     <ClInclude Include="Common\define.h" />
     <ClInclude Include="Common\HRESULT_ASSERT.h" />
+    <ClInclude Include="Common\SingletonPattern.h" />
     <ClInclude Include="Common\structs.h" />
     <ClInclude Include="Core\ConfigManager\ConfigManager.h" />
     <ClInclude Include="Core\ConfigManager\ConfigType.h" />
@@ -410,6 +411,7 @@
     <ClInclude Include="Features\TimeMeasurer\TimeMeasurer.h" />
     <ClInclude Include="Features\Viewport\Viewport.h" />
     <ClInclude Include="Framework\NimaFramework.h" />
+    <ClInclude Include="Interfaces\IEntityStats.h" />
     <ClInclude Include="Interfaces\IObjectSystem.h" />
     <ClInclude Include="Interfaces\ISceneArgs.h" />
     <ClInclude Include="Interfaces\ISceneFactory.h" />
