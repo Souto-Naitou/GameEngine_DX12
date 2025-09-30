@@ -17,6 +17,7 @@ public:
     ~OBB();
 
     void Initialize();
+    void Update();
     void Draw();
 
 
@@ -54,7 +55,7 @@ private:
 
     Matrix4x4 rotateMatrix_ = {};
 
-    std::unique_ptr<Line> lines = nullptr;
+    Line lines_ = { 12 }; // 線
 
 
 private:

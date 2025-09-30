@@ -236,6 +236,9 @@
     <ClCompile Include="Effects\PostEffects\Vignette\Vignette.cpp" />
     <ClCompile Include="Features\Audio\Audio.cpp" />
     <ClCompile Include="Features\Audio\AudioManager.cpp" />
+    <ClCompile Include="Features\Bar2d\Bar2d.cpp" />
+    <ClCompile Include="Features\Bar3d\Bar3d.cpp" />
+    <ClCompile Include="Features\Collision\CellBasedFiltering\CellBasedFiltering.cpp" />
     <ClCompile Include="Features\Collision\Collider\Collider.cpp" />
     <ClCompile Include="Features\Collision\Manager\CollisionManager.cpp" />
     <ClCompile Include="Features\CSV\CSVLoader.cpp" />
@@ -342,8 +345,13 @@
     <ClInclude Include="Effects\PostEffects\RandomFilter\RandomFilter.h" />
     <ClInclude Include="Effects\PostEffects\SeparatedGaussianFilter\SeparatedGaussianFilter.h" />
     <ClInclude Include="Effects\PostEffects\Vignette\Vignette.h" />
+    <ClInclude Include="Features\Animation\AnimationTimeline.h" />
+    <ClInclude Include="Features\Animation\AnimationTween.hpp" />
     <ClInclude Include="Features\Audio\Audio.h" />
     <ClInclude Include="Features\Audio\AudioManager.h" />
+    <ClInclude Include="Features\Bar2d\Bar2d.h" />
+    <ClInclude Include="Features\Bar3d\Bar3d.h" />
+    <ClInclude Include="Features\Collision\CellBasedFiltering\CellBasedFiltering.h" />
     <ClInclude Include="Features\Collision\Collider\Collider.h" />
     <ClInclude Include="Features\Collision\Manager\CollisionManager.h" />
     <ClInclude Include="Features\Collision\Shape.h" />

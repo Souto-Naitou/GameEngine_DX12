@@ -24,7 +24,7 @@ void Audio::Unload(SoundData* soundData)
     return;
 }
 
-void Audio::Play()
+void Audio::Play(bool isLoop)
 {
     /// SourceVoice作成
     hr_ = pXAudio2_->CreateSourceVoice(&pCurrentSourceVoice_, &soundData_->wfex);
@@ -34,6 +34,7 @@ void Audio::Play()
     buffer.pAudioData = soundData_->pBuffer.get();
     buffer.AudioBytes = soundData_->bufferSize;
     buffer.Flags = XAUDIO2_END_OF_STREAM;
+    buffer.LoopCount = isLoop ? XAUDIO2_LOOP_INFINITE : 0;
 
     /// 再生
     hr_ = pCurrentSourceVoice_->SubmitSourceBuffer(&buffer);
