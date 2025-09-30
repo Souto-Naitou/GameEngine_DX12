@@ -178,9 +178,6 @@
     <Filter Include="Feature\Audio\Command">
       <UniqueIdentifier>{38ba84f9-eca5-442a-a4ee-52776a6ec517}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ClassStyle">
-      <UniqueIdentifier>{2f0b747a-3f33-4993-a0f0-1abcc42de342}</UniqueIdentifier>
-    </Filter>
     <Filter Include="BaseClass">
       <UniqueIdentifier>{6eba742e-07c6-4355-a651-8ec2446a5ca1}</UniqueIdentifier>
     </Filter>
@@ -201,9 +198,6 @@
     </Filter>
     <Filter Include="Utility\JSONIO">
       <UniqueIdentifier>{158aa26d-4868-4d7d-a32e-aea18848c56f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Type">
-      <UniqueIdentifier>{716e7ea7-33a6-41be-84dc-73a74d4d0079}</UniqueIdentifier>
     </Filter>
     <Filter Include="Utility\String">
       <UniqueIdentifier>{92bf5668-a1ed-46fd-bc3e-cb0c886e6d58}</UniqueIdentifier>
@@ -339,6 +333,9 @@
     </Filter>
     <Filter Include="DebugTools\DebugEntry">
       <UniqueIdentifier>{758042fc-2bde-4ae2-8db7-ae2811523059}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Feature\Animation">
+      <UniqueIdentifier>{4cb28116-e61d-4a3f-8272-987cb1990ae5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -512,9 +509,6 @@
     </ClCompile>
     <ClCompile Include="Utility\JSONIO\jsonio.cpp">
       <Filter>Utility\JSONIO</Filter>
-    </ClCompile>
-    <ClCompile Include="Type\Color.cpp">
-      <Filter>Type</Filter>
     </ClCompile>
     <ClCompile Include="Core\ConfigManager\ConfigManager.cpp">
       <Filter>Core\ConfigManager</Filter>
@@ -830,9 +824,6 @@
     <ClInclude Include="Features\Audio\Audio.h">
       <Filter>Feature\Audio\Command</Filter>
     </ClInclude>
-    <ClInclude Include="ClassStyles\SingletonStyle.h">
-      <Filter>ClassStyle</Filter>
-    </ClInclude>
     <ClInclude Include="Features\NiGui\NiGuiDrawer.h">
       <Filter>Feature\NiGuiDerived</Filter>
     </ClInclude>
@@ -853,9 +844,6 @@
     </ClInclude>
     <ClInclude Include="Utility\JSONIO\jsonio.h">
       <Filter>Utility\JSONIO</Filter>
-    </ClInclude>
-    <ClInclude Include="Type\Color.h">
-      <Filter>Type</Filter>
     </ClInclude>
     <ClInclude Include="Utility\String\strutl.h">
       <Filter>Utility\String</Filter>
@@ -1030,6 +1018,12 @@
     </ClInclude>
     <ClInclude Include="DebugTools\DebugEntry\DebugEntry.h">
       <Filter>DebugTools\DebugEntry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\CG\GameEngine_DX12\Engine\Features\Animation\AnimationTimeline.h">
+      <Filter>Feature\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\CG\GameEngine_DX12\Engine\Features\Animation\AnimationTween.hpp">
+      <Filter>Feature\Animation</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
