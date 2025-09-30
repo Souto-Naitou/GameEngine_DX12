@@ -24,13 +24,14 @@ void Audio::Unload(SoundData* soundData)
     return;
 }
 
-void Audio::Play()
+void Audio::Play(bool isLoop)
 {
     /// バッファ設定
     XAUDIO2_BUFFER buffer = {};
     buffer.pAudioData = soundData_->pBuffer.get();
     buffer.AudioBytes = soundData_->bufferSize;
     buffer.Flags = XAUDIO2_END_OF_STREAM;
+    buffer.LoopCount = isLoop ? XAUDIO2_LOOP_INFINITE : 0;
 
     /// SourceVoice作成
     hr_ = pXAudio2_->CreateSourceVoice(&pCurrentSourceVoice_, &soundData_->wfex);

@@ -28,7 +28,9 @@ public: /// Getter
     inline  const T*                    GetOwner()                  const       { return static_cast<T*>(owner_); }
 
     inline  const AABB*                 GetAABB()                   const       { return std::get<AABB*>(shapeData_); }
+    inline  AABB*                       GetAABB()                               { return std::get<AABB*>(shapeData_); }
     inline  const OBB*                  GetOBB()                    const       { return std::get<OBB*>(shapeData_); }
+    inline  OBB*                        GetOBB()                                { return std::get<OBB*>(shapeData_); }
     inline  const Sphere*               GetSphere()                 const       { return std::get<Sphere*>(shapeData_); }
 
     inline  uint32_t                    GetCollisionAttribute()     const       { return collisionAttribute_; }
