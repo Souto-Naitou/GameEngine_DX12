@@ -6,7 +6,6 @@
 #include <imgui.h>
 
 
-
 void CellBasedFiltering::Initialize(int cellSize, int worldWidth, int worldHeight)
 {
     cellSize_ = cellSize;
@@ -67,68 +66,65 @@ void CellBasedFiltering::Draw2dDebug()
 
 void CellBasedFiltering::DrawImGui()
 {
-    if (ImGui::Begin("Cell Based Filtering"))
+    #ifdef _DEBUG
+    if (ImGui::TreeNode("Display lines"))
     {
-        if (ImGui::TreeNode("Display lines"))
-        {
-            ImGui::Indent(15.0f);
+        ImGui::Indent(15.0f);
 
-            ImGui::Checkbox("All Cells", &isDrawAllCells_);
-            ImGui::Checkbox("Current Cells", &isDrawCurrentCells_);
-            ImGui::Checkbox("Potentials", &isDrawPotentials_);
+        ImGui::Checkbox("All Cells", &isDrawAllCells_);
+        ImGui::Checkbox("Current Cells", &isDrawCurrentCells_);
+        ImGui::Checkbox("Potentials", &isDrawPotentials_);
 
-            if (isDrawAllCells_) ImGui::DragFloat("Cell Grid Y", &cellGridY_, 0.01f);
+        if (isDrawAllCells_) ImGui::DragFloat("Cell Grid Y", &cellGridY_, 0.01f);
 
-            ImGui::Unindent(15.0f);
-            ImGui::TreePop();
-        }
-
-        if (ImGui::TreeNode("Cells"))
-        {
-            ImGui::Indent(15.0f);
-
-            ImGui::Checkbox("Enable modify", &isModifyMode_);
-
-            if (!isModifyMode_)
-            {
-                ImGui::Text("Cell Size: %d", cellSize_);
-            }
-            else
-            {
-                ImGui::SliderInt("Cell Size", &cellSize_, 2, 40);
-                if (ImGui::Button("Reassign All"))
-                {
-                    ReassignToGridAll(cellSize_);
-                    isModifyMode_ = false;
-                }
-            }
-
-            ImGui::Spacing();
-
-            // 各種情報の表示
-            ImGui::Text("World Size: %d x %d", worldWidth_, worldHeight_);
-            ImGui::Text("Num Cells: %d x %d", numCellsX_, numCellsZ_);
-            ImGui::Text("Total Cells: %zu", grid_.size());
-            ImGui::Text("Potential Colliders: %zu", potentialColliders_.size());
-
-            // 現在のアクティブセルの表示
-            if (!activeCellsIndices_.empty())
-            {
-                std::string activeCellsStr = "Active Cells: { ";
-                for (auto& activeCell : activeCellsIndices_)
-                {
-                    activeCellsStr += std::to_string(activeCell) + " ";
-                }
-                activeCellsStr += "}";
-                ImGui::Text("%s", activeCellsStr.c_str());
-            }
-
-            ImGui::Unindent(15.0f);
-            ImGui::TreePop();
-        }
-
+        ImGui::Unindent(15.0f);
+        ImGui::TreePop();
     }
-    ImGui::End();
+
+    if (ImGui::TreeNode("Cells"))
+    {
+        ImGui::Indent(15.0f);
+
+        ImGui::Checkbox("Enable modify", &isModifyMode_);
+
+        if (!isModifyMode_)
+        {
+            ImGui::Text("Cell Size: %d", cellSize_);
+        }
+        else
+        {
+            ImGui::SliderInt("Cell Size", &cellSize_, 2, 40);
+            if (ImGui::Button("Reassign All"))
+            {
+                ReassignToGridAll(cellSize_);
+                isModifyMode_ = false;
+            }
+        }
+
+        ImGui::Spacing();
+
+        // 各種情報の表示
+        ImGui::Text("World Size: %d x %d", worldWidth_, worldHeight_);
+        ImGui::Text("Num Cells: %d x %d", numCellsX_, numCellsZ_);
+        ImGui::Text("Total Cells: %zu", grid_.size());
+        ImGui::Text("Potential Colliders: %zu", potentialColliders_.size());
+
+        // 現在のアクティブセルの表示
+        if (!activeCellsIndices_.empty())
+        {
+            std::string activeCellsStr = "Active Cells: { ";
+            for (auto& activeCell : activeCellsIndices_)
+            {
+                activeCellsStr += std::to_string(activeCell) + " ";
+            }
+            activeCellsStr += "}";
+            ImGui::Text("%s", activeCellsStr.c_str());
+        }
+
+        ImGui::Unindent(15.0f);
+        ImGui::TreePop();
+    }
+    #endif
 }
 
 void CellBasedFiltering::AssignToGrid(Collider* collider)

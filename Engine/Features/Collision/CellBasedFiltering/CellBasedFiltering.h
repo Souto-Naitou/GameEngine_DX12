@@ -4,6 +4,7 @@
 #include <Features/Collision/Manager/CollisionManager.h>
 #include <set>
 #include <Features/Line/Line.h>
+#include <memory>
 
 // コライダーのセル分割によるフィルタリング
 // 衝突判定マネージャ登録ヘルパークラス
@@ -36,10 +37,10 @@ private:
     int numCellsX_      = 0;
     int numCellsZ_      = 0;
 
-    std::vector<std::vector<Collider*>> grid_;
-    std::set<Collider*> potentialColliders_;
-    std::set<uint64_t> activeCellsIndices_;
-    std::unique_ptr<Line> cellGridLines_;
+    std::vector<std::vector<Collider*>> grid_ = {};
+    std::set<Collider*> potentialColliders_ = {};
+    std::set<uint64_t> activeCellsIndices_ = {};
+    std::unique_ptr<Line> cellGridLines_ = {};
     bool isModifyMode_ = false;
     bool isDrawPotentials_ = false;
     bool isDrawCurrentCells_ = false;

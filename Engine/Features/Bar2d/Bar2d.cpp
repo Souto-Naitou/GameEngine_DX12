@@ -70,6 +70,7 @@ void Bar2d::Draw2D()
 
 void Bar2d::ImGui()
 {
+    #ifdef _DEBUG
     bool isOpen = false;
     if (nameTexturePath_.empty())
     {
@@ -90,6 +91,7 @@ void Bar2d::ImGui()
         ImGui::DragFloat("Current Value", &currentValue_, 0.1f, FLT_MIN, maxValue_);
     }
     ImGui::End();
+    #endif
 }
 
 void Bar2d::SetOpacity(float alpha)
