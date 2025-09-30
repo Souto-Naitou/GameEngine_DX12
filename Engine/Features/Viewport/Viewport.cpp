@@ -226,10 +226,15 @@ void Viewport::DrawWindow()
         {
             aspect = static_cast<float>(width) / static_cast<float>(height);
         }
-
         ImVec2 imageSizeAdjusted = cliSize;
-        imageSizeAdjusted.x = cliSize.y * aspect;
 
+        if (cliSize.x / aspect <= cliSize.y) imageSizeAdjusted.y = cliSize.x / aspect;
+        else imageSizeAdjusted.x = cliSize.y * aspect;
+
+        // Imageを中央に配置
+        Vector2 offset = { (cliSize.x - imageSizeAdjusted.x) / 2.0f, (cliSize.y - imageSizeAdjusted.y) / 2.0f };
+        ImGui::SetCursorPos(offset + ImGui::GetCursorPos());
+        
         ImGui::Image((ImTextureID)gpuHnd.ptr, imageSizeAdjusted);
 
         nextContentRegionSize_ = imageSizeAdjusted;

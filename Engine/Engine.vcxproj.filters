@@ -337,6 +337,18 @@
     <Filter Include="Preset\Object3d\Grid">
       <UniqueIdentifier>{b301e74a-e41d-4a55-b4bc-e3567fa912d8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Feature\Animation">
+      <UniqueIdentifier>{732f7de8-8b75-4490-b201-385c775c22e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Feature\Bar2d">
+      <UniqueIdentifier>{ba89ddb5-a4d1-493c-9e72-3b9692166820}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Feature\Bar3d">
+      <UniqueIdentifier>{96d2037a-0c4b-4b54-ad31-2f2286e1015f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Feature\Collision\CellBasedFiltering">
+      <UniqueIdentifier>{fc1f23c8-4070-41e3-8122-d17c37ddd352}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DebugTools\DebugManager\DebugManager.cpp">
@@ -641,6 +653,15 @@
     </ClCompile>
     <ClCompile Include="Presets\Object3d\Grid\Preset_Grid.cpp">
       <Filter>Preset\Object3d\Grid</Filter>
+    </ClCompile>
+    <ClCompile Include="Features\Bar2d\Bar2d.cpp">
+      <Filter>Feature\Bar2d</Filter>
+    </ClCompile>
+    <ClCompile Include="Features\Bar3d\Bar3d.cpp">
+      <Filter>Feature\Bar3d</Filter>
+    </ClCompile>
+    <ClCompile Include="Features\Collision\CellBasedFiltering\CellBasedFiltering.cpp">
+      <Filter>Feature\Collision\CellBasedFiltering</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1024,6 +1045,21 @@
     </ClInclude>
     <ClInclude Include="Presets\Object3d\Grid\Preset_Grid.h">
       <Filter>Preset\Object3d\Grid</Filter>
+    </ClInclude>
+    <ClInclude Include="Features\Animation\AnimationTimeline.h">
+      <Filter>Feature\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="Features\Animation\AnimationTween.hpp">
+      <Filter>Feature\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="Features\Bar2d\Bar2d.h">
+      <Filter>Feature\Bar2d</Filter>
+    </ClInclude>
+    <ClInclude Include="Features\Bar3d\Bar3d.h">
+      <Filter>Feature\Bar3d</Filter>
+    </ClInclude>
+    <ClInclude Include="Features\Collision\CellBasedFiltering\CellBasedFiltering.h">
+      <Filter>Feature\Collision\CellBasedFiltering</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

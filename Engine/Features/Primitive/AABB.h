@@ -8,14 +8,17 @@
 #include <Features/GameEye/GameEye.h>
 
 #include <memory>
+#include <Color.h>
 
 class AABB
 {
 public:
     AABB() = default;
+    AABB(const Vector3& _min, const Vector3& _max) : min_(_min), max_(_max) {}
     ~AABB();
 
     void Initialize();
+    void Update();
     void Draw();
 
 
@@ -26,6 +29,7 @@ public: /// Setter
         max_ = _max;
     }
     void SetGameEye(GameEye** _eye) { pGameEye = _eye; ModifyGameEye(_eye); }
+    void SetColor(const Color& _color) { lines.SetColor(_color); }
 
 
 public: /// Getter
