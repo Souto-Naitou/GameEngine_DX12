@@ -40,8 +40,6 @@ private:
 
     std::string                 name_                   = "CG3";
 
-    Audio*                      pAudio_                 = nullptr;
-
     D3D12_VIEWPORT              viewport_               = {};
 
 

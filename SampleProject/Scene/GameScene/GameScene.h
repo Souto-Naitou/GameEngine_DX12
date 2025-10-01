@@ -41,7 +41,6 @@ private:
     std::unique_ptr<Sprite> pGuideSprite_;
 
     // Pointers
-    Audio* pAudio_ = nullptr;
     Input* pInput_ = nullptr;
     ModelManager* pModelManager_ = nullptr;
 };

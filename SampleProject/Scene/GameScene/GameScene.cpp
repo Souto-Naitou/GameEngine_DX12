@@ -60,9 +60,6 @@ void GameScene::Initialize()
     pSmoke_->Initialize(pModelSpark_, "Resources/Json/Smoke.json");
     pSpark_ = std::make_unique<ParticleEmitter>();
     pSpark_->Initialize(pModelSpark_, "Resources/Json/Spark.json");
-
-    /// 音声の取得
-    pAudio_ = AudioManager::GetInstance()->GetNewAudio("pi.wav");
 }
 
 void GameScene::Finalize()
@@ -73,7 +70,6 @@ void GameScene::Finalize()
     pFirework_->Finalize();
     pSmoke_->Finalize();
     pSpark_->Finalize();
-    pAudio_->Finalize();
 }
 
 void GameScene::Update()
