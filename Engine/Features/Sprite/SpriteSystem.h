@@ -4,14 +4,14 @@
 #include <d3d12.h>
 #include <list>
 
-#include <ClassStyles/SingletonStyle.h>
 #include <BaseClasses/ObjectSystemBaseMT.h>
+#include <Common/SingletonPattern.h>
 
 class SpriteSystem : 
-    public SingletonStyle<SpriteSystem>,
+    public SingletonPattern<SpriteSystem>,
     public ObjectSystemBaseMT
 {
-    friend class SingletonStyle<SpriteSystem>;
+    friend class SingletonPattern<SpriteSystem>;
 
 public:
     struct CommandListData

@@ -5,9 +5,9 @@
 #define TO_VECTOR2(class) Vector2{(class).x, (class).y}
 #define TO_VECTOR4(class) Vector4{(class).x, (class).y, (class).z, (class).w}
 
-const Color Bar2d::COLOR_BAR_NORMAL = Color(0x2762e8ff);
-const Color Bar2d::COLOR_BAR_BG = Color(0xabababff);
-const Color Bar2d::COLOR_BAR_LOW = Color(0x2762e8ff);
+const RGBA Bar2d::COLOR_BAR_NORMAL = RGBA(0x2762e8ff);
+const RGBA Bar2d::COLOR_BAR_BG = RGBA(0xabababff);
+const RGBA Bar2d::COLOR_BAR_LOW = RGBA(0x2762e8ff);
 
 const Vector2 Bar2d::SPACING_HEAD_TO_DECO = { 0.0f, 10.0f };
 
@@ -29,7 +29,7 @@ void Bar2d::Initialize(const std::string& _nameTexturePath, const Vector2& _barS
     // スプライトの初期化
     bar_ = std::make_unique<Sprite>();
     bar_->Initialize(PATH_BAR);
-    bar_->SetColor(COLOR_BAR_NORMAL.Vec4());
+    bar_->SetColor(COLOR_BAR_NORMAL.to_Vector4());
 
     if (isDisplay_name_)
     {
@@ -39,7 +39,7 @@ void Bar2d::Initialize(const std::string& _nameTexturePath, const Vector2& _barS
 
     background_ = std::make_unique<Sprite>();
     background_->Initialize(PATH_BAR);
-    background_->SetColor(COLOR_BAR_BG.Vec4());
+    background_->SetColor(COLOR_BAR_BG.to_Vector4());
 }
 
 void Bar2d::Update()
@@ -145,18 +145,18 @@ void Bar2d::UpdateColor()
     if (isEnable_lerp_color_)
     {
         Vector4 color = {};
-        color.Lerp(COLOR_BAR_LOW.Vec4(), COLOR_BAR_NORMAL.Vec4(), currentValue_ / maxValue_);
+        color.Lerp(COLOR_BAR_LOW.to_Vector4(), COLOR_BAR_NORMAL.to_Vector4(), currentValue_ / maxValue_);
         bar_->SetColor(TO_VECTOR4(color));
     }
     else
     {
         if (currentValue_ < maxValue_ * BORDER_DANGER)
         {
-            bar_->SetColor(COLOR_BAR_LOW.Vec4());
+            bar_->SetColor(COLOR_BAR_LOW.to_Vector4());
         }
         else
         {
-            bar_->SetColor(COLOR_BAR_NORMAL.Vec4());
+            bar_->SetColor(COLOR_BAR_NORMAL.to_Vector4());
         }
     }
 }

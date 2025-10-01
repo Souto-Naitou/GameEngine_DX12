@@ -29,7 +29,7 @@ public: /// Setter
         max_ = _max;
     }
     void SetGameEye(GameEye** _eye) { pGameEye = _eye; ModifyGameEye(_eye); }
-    void SetColor(const Color& _color) { lines.SetColor(_color); }
+    void SetColor(const RGBA& _color) { lines.SetColor(_color.to_Vector4()); }
 
 
 public: /// Getter

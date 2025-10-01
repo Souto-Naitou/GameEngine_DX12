@@ -69,8 +69,6 @@ void CG3PT2::Initialize()
     pText_->SetFontFamily("Meiryo");
     pText_->SetFontSize(15.0f);
     pText_->SetColorName("Black");
-
-    pAudio_ = AudioManager::GetInstance()->GetNewAudio("piano.wav");
 }
 
 void CG3PT2::Finalize()
@@ -90,10 +88,6 @@ void CG3PT2::Update()
 
     pText_->Update();
 
-    if (Input::GetInstance()->TriggerKey(DIK_SPACE))
-    {
-        pAudio_->Play();
-    }
 }
 
 void CG3PT2::Draw()

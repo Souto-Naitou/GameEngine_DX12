@@ -295,7 +295,6 @@
     <ClCompile Include="Presets\Object3d\Grid\Preset_Grid.cpp" />
     <ClCompile Include="Scene\Args\SceneArgs.cpp" />
     <ClCompile Include="Scene\SceneBase.cpp" />
-    <ClCompile Include="Type\Color.cpp" />
     <ClCompile Include="Utility\Debug\dbgutl.cpp" />
     <ClCompile Include="Utility\FileSystem\fsutl.cpp" />
     <ClCompile Include="Utility\JSONIO\jsonio.cpp" />
@@ -304,9 +303,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseClasses\ObjectSystemBaseMT.h" />
-    <ClInclude Include="ClassStyles\SingletonStyle.h" />
     <ClInclude Include="Common\define.h" />
     <ClInclude Include="Common\HRESULT_ASSERT.h" />
+    <ClInclude Include="Common\SingletonPattern.h" />
     <ClInclude Include="Common\structs.h" />
     <ClInclude Include="Core\ConfigManager\ConfigManager.h" />
     <ClInclude Include="Core\ConfigManager\ConfigType.h" />
@@ -418,6 +417,7 @@
     <ClInclude Include="Features\TimeMeasurer\TimeMeasurer.h" />
     <ClInclude Include="Features\Viewport\Viewport.h" />
     <ClInclude Include="Framework\NimaFramework.h" />
+    <ClInclude Include="Interfaces\IEntityStats.h" />
     <ClInclude Include="Interfaces\IObjectSystem.h" />
     <ClInclude Include="Interfaces\ISceneArgs.h" />
     <ClInclude Include="Interfaces\ISceneFactory.h" />
@@ -426,7 +426,6 @@
     <ClInclude Include="Presets\Object3d\Grid\Preset_Grid.h" />
     <ClInclude Include="Scene\Args\SceneArgs.h" />
     <ClInclude Include="Scene\SceneBase.h" />
-    <ClInclude Include="Type\Color.h" />
     <ClInclude Include="Utility\ConvertString\ConvertString.h" />
     <ClInclude Include="Utility\Debug\dbgutl.h" />
     <ClInclude Include="Utility\DIContainer\DIContainer.h" />

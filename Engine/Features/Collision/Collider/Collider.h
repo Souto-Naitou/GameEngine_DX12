@@ -11,6 +11,7 @@
 #include <DebugTools/DebugManager/DebugManager.h>
 #include <variant>
 
+
 class CollisionManager;
 
 class Collider
@@ -23,7 +24,8 @@ public:
     void DrawArea();
 
 public: /// Getter
-    inline  const void*                 GetOwner()                  const       { return owner_; }
+    template <typename T>
+    inline  const T*                    GetOwner()                  const       { return static_cast<T*>(owner_); }
 
     inline  const AABB*                 GetAABB()                   const       { return std::get<AABB*>(shapeData_); }
     inline  AABB*                       GetAABB()                               { return std::get<AABB*>(shapeData_); }

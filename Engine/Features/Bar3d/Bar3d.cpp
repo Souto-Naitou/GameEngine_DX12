@@ -3,7 +3,7 @@
 #include <Matrix4x4.h>
 #include <Vector3.h>
 
-void Bar3d::Initialize(const Color& colorContext, const Color& colorBG)
+void Bar3d::Initialize(const RGBA& colorContext, const RGBA& colorBG)
 {
     // Initialize the background sprite
     InitializeSprite(sprite_max_, colorBG);
@@ -69,11 +69,11 @@ Vector2 Bar3d::GetHeadUpPositionOnScreen(const Vector3& _targetPos, const Vector
 }
 
 
-void Bar3d::InitializeSprite(std::unique_ptr<Sprite>& _sprite, const Color& _color)
+void Bar3d::InitializeSprite(std::unique_ptr<Sprite>& _sprite, const RGBA& _color)
 {
     _sprite = std::make_unique<Sprite>();
     _sprite->Initialize("white.png");
-    _sprite->SetColor(_color.Vec4());
+    _sprite->SetColor(_color.to_Vector4());
 }
 
 void Bar3d::CurrentValueSpriteUpdate()

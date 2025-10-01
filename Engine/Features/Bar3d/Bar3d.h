@@ -11,8 +11,8 @@ class Bar3d
 public:
     Bar3d() = default;
     ~Bar3d() = default;
-
-    void Initialize(const Color& colorContext = 0xff0000ff, const Color& colorBG = 0x000000cc);
+  
+    void Initialize(const RGBA& colorContext = 0xff0000ff, const RGBA& colorBG = 0x000000cc);
     void Update();
     void Draw2d();
     void Display(float _sec);
@@ -49,7 +49,7 @@ private:
 
 
 private:
-    void InitializeSprite(std::unique_ptr<Sprite>& _sprite, const Color& _color);
+    void InitializeSprite(std::unique_ptr<Sprite>& _sprite, const RGBA& _color);
     void CurrentValueSpriteUpdate();
     void UpdateDisplayFlagByTimer();
 };
