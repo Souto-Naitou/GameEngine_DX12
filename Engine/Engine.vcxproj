@@ -302,8 +302,6 @@
     <ClCompile Include="Utility\String\strutl.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\..\..\CG\GameEngine_DX12\Engine\Features\Animation\AnimationTimeline.h" />
-    <ClInclude Include="..\..\..\..\..\CG\GameEngine_DX12\Engine\Features\Animation\AnimationTween.hpp" />
     <ClInclude Include="BaseClasses\ObjectSystemBaseMT.h" />
     <ClInclude Include="Common\define.h" />
     <ClInclude Include="Common\HRESULT_ASSERT.h" />
