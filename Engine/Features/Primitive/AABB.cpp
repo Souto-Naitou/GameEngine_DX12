@@ -11,7 +11,7 @@ void AABB::Initialize()
     lines.Initialize();
 }
 
-void AABB::Draw()
+void AABB::Update()
 {
     Vector3 vertices[8]
     {
@@ -62,6 +62,10 @@ void AABB::Draw()
     lines[23] = vertices[7];
 
     lines.Update();
+}
+
+void AABB::Draw()
+{
     lines.Draw();
 
     return;

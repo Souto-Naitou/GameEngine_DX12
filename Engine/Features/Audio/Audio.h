@@ -47,7 +47,7 @@ public:
     void Finalize();
 
     void Unload(SoundData* soundData);
-    void Play();
+    void Play(bool isLoop = false);
     void SetVolume(float volume);
     float GetVolume() const;
 
