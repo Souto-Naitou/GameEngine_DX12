@@ -10,7 +10,7 @@ void Skybox::Initialize(CubemapSystem* _cms)
     device_ = pDx12_->GetDevice();
     ppGlobalEye_ = pCubemapSystem_->GetGlobalEye();
 
-    RegisterDebugWindowS(name_, Skybox::_ImGui, false);
+    pDebugEntry_ = std::make_unique<DebugEntry<Skybox>>("Skybox", this, false);
 
     this->_CreateVertexResource();
     this->_CreateIndexResource();
@@ -20,7 +20,6 @@ void Skybox::Initialize(CubemapSystem* _cms)
 
 void Skybox::Finalize() const
 {
-    UnregisterDebugWindowS(name_);
 }
 
 void Skybox::Update()
@@ -162,7 +161,7 @@ void Skybox::_CreateMaterialResource()
     *mappedMaterial_ = Vector4(1.0f, 1.0f, 1.0f, 1.0f); // Default color
 }
 
-void Skybox::_ImGui()
+void Skybox::ImGui()
 {
     #ifdef _DEBUG
 

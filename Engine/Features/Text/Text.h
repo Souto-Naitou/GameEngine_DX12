@@ -77,7 +77,7 @@ private: /// 借り物
 
 
 private: /// デバッグ
-    void DebugWindow();
+    void ImGui();
     std::string                                 name_                       = {};
     const char*                                 anchors_[9]                 = { "TopLeft", "TopCenter", "TopRight", "CenterLeft", "Center", "CenterRight", "BottomLeft", "BottomCenter", "BottomRight" };
     int                                         callCount_UpdatePosition_   = 0;

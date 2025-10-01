@@ -35,7 +35,7 @@ public:
     void Draw();
     void OnResize();
     void OnResizedBuffers();
-    void DebugWindow();
+    void ImGui();
 
 
 public:

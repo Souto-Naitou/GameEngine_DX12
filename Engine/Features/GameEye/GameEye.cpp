@@ -19,7 +19,7 @@ GameEye::GameEye()
 {
     std::string* ptr = &name_; ptr;
 
-    RegisterDebugWindowC("GameEye", name_, GameEye::DebugWindow, false);
+    RegisterDebugWindowC("GameEye", name_, GameEye::ImGui, false);
     pRandomGenerator_ = RandomGenerator::GetInstance();
 }
 
@@ -51,7 +51,7 @@ void GameEye::_UpdateFovFromFocalLength()
     }
 }
 
-void GameEye::DebugWindow()
+void GameEye::ImGui()
 {
 #ifdef _DEBUG
 

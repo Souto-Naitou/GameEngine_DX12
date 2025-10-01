@@ -9,6 +9,8 @@
 #include <Features/Model/ModelData.h>
 #include <string>
 #include <DirectXTex/DirectXTex.h>
+#include <DebugTools/DebugEntry/DebugEntry.h>
+#include <memory>
 
 class SpriteSystem;
 
@@ -29,10 +31,10 @@ public:
     void                Update();
     void                Draw();
     void                Finalize();
+    void                ImGui();
 
 
 public: /// Getter
-    const std::string&  GetName()           const                   { return name_; }
     const bool          GetEnableUpdate()   const                   { return isUpdate_; }
     const bool          GetEnableDraw()     const                   { return isDraw_; }
     const float         GetRotation()       const                   { return rotate_; }
@@ -46,7 +48,7 @@ public: /// Getter
     const Vector2&      GetTextureSize()    const                   { return textureSize_; }
 
 public: /// Setter
-    void                SetName(const std::string& _name)           { name_ = _name; }
+    void                SetName(const std::string& name)            { pDebugEntry_->SetName(name); }
     void                SetEnableUpdate(const bool _isUpdate)       { isUpdate_ = _isUpdate; }
     void                SetEnableDraw(const bool _isDraw)           { isDraw_ = _isDraw; }
     void                SetRotation(const float _rotation)          { rotate_ = _rotation; }
@@ -68,7 +70,7 @@ private: /// 他クラスが所持するインスタンスへのポインタ
 
 
 private: /// メンバ変数
-    std::string                                 name_                           = "unnamed";            // 名前
+    std::unique_ptr<DebugEntry<Sprite>>         pDebugEntry_                    = nullptr;              // デバッグエントリ
     bool                                        isUpdate_                       = true;                 // 有効かどうか。falseにするとUpdateとDrawをスキップする
     bool                                        isDraw_                         = true;                 // 描画するかどうか。falseにするとDrawをスキップする
 
@@ -127,5 +129,4 @@ private: /// メンバ関数
     void CreateMaterialResource();
     void CreateTransformationMatrixResource();
     void AdjustSpriteSize();
-    void DebugWindow();
 };

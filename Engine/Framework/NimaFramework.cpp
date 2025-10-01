@@ -135,8 +135,8 @@ void NimaFramework::Initialize()
     NiGui::SetClientSize({WinSystem::clientWidth, WinSystem::clientHeight});
     
 
-    NiGui::SetConfirmSound(pAudioManager_->GetNewAudio("ui_confirm.wav"));
-    NiGui::SetHoverSound(pAudioManager_->GetNewAudio("ui_hover.wav"));
+    NiGui::SetConfirmSound(pAudioManager_->GetNewAudio("UI", "ui_confirm.wav"));
+    NiGui::SetHoverSound(pAudioManager_->GetNewAudio("UI", "ui_hover.wav"));
 
     /// Drawerの設定
     pDrawer_ = std::make_unique<NiGuiDrawer>();
@@ -286,13 +286,13 @@ void NimaFramework::Draw()
     pParticleManager_->Draw();
     pParticleSystem_->DrawCall();
 
-    /// 前景スプライトの描画
-    NiGui::DrawUI();
-    pSpriteSystem_->DrawCall();
-
     // シーンの描画 (テキスト以外)
     pSceneManager_->SceneDraw();
     pObject3dSystem_->DrawCall();
+
+    /// 前景スプライトの描画
+    NiGui::DrawUI();
+    pSpriteSystem_->DrawCall();
 
     // 同期待ち
     pObject3dSystem_->Sync();

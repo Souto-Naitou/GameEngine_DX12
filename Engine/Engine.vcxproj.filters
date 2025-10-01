@@ -337,6 +337,9 @@
     <Filter Include="Preset\Object3d\Grid">
       <UniqueIdentifier>{b301e74a-e41d-4a55-b4bc-e3567fa912d8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="DebugTools\DebugEntry">
+      <UniqueIdentifier>{758042fc-2bde-4ae2-8db7-ae2811523059}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Feature\Animation">
       <UniqueIdentifier>{732f7de8-8b75-4490-b201-385c775c22e4}</UniqueIdentifier>
     </Filter>
@@ -1045,6 +1048,9 @@
     </ClInclude>
     <ClInclude Include="Presets\Object3d\Grid\Preset_Grid.h">
       <Filter>Preset\Object3d\Grid</Filter>
+    </ClInclude>
+    <ClInclude Include="DebugTools\DebugEntry\DebugEntry.h">
+      <Filter>DebugTools\DebugEntry</Filter>
     </ClInclude>
     <ClInclude Include="Features\Animation\AnimationTimeline.h">
       <Filter>Feature\Animation</Filter>

@@ -84,9 +84,9 @@ void FreeLookEye::CatchRotateCommands()
     SetTransform(transform);
 }
 
-void FreeLookEye::DebugWindow()
+void FreeLookEye::ImGui()
 {
-    GameEye::DebugWindow();
+    GameEye::ImGui();
 
     static const std::list<std::pair<std::string, std::string>> controlExplainList = 
     {

@@ -30,7 +30,7 @@ void Sprite::Initialize(std::string _filepath)
     device_ = pDx12_->GetDevice();
 
     // デバッグウィンドウの登録
-    RegisterDebugWindowC("Sprite", name_, Sprite::DebugWindow, false);
+    pDebugEntry_ = std::make_unique<DebugEntry<Sprite>>("Sprite", "unnamed", this, false);
 
     /// Create BufferResource
     // 頂点リソースを作成する
@@ -159,8 +159,6 @@ void Sprite::Draw()
 
 void Sprite::Finalize()
 {
-    // デバッグウィンドウの解除
-    UnregisterDebugWindowC("Sprite", name_);
 }
 
 void Sprite::SetSizeMultiply(float _multiply)
@@ -265,7 +263,7 @@ void Sprite::AdjustSpriteSize()
     aspectRatio_ = size_.x / size_.y;
 }
 
-void Sprite::DebugWindow()
+void Sprite::ImGui()
 {
 #if defined _DEBUG
 

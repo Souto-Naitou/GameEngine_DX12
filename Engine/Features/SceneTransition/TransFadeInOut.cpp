@@ -19,7 +19,7 @@ void TransFadeInOut::Initialize(const std::string& _sceneName)
     sprite_->SetSize({ screenWidth_, screenHeight_ });
     timer_.Start();
     DebugManager::GetInstance()->SetComponent(
-        "Transition", name_, std::bind(&TransFadeInOut::DebugWindow, this));
+        "Transition", name_, std::bind(&TransFadeInOut::ImGui, this));
 
     name_ = "FadeInOut";
 }
@@ -67,7 +67,7 @@ void TransFadeInOut::Finalize()
     sprite_->Finalize();
 }
 
-void TransFadeInOut::DebugWindow()
+void TransFadeInOut::ImGui()
 {
 #ifdef _DEBUG
 

@@ -5,6 +5,8 @@
 #include <map>
 #include <list>
 #include <string>
+#include <unordered_map>
+#include <memory>
 
 class AudioManager
 {
@@ -33,7 +35,7 @@ public:
     void AddSearchPath(const std::string& _path);
 
     void AddSourceVoice(IXAudio2SourceVoice* _sv) { sourceVoices_.push_back(_sv); }
-    Audio* GetNewAudio(const std::string& _filename);
+    Audio* GetNewAudio(const std::string& category , const std::string& filename);
 
 
 private:
@@ -44,6 +46,8 @@ private:
     std::unique_ptr<PathResolver> pFilePathSearcher_ = nullptr;
 
     std::list<IXAudio2SourceVoice*> sourceVoices_;
+    // <カテゴリ, Audioリスト>
+    std::unordered_map<std::string, std::list<std::unique_ptr<Audio>>> audioMap_; // 音声ファイル名とAudioのリストのマップ
 
 private:
     AudioManager() = default;

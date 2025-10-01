@@ -9,7 +9,7 @@ Collider::Collider(bool _enableDebugWindow) : isEnableDebugWindow_(_enableDebugW
     hexID_ = utl::debug::generate_name_default(this);
     if (isEnableDebugWindow_)
     {
-        DebugManager::GetInstance()->SetComponent("Colliders", hexID_, std::bind(&Collider::DebugWindow, this));
+        DebugManager::GetInstance()->SetComponent("Colliders", hexID_, std::bind(&Collider::ImGui, this));
     }
 }
 
@@ -78,7 +78,7 @@ void Collider::OnCollisionTrigger(const Collider* _other)
     return;
 }
 
-void Collider::DebugWindow()
+void Collider::ImGui()
 {
 #ifdef _DEBUG
 

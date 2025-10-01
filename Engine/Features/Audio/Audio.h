@@ -39,6 +39,10 @@ struct SoundData
 class Audio
 {
 public:
+    Audio(IXAudio2* pXAudio2, SoundData* soundData): 
+        pXAudio2_(pXAudio2), 
+        soundData_(soundData) {}
+
     void Initialize();
     void Finalize();
 
@@ -47,15 +51,10 @@ public:
     void SetVolume(float volume);
     float GetVolume() const;
 
-
-public:
-    void SetSoundData(SoundData* _soundData) { soundData_ = _soundData; }
-    void SetXAudio2(IXAudio2* _pXAudio2) { pXAudio2_ = _pXAudio2; }
-
-
 private:
     HRESULT_ASSERT hr_ = {};
     SoundData* soundData_ = nullptr;
     IXAudio2* pXAudio2_ = nullptr;
     IXAudio2SourceVoice* pCurrentSourceVoice_ = nullptr;
+    float volume_ = 1.0f; // 音量（0.0f - 1.0f）
 };

@@ -326,6 +326,7 @@
     <ClInclude Include="Core\DirectX12\TextureResource\TextureResource.h" />
     <ClInclude Include="Core\Localization\LanguageData.h" />
     <ClInclude Include="Core\Win32\WinSystem.h" />
+    <ClInclude Include="DebugTools\DebugEntry\DebugEntry.h" />
     <ClInclude Include="DebugTools\DebugManager\DebugManager.h" />
     <ClInclude Include="DebugTools\EventTimer\EventTimer.h" />
     <ClInclude Include="DebugTools\ImGuiManager\ImGuiManager.h" />

@@ -16,7 +16,7 @@
 
 void CollisionManager::Initialize()
 {
-    DebugManager::GetInstance()->SetComponent("Common", name_, std::bind(&CollisionManager::DebugWindow, this), true);
+    DebugManager::GetInstance()->SetComponent("Common", name_, std::bind(&CollisionManager::ImGui, this), true);
 }
 
 void CollisionManager::Finalize()
@@ -90,7 +90,7 @@ uint32_t CollisionManager::GetNewAttribute(std::string _id)
     return attributeList_.back().second;
 }
 
-void CollisionManager::DebugWindow()
+void CollisionManager::ImGui()
 {
 #ifdef _DEBUG
 

@@ -13,6 +13,8 @@
 #include "./Type/ParticleType.h"
 #include "./Emitter/EmitterData.h"
 #include <Features/Model/IModel.h>
+#include <DebugTools/DebugEntry/DebugEntry.h>
+#include <memory>
 
 class Particle : public EngineFeature
 {
@@ -23,16 +25,16 @@ public:
     void Draw();
     void Update();
     void Finalize();
+    void ImGui();
 
 
 public: /// Setter
-    void SetName(const std::string& _name) { name_ = _name; }
+    void SetName(const std::string& name) { pDebugEntry_->SetName(name); }
     void SetEnableBillboard(bool _enable) { enableBillboard_ = _enable; }
     void SetGameEye(GameEye** _pGameEye) { pGameEye_ = _pGameEye; }
 
 
 public: /// Getter
-    const std::string& GetName() const { return name_; }
     bool GetEnableBillboard() const { return enableBillboard_; }
     auto& GetParticleData() { return particleData_; }
     bool IsAbleDelete() const { return particleData_.empty(); }
@@ -45,7 +47,7 @@ public: /// container operator
 
 private:
     /// Common
-    std::string                             name_                               = {};
+    std::unique_ptr<DebugEntry<Particle>>   pDebugEntry_                        = nullptr;
 
     /// GameEye
     GameEye**                               pGameEye_                           = nullptr;
@@ -87,7 +89,6 @@ private:
     void GetModelData();
     void InitializeTransform();
     void ParticleDataUpdate(std::vector<ParticleData>::iterator& _itr);
-    void DebugWindow();
     float EaseOutCubic(float t);
     float EaseOutQuad(float t);
     bool UpdateByCollisionFloor(Vector3& _position, Vector3& _velocity, const v3::CollisionFloor& _floor, float _radius);

@@ -42,7 +42,7 @@ void SceneManager::ReserveStartupScene()
 
 void SceneManager::Initialize()
 {
-    DebugManager::GetInstance()->SetComponent("Core", name_, std::bind(&SceneManager::DebugWindow, this), true);
+    DebugManager::GetInstance()->SetComponent("Core", name_, std::bind(&SceneManager::ImGui, this), true);
 
     pSceneArgs_ = std::make_unique<SceneArgs>();
 
@@ -73,6 +73,8 @@ void SceneManager::SceneDraw()
     {
         pCurrentScene_->Draw();
     }
+
+    pSceneTransitionManager_->Draw();
 }
 
 void SceneManager::SceneDrawText()
@@ -108,7 +110,7 @@ void SceneManager::ChangeScene()
     pCurrentScene_->Initialize();
 }
 
-void SceneManager::DebugWindow()
+void SceneManager::ImGui()
 {
 #ifdef _DEBUG
 

@@ -21,7 +21,7 @@ void ParticleEmitter::Initialize(IModel* _pModel, const std::string& _jsonPath)
 #ifdef _DEBUG
     ptrHex_ = utl::string::to_string(this);
     name_ = "unnamed##" + ptrHex_;
-    DebugManager::GetInstance()->SetComponent("ParticleEmitter", name_, std::bind(&ParticleEmitter::DebugWindow, this));
+    DebugManager::GetInstance()->SetComponent("ParticleEmitter", name_, std::bind(&ParticleEmitter::ImGui, this));
 #endif // _DEBUG
 
     winTools_ = WinTools::GetInstance();
@@ -232,7 +232,7 @@ Vector3 ParticleEmitter::RandomUnitSphere()
     return Vector3(x, y, z);
 }
 
-void ParticleEmitter::DebugWindow()
+void ParticleEmitter::ImGui()
 {
 #ifdef _DEBUG
 

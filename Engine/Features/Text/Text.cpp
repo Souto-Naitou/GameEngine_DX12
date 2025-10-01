@@ -17,7 +17,7 @@ void Text::Initialize()
     pViewport_ = pTextSystem_->GetViewport();
 
 #ifdef _DEBUG
-    RegisterDebugWindowC("Text", name_, Text::DebugWindow, false);
+    RegisterDebugWindowC("Text", name_, Text::ImGui, false);
 #endif // _DEBUG
 
     fontFamily_ = "Bahnschrift";
@@ -148,7 +148,7 @@ void Text::CreateTextLayout()
     return;
 }
 
-void Text::DebugWindow()
+void Text::ImGui()
 {
 #ifdef _DEBUG
 
