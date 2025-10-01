@@ -11,7 +11,7 @@ class Bar3d
 public:
     Bar3d() = default;
     ~Bar3d() = default;
-
+  
     void Initialize(const RGBA& colorContext = 0xff0000ff, const RGBA& colorBG = 0x000000cc);
     void Update();
     void Draw2d();
