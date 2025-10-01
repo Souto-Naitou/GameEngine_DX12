@@ -257,7 +257,7 @@ void CellBasedFiltering::Draw2dAllCells()
         (*cellGridLines_)[lineIdx++] = Vector3{ 0.0f, cellGridY_, static_cast<float>(iz * cellSize_) };
         (*cellGridLines_)[lineIdx++] = Vector3{ static_cast<float>(numCellsX_ * cellSize_), cellGridY_, static_cast<float>(iz * cellSize_) };
     }
-    cellGridLines_->SetColor(Color(0xffff00ff).Vec4());
+    cellGridLines_->SetColor(RGBA(0xffff00ff).to_Vector4());
     cellGridLines_->Update();
     cellGridLines_->Draw();
 }

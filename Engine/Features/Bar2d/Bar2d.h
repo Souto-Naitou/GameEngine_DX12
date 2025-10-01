@@ -38,9 +38,9 @@ private:
     static constexpr char PATH_BAR[] = "white.png";
     static constexpr char PATH_DECORATION[] = "white.png";
 
-    static const Color COLOR_BAR_NORMAL;
-    static const Color COLOR_BAR_LOW;
-    static const Color COLOR_BAR_BG;
+    static const RGBA COLOR_BAR_NORMAL;
+    static const RGBA COLOR_BAR_LOW;
+    static const RGBA COLOR_BAR_BG;
 
     static const Vector2 SPACING_HEAD_TO_DECO;
     Vector2 barSize_ = { 100.0f , 10.0f };
