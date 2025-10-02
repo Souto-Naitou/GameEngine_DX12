@@ -1,12 +1,12 @@
-[submodule "Engine/Externals/VectorMatrix"]
-	path = Engine/Externals/VectorMatrix
-	url = https://github.com/Souto-Naitou/VectorMatrix.git
 [submodule "Engine/Externals/Easing_ImGui"]
 	path = Engine/Externals/Easing_ImGui
 	url = https://github.com/Souto-Naitou/Easing_ImGui.git
-[submodule "Engine/Externals/NiGui"]
-	path = Engine/Externals/NiGui
+[submodule "modules/nigui"]
+	path = modules/nigui
 	url = https://github.com/Souto-Naitou/NiGui.git
-[submodule "Engine/Externals/googletest"]
-	path = Engine/Externals/googletest
+[submodule "modules/vectormatrix"]
+	path = modules/vectormatrix
+	url = https://github.com/Souto-Naitou/VectorMatrix.git
+[submodule "externals/googletest"]
+	path = externals/googletest
 	url = https://github.com/google/googletest.git
