@@ -4,7 +4,7 @@ on:
     branches:
       - main
 env:
-  SOLUTION_FILE_PATH: src/GameEngine_DX12.sln
+  SOLUTION_FILE_PATH: src/NimaEngine.sln
   CONFIGURATION: Debug
 
 jobs:
