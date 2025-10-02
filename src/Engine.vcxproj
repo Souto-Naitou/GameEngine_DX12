@@ -54,7 +54,6 @@
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug_ASAN|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\ASAN.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
@@ -64,19 +63,19 @@
     <IncludePath>$(ProjectDir)Externals\VectorMatrix\Math\;$(ProjectDir)Externals\;$(IncludePath)</IncludePath>
     <OutDir>$(ProjectDir)bin\$(Configuration)\</OutDir>
     <IntDir>$(ProjectDir)bin\$(Configuration)\Int\$(ProjectName)\</IntDir>
-    <PublicIncludeDirectories>$(ProjectDir);</PublicIncludeDirectories>
+    <PublicIncludeDirectories>$(ProjectDir);$(ProjectDir)../externals;$(ProjectDir)../modules</PublicIncludeDirectories>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_ASAN|x64'">
     <IncludePath>$(ProjectDir)Externals\VectorMatrix\Math\;$(ProjectDir)Externals\;$(IncludePath)</IncludePath>
     <OutDir>$(ProjectDir)bin\$(Configuration)\</OutDir>
     <IntDir>$(ProjectDir)bin\$(Configuration)\Int\$(ProjectName)\</IntDir>
-    <PublicIncludeDirectories>$(ProjectDir);</PublicIncludeDirectories>
+    <PublicIncludeDirectories>$(ProjectDir);$(ProjectDir)../externals;$(ProjectDir)../modules</PublicIncludeDirectories>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>$(ProjectDir)Externals\VectorMatrix\Math\;$(ProjectDir)Externals\;$(IncludePath)</IncludePath>
     <OutDir>$(ProjectDir)bin\$(Configuration)\</OutDir>
     <IntDir>$(ProjectDir)bin\$(Configuration)\Int\$(ProjectName)\</IntDir>
-    <PublicIncludeDirectories>$(ProjectDir);</PublicIncludeDirectories>
+    <PublicIncludeDirectories>$(ProjectDir);$(ProjectDir)../externals;$(ProjectDir)../modules</PublicIncludeDirectories>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
