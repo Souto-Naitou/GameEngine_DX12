@@ -16,8 +16,8 @@
   </ItemGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <PublicIncludeDirectories>$(MSBuildProjectDirectory);$(PublicIncludeDirectories)</PublicIncludeDirectories>
-    <OutDir>$(MSBuildProjectDirectory)\Bin\$(Configuration)\</OutDir>
-    <IntDir>$(MSBuildProjectDirectory)\Bin\$(Configuration)\Intermediate\</IntDir>
+    <OutDir>$(MSBuildProjectDirectory)\bin\$(Configuration)\</OutDir>
+    <IntDir>$(MSBuildProjectDirectory)\bin\$(Configuration)\Intermediate\</IntDir>
     <TargetName>$(ProjectName)</TargetName>
     <CopyLocalDeploymentContent>false</CopyLocalDeploymentContent>
     <CopyLocalProjectReference>false</CopyLocalProjectReference>
@@ -27,8 +27,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <PublicIncludeDirectories>$(MSBuildProjectDirectory);$(PublicIncludeDirectories)</PublicIncludeDirectories>
-    <OutDir>$(MSBuildProjectDirectory)\Bin\$(Configuration)\</OutDir>
-    <IntDir>$(MSBuildProjectDirectory)\Bin\$(Configuration)\Intermediate\</IntDir>
+    <OutDir>$(MSBuildProjectDirectory)\bin\$(Configuration)\</OutDir>
+    <IntDir>$(MSBuildProjectDirectory)\bin\$(Configuration)\Intermediate\</IntDir>
     <TargetName>$(ProjectName)</TargetName>
     <CopyLocalDeploymentContent>false</CopyLocalDeploymentContent>
     <CopyLocalProjectReference>false</CopyLocalProjectReference>
@@ -38,8 +38,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_ASAN|x64'">
     <PublicIncludeDirectories>$(MSBuildProjectDirectory);$(PublicIncludeDirectories)</PublicIncludeDirectories>
-    <OutDir>$(MSBuildProjectDirectory)\Bin\$(Configuration)\</OutDir>
-    <IntDir>$(MSBuildProjectDirectory)\Bin\$(Configuration)\Intermediate\</IntDir>
+    <OutDir>$(MSBuildProjectDirectory)\bin\$(Configuration)\</OutDir>
+    <IntDir>$(MSBuildProjectDirectory)\bin\$(Configuration)\Intermediate\</IntDir>
     <TargetName>$(ProjectName)</TargetName>
     <CopyLocalDeploymentContent>false</CopyLocalDeploymentContent>
     <CopyLocalProjectReference>false</CopyLocalProjectReference>

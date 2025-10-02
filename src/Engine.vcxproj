@@ -62,20 +62,20 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>$(ProjectDir)Externals\VectorMatrix\Math\;$(ProjectDir)Externals\;$(IncludePath)</IncludePath>
-    <OutDir>$(ProjectDir)Bin\$(Configuration)\</OutDir>
-    <IntDir>$(ProjectDir)Bin\$(Configuration)\Int\$(ProjectName)\</IntDir>
+    <OutDir>$(ProjectDir)bin\$(Configuration)\</OutDir>
+    <IntDir>$(ProjectDir)bin\$(Configuration)\Int\$(ProjectName)\</IntDir>
     <PublicIncludeDirectories>$(ProjectDir);$(ProjectDir)Externals\</PublicIncludeDirectories>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_ASAN|x64'">
     <IncludePath>$(ProjectDir)Externals\VectorMatrix\Math\;$(ProjectDir)Externals\;$(IncludePath)</IncludePath>
-    <OutDir>$(ProjectDir)Bin\$(Configuration)\</OutDir>
-    <IntDir>$(ProjectDir)Bin\$(Configuration)\Int\$(ProjectName)\</IntDir>
+    <OutDir>$(ProjectDir)bin\$(Configuration)\</OutDir>
+    <IntDir>$(ProjectDir)bin\$(Configuration)\Int\$(ProjectName)\</IntDir>
     <PublicIncludeDirectories>$(ProjectDir);$(ProjectDir)Externals\</PublicIncludeDirectories>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>$(ProjectDir)Externals\VectorMatrix\Math\;$(ProjectDir)Externals\;$(IncludePath)</IncludePath>
-    <OutDir>$(ProjectDir)Bin\$(Configuration)\</OutDir>
-    <IntDir>$(ProjectDir)Bin\$(Configuration)\Int\$(ProjectName)\</IntDir>
+    <OutDir>$(ProjectDir)bin\$(Configuration)\</OutDir>
+    <IntDir>$(ProjectDir)bin\$(Configuration)\Int\$(ProjectName)\</IntDir>
     <PublicIncludeDirectories>$(ProjectDir);$(ProjectDir)Externals\</PublicIncludeDirectories>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
