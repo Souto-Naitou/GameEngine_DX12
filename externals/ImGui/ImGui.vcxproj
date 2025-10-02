@@ -33,6 +33,11 @@
     <ClCompile Include="imgui_tables.cpp" />
     <ClCompile Include="imgui_widgets.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\modules\vectormatrix\Project\VecMat.vcxproj">
+      <Project>{a87ad77f-cc08-4788-8630-68470354fcd3}</Project>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
