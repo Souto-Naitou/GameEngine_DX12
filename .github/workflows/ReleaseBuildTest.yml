@@ -1,7 +1,7 @@
 name: ReleaseBuild
 on: [pull_request]
 env:
-  SOLUTION_FILE_PATH: Engine/GameEngine_DX12.sln
+  SOLUTION_FILE_PATH: src/GameEngine_DX12.sln
   CONFIGURATION: Release
 
 jobs:
