@@ -87,22 +87,22 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>$(ProjectDir)..\math\;$(IncludePath)</IncludePath>
-    <OutDir>$(ProjectDir)..\Bin\$(Configuration)\</OutDir>
-    <IntDir>$(ProjectDir)..\Bin\$(Configuration)\Int\</IntDir>
+    <OutDir>$(ProjectDir)..\bin\$(Configuration)\</OutDir>
+    <IntDir>$(ProjectDir)..\bin\$(Configuration)\Int\</IntDir>
     <PublicIncludeDirectories>$(ProjectDir)..\math\;$(PublicIncludeDirectories)</PublicIncludeDirectories>
     <AllProjectIncludesArePublic>true</AllProjectIncludesArePublic>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_ASAN|x64'">
     <IncludePath>$(ProjectDir)..\math\;$(IncludePath)</IncludePath>
-    <OutDir>$(ProjectDir)..\Bin\$(Configuration)\</OutDir>
-    <IntDir>$(ProjectDir)..\Bin\$(Configuration)\Int\</IntDir>
+    <OutDir>$(ProjectDir)..\bin\$(Configuration)\</OutDir>
+    <IntDir>$(ProjectDir)..\bin\$(Configuration)\Int\</IntDir>
     <PublicIncludeDirectories>$(ProjectDir)..\math\;$(PublicIncludeDirectories)</PublicIncludeDirectories>
     <AllProjectIncludesArePublic>true</AllProjectIncludesArePublic>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>$(ProjectDir)..\math\;$(IncludePath)</IncludePath>
-    <OutDir>$(ProjectDir)..\Bin\$(Configuration)\</OutDir>
-    <IntDir>$(ProjectDir)..\Bin\$(Configuration)\Int\</IntDir>
+    <OutDir>$(ProjectDir)..\bin\$(Configuration)\</OutDir>
+    <IntDir>$(ProjectDir)..\bin\$(Configuration)\Int\</IntDir>
     <PublicIncludeDirectories>$(ProjectDir)..\math\;$(PublicIncludeDirectories)</PublicIncludeDirectories>
     <AllProjectIncludesArePublic>true</AllProjectIncludesArePublic>
   </PropertyGroup>
