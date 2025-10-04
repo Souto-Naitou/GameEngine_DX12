@@ -1,8 +1,6 @@
 #include "Text.h"
 #include <Utility/ConvertString/ConvertString.h>
 #include <cassert>
-
-#include <DebugTools/DebugManager/DebugManager.h>
 #include <imgui.h>
 
 #ifdef _DEBUG
@@ -17,7 +15,7 @@ void Text::Initialize()
     pViewport_ = pTextSystem_->GetViewport();
 
 #ifdef _DEBUG
-    RegisterDebugWindowC("Text", name_, Text::ImGui, false);
+    pDebugEntry_ = std::make_unique<DebugEntry<Text>>("Text", utl::debug::generate_name_default(this), this, false);
 #endif // _DEBUG
 
     fontFamily_ = "Bahnschrift";
@@ -59,9 +57,6 @@ void Text::Draw()
 
 void Text::Finalize()
 {
-#ifdef _DEBUG
-    UnregisterDebugWindowC("Text", name_);
-#endif // _DEBUG
 }
 
 void Text::SetText(const std::string& _text)

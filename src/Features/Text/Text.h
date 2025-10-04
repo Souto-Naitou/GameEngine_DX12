@@ -1,8 +1,10 @@
 #pragma once
 
 #include <Core/DirectX12/DirectX12.h>
+#include <DebugTools/DebugEntry/DebugEntry.h>
 
 #include "TextSystem.h"
+#include <memory>
 
 enum class TextStandardPoint : int
 {
@@ -27,13 +29,14 @@ public:
     void Update();
     void Draw();
     void Finalize();
+    void ImGui();
 
 public: /// Getter
     Vector2 GetSize() const { return { metrics_.width, metrics_.height }; }
 
 
 public: /// Setter
-    void SetName(const std::string& _name) { name_ = _name; }
+    void SetName(const std::string& name) { pDebugEntry_->SetName(name); }
     void SetText(const std::string& _text);
     void SetAnchorPoint(TextStandardPoint _anchor) { anchorPoint_ = _anchor; UpdatePosition(); }
     void SetPivot(TextStandardPoint _pivot) { pivot_ = _pivot; UpdatePosition(); }
@@ -69,6 +72,8 @@ private: /// メンバー
     Microsoft::WRL::ComPtr<IDWriteTextLayout>   textLayout_                 = nullptr;
     DWRITE_TEXT_METRICS                         metrics_                    = {};
 
+    std::unique_ptr<DebugEntry<Text>>           pDebugEntry_                = nullptr;
+
 private: /// 借り物
     IDWriteFactory7*                            dwriteFactory_              = nullptr;
     TextSystem*                                 pTextSystem_                = nullptr;
@@ -77,8 +82,6 @@ private: /// 借り物
 
 
 private: /// デバッグ
-    void ImGui();
-    std::string                                 name_                       = {};
     const char*                                 anchors_[9]                 = { "TopLeft", "TopCenter", "TopRight", "CenterLeft", "Center", "CenterRight", "BottomLeft", "BottomCenter", "BottomRight" };
     int                                         callCount_UpdatePosition_   = 0;
 
