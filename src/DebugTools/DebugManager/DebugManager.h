@@ -2,7 +2,6 @@
 
 #include <Core/Localization/LanguageData.h>
 #include <Core/DirectX12/DirectX12.h>
-#include <Features/Text/Text.h>
 #include <Features/TimeMeasurer/TimeMeasurer.h>
 
 #include <functional>

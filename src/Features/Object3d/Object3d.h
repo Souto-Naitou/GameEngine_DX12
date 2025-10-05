@@ -73,7 +73,7 @@ public: /// Setter
     void SetRotate(const Vector3& _rotate)                      { option_.transform.rotate = _rotate; }
     void SetTranslate(const Vector3& _translate)                { option_.transform.translate = _translate; }
     void SetGameEye(GameEye* _pGameEye)                         { pGameEye_ = _pGameEye; }
-    void SetName(const std::string& name)                       { pDebugEntry_->SetName(name); }
+    void SetName(const std::string& name)                       { if(pDebugEntry_) pDebugEntry_->SetName(name); }
     void SetDirectionalLight(DirectionalLight* _light)          { directionalLight_ = _light; }
     void SetPointLight(PointLight* _light)                      { pointLight_ = _light; }
     void SetModel(IModel* _pModel)                              { pModel_ = _pModel; }

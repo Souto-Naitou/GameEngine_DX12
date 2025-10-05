@@ -45,11 +45,13 @@ public:
         {
             ImGui::Indent(15.0f);
 
+            if (ImGui::Button("Play")) this->Start();
+
             uint32_t index = 0;
             for (auto& tween : tweens_)
             {
                 tween.ImGui("Tween " + std::to_string(index));
-                index++;
+                ++index;
             }
 
             ImGui::Unindent(15.0f);

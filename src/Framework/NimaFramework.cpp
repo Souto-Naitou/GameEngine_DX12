@@ -26,8 +26,6 @@ void NimaFramework::Run()
     }
 
     Finalize();
-
-    return;
 }
 
 void NimaFramework::Initialize()
@@ -69,7 +67,7 @@ void NimaFramework::Initialize()
     pWinSystem_->ShowWnd();
 
     /// DirectX12の初期化
-    pDirectX_->Initialize();
+    if (pWinSystem_->IsResized()) pDirectX_->Initialize();
 
     /// SRVManagerの初期化
     pSRVManager_->Initialize(pDirectX_.get());

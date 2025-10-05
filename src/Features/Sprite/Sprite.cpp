@@ -11,6 +11,7 @@
 #include <imgui.h>
 #endif // _DEBUG
 #include <Core/Win32/WinSystem.h>
+#include <cmath>
 
 Sprite::Sprite()
 {
@@ -74,11 +75,14 @@ void Sprite::Initialize(std::string _filepath)
 
 void Sprite::Update()
 {
-    if (!isUpdate_) return;
+    if (!isUpdateEnabled_) return;
+    #ifdef _DEBUG
+    isUpdateCalled_ = true;
+    #endif // _DEBUG
+
     uint32_t clientWidth = WinSystem::clientWidth;
     uint32_t clientHeight = WinSystem::clientHeight;
     const DirectX::TexMetadata& metadata = TextureManager::GetInstance()->GetMetaData(texturePath_);
-
 
     // 左下
     vertexData_[0].normal = { 0.0f, 0.0f, -1.0f };
@@ -95,13 +99,13 @@ void Sprite::Update()
     float top       = 0.0f - anchorPoint_.y;
     float bottom    = 1.0f - anchorPoint_.y;
 
-    if (isFlipX)
+    if (isFlipX_)
     {
         left = -left;
         right = -right;
     }
 
-    if (isFlipY)
+    if (isFlipY_)
     {
         top = -top;
         bottom = -bottom;
@@ -137,17 +141,17 @@ void Sprite::Update()
 
 
     /// UVTransformMatrixの更新 (まだ使えない)
-    uvTransformMatrix_ = Matrix4x4::ScaleMatrix(uvTransform_.scale);
-    uvTransformMatrix_ *= Matrix4x4::RotateZMatrix(uvTransform_.rotate.z);
-    uvTransformMatrix_ *= Matrix4x4::TranslateMatrix(uvTransform_.translate);
+    //uvTransformMatrix_ = Matrix4x4::ScaleMatrix(uvTransform_.scale);
+    //uvTransformMatrix_ *= Matrix4x4::RotateZMatrix(uvTransform_.rotate.z);
+    //uvTransformMatrix_ *= Matrix4x4::TranslateMatrix(uvTransform_.translate);
 }
 
 
 void Sprite::Draw()
 {
-    if (!isDraw_) return;
+    if (!isDrawEnabled_) return;
 
-    SpriteSystem::CommandListData data;
+    SpriteSystem::CommandListData data{};
     data.materialResource = materialResource_.Get();
     data.transformationMatrixResource = transformationMatrixResource_.Get();
     data.srvHandleGPU = textureSrvHandleGPU_;
@@ -161,12 +165,12 @@ void Sprite::Finalize()
 {
 }
 
-void Sprite::SetSizeMultiply(float _multiply)
+void Sprite::SetSizeWithFactor(float factor)
 {
     size_ = Vector2(
         static_cast<float>(metadata_.width), 
         static_cast<float>(metadata_.height)
-    ) * _multiply;
+    ) * factor;
 }
 
 /// 頂点リソースを作成する
@@ -252,8 +256,8 @@ void Sprite::AdjustSpriteSize()
     metadata_ = TextureManager::GetInstance()->GetMetaData(texturePath_);
 
     // テクスチャのサイズを取得
-    float textureWidth = static_cast<float>(metadata_.width);
-    float textureHeight = static_cast<float>(metadata_.height);
+    auto textureWidth = static_cast<float>(metadata_.width);
+    auto textureHeight = static_cast<float>(metadata_.height);
 
     // サイズを調整
     size_ = Vector2(textureWidth, textureHeight);
@@ -275,9 +279,19 @@ void Sprite::ImGui()
     ImGui::Image(static_cast<ImTextureID>(textureSrvHandleGPU_.ptr), ImVec2(thumbnailSize_.x, thumbnailSize_.y));
     ImGui::EndChild();
 
-    ImGui::Checkbox("Update", &isUpdate_);
+    ImGui::Checkbox("Update", &isUpdateEnabled_);
     ImGui::SameLine();
-    ImGui::Checkbox("Draw2D", &isDraw_);
+    ImGui::Checkbox("Draw2D", &isDrawEnabled_);
+
+    // FIX: 複数インスタンスがImGui()を呼び出すとtの値が加速する
+    static float t = 1.0f;
+    if (!isUpdateCalled_)
+    {
+        ImGui::SameLine();
+        float opacity = (std::sinf(t) + 1.0f) / 2.0f;
+        ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, opacity), "Update is not called!");
+        t += 0.04f;
+    }
 
     ImGui::SeparatorText("Transform");
     ImGui::DragFloat2("Size", &size_.x, 0.1f);
@@ -286,8 +300,9 @@ void Sprite::ImGui()
 
     ImGui::SeparatorText("Option");
     ImGui::DragFloat2("AnchorPoint", &anchorPoint_.x, 0.1f);
-    ImGui::Checkbox("FlipX", &isFlipX);
-    ImGui::Checkbox("FlipY", &isFlipY);
+    ImGui::Checkbox("FlipX", &isFlipX_);
+    ImGui::Checkbox("FlipY", &isFlipY_);
 
+    isUpdateCalled_ = false;
 #endif // _DEBUG && DEBUG_ENGINE
 }
