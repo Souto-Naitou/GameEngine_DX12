@@ -81,6 +81,7 @@ private: /// メンバ変数
     Vector2                                     anchorPoint_                    = {};                   // アンカーポイント
     bool                                        isFlipX_                        = false;                // X軸反転
     bool                                        isFlipY_                        = false;                // Y軸反転
+    float                                       aspectRatio_                    = 0.0f;                 // アスペクト比
 
     Vector2                                     textureLeftTop_                 = {};                   // テクスチャの左上uv
     Vector2                                     textureSize_                    = {};                   // テクスチャのuv範囲
@@ -117,7 +118,6 @@ private: /// メンバ変数
 
     /// ImGui用
     #ifdef _DEBUG
-    float                                       aspectRatio_                    = 0.0f;                 // アスペクト比
     Vector2                                     thumbnailSize_                  = { 100.0f, 100.0f };   // サムネイルサイズ
     bool                                        isUpdateCalled_                 = false;                // 更新処理が呼ばれたかどうか
     #endif

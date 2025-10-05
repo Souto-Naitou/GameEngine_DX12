@@ -36,7 +36,7 @@ public: /// Getter
 
 
 public: /// Setter
-    void SetName(const std::string& name) { pDebugEntry_->SetName(name); }
+    void SetName(const std::string& name) { if(pDebugEntry_) pDebugEntry_->SetName(name); }
     void SetText(const std::string& _text);
     void SetAnchorPoint(TextStandardPoint _anchor) { anchorPoint_ = _anchor; UpdatePosition(); }
     void SetPivot(TextStandardPoint _pivot) { pivot_ = _pivot; UpdatePosition(); }
