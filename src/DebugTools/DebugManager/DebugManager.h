@@ -107,7 +107,6 @@ private:
 
 
 private: /// Windows
-    void Window_Common();
     void Window_ObjectList();
     void Window_DebugInfo();
     void Window_Inspector();

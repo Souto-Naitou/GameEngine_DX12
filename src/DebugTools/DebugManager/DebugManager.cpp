@@ -29,11 +29,6 @@ DebugManager::~DebugManager()
 
 }
 
-void DebugManager::Window_Common()
-{
-
-}
-
 void DebugManager::OverlayFPS() const
 {
     #ifdef _DEBUG
@@ -166,6 +161,8 @@ void DebugManager::Window_DebugInfo()
 
 void DebugManager::Window_Inspector()
 {
+    #ifdef _DEBUG
+
     // 登録されていないなら早期リターン
     if (componentList_.size() == 0) return;
 
@@ -213,6 +210,8 @@ void DebugManager::Window_Inspector()
     }
     ImGui::EndTabBar();
     ImGui::End();
+
+    #endif // _DEBUG
 }
 
 void DebugManager::SetComponent(const std::string& _name, const std::function<void(void)>& _component, bool isWindowMode)
@@ -358,6 +357,7 @@ void DebugManager::DrawUI()
 void DebugManager::ChangeFont()
 {
     #ifdef _DEBUG
+
     ImGuiIO& io = ImGui::GetIO();
 
     ImFontConfig fontcfg;
@@ -379,6 +379,7 @@ void DebugManager::ChangeFont()
 
     io.Fonts->Build();
     ImGui_ImplDX12_CreateDeviceObjects();
+
     #endif // _DEBUG
 }
 
