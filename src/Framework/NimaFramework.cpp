@@ -255,7 +255,14 @@ void NimaFramework::Update()
     pDebugManager_->Update();
     pDebugManager_->DrawUI();
     pViewport_->DrawWindow();
-    pLogger_->DrawUI();
+
+    #ifdef _DEBUG
+    if (pDebugManager_->IsDisplay())
+    {
+        pLogger_->DrawUI();
+        NiGui::DrawDebug();
+    }
+    #endif // _DEBUG
 
     /// シーン更新
     pSceneManager_->Update();
@@ -264,11 +271,6 @@ void NimaFramework::Update()
     /// イベント計測終了
     #ifdef _DEBUG
     pEventTimer_->EndEvent("Update");
-    #endif // _DEBUG
-
-
-    #ifdef _DEBUG
-    NiGui::DrawDebug();
     #endif // _DEBUG
 
     /// パーティクル更新
@@ -314,7 +316,8 @@ void NimaFramework::Draw()
     /// イベント計測終了と出力
     pEventTimer_->EndEvent("Draw");
     pEventTimer_->EndFrame();
-    pEventTimer_->ImGui();
+
+    if (pDebugManager_->IsDisplay()) pEventTimer_->ImGui();
 
     /// ImGuiの描画
     #ifdef _DEBUG
