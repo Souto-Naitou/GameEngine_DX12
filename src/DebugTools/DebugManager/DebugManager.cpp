@@ -21,14 +21,10 @@ void DebugManager::PushLog(const std::string& _log)
 
 DebugManager::DebugManager()
 {
+    pInput_ = Input::GetInstance();
 }
 
 DebugManager::~DebugManager()
-{
-
-}
-
-void DebugManager::Window_Common()
 {
 
 }
@@ -163,6 +159,61 @@ void DebugManager::Window_DebugInfo()
     #endif // _DEBUG
 }
 
+void DebugManager::Window_Inspector()
+{
+    #ifdef _DEBUG
+
+    // 登録されていないなら早期リターン
+    if (componentList_.size() == 0) return;
+
+    ImGui::Begin(lang_dm_.window_debug.c_str());
+
+    ImGuiTabBarFlags tabFlag = {};
+    tabFlag |= ImGuiTabBarFlags_Reorderable;
+    tabFlag |= ImGuiTabBarFlags_FittingPolicyResizeDown;
+    tabFlag |= ImGuiTabBarFlags_TabListPopupButton;
+
+    ImGui::BeginTabBar("## TABBAR", tabFlag);
+    for (auto& component : componentList_)
+    {
+        bool isCategorized = component.categoryId.has_value();
+        std::string id = component.id_ptr ? *component.id_ptr : component.id_cpy;
+        std::string parentID = isCategorized ? component.categoryId.value() : lang_common_.uncategorized;
+
+        if (component.isEnabled)
+        {
+            std::string tabName;
+            if (isCategorized == false) tabName = id;
+            else tabName = id + " - " + parentID;
+
+            std::string id_str = tabName + "TABITEM";
+            ImGui::PushID(id_str.c_str());
+            {
+                // ウィンドウモード
+                if (component.isWindow && ImGui::Begin(id.c_str(), &component.isEnabled))
+                {
+                    component.function();
+                    ImGui::End();
+                }
+                // デフォルトモード
+                else if (ImGui::BeginTabItem(tabName.c_str(), &component.isEnabled))
+                {
+                    ImGui::Text((lang_common_.category + ": %s").c_str(), parentID.c_str());
+                    ImGui::TextDisabled((lang_common_.name + ": %s").c_str(), id.c_str());
+                    ImGui::Separator();
+                    component.function();
+                    ImGui::EndTabItem();
+                }
+            }
+            ImGui::PopID();
+        }
+    }
+    ImGui::EndTabBar();
+    ImGui::End();
+
+    #endif // _DEBUG
+}
+
 void DebugManager::SetComponent(const std::string& _name, const std::function<void(void)>& _component, bool isWindowMode)
 {
     ComponentData data = {};
@@ -274,6 +325,11 @@ void DebugManager::DeleteComponent(const std::string& _category, const std::stri
 
 void DebugManager::Update()
 {
+    if (pInput_->TriggerKey(DIK_F3))
+    {
+        isDisplay_ = !isDisplay_;
+    }
+
     MeasureFrameTime();
     MeasureFPS();
 }
@@ -282,76 +338,26 @@ void DebugManager::DrawUI()
 {
     #ifdef _DEBUG
 
-    if (!onDisplay_) return;
-
     ShowDockSpace();
 
-    DebugInfoBar();
-
-    Window_DebugInfo();
-
-    // 登録されていないなら早期リターン
-    if (componentList_.size() == 0) return;
-
-    ImGui::PushID("DEBUG_MANAGER");
-
-    Window_ObjectList();
-
-    // デバッグウィンドウ描画
-    ImGui::Begin(lang_dm_.window_debug.c_str());
-
-    ImGuiTabBarFlags tabFlag = {};
-    tabFlag |= ImGuiTabBarFlags_Reorderable;
-    tabFlag |= ImGuiTabBarFlags_FittingPolicyResizeDown;
-    tabFlag |= ImGuiTabBarFlags_TabListPopupButton;
-
-    ImGui::BeginTabBar("## TABBAR", tabFlag);
-    for (auto& component : componentList_)
+    if (isDisplay_)
     {
-        bool isCategorized = component.categoryId.has_value();
-        std::string id = component.id_ptr ? *component.id_ptr : component.id_cpy;
-        std::string parentID = isCategorized ? component.categoryId.value() : lang_common_.uncategorized;
+        DebugInfoBar();
 
-        if (component.isEnabled)
-        {
-            std::string tabName;
-            if (isCategorized == false) tabName = id;
-            else tabName = id + " - " + parentID;
+        Window_DebugInfo();
 
-            std::string id_str = tabName + "TABITEM";
-            ImGui::PushID(id_str.c_str());
-            {
-                // ウィンドウモード
-                if (component.isWindow && ImGui::Begin(id.c_str(), &component.isEnabled))
-                {
-                    component.function();
-                    ImGui::End();
-                }
-                // デフォルトモード
-                else if (ImGui::BeginTabItem(tabName.c_str(), &component.isEnabled))
-                {
-                    ImGui::Text((lang_common_.category + ": %s").c_str(), parentID.c_str());
-                    ImGui::TextDisabled((lang_common_.name + ": %s").c_str(), id.c_str());
-                    ImGui::Separator();
-                    component.function();
-                    ImGui::EndTabItem();
-                }
-            }
-            ImGui::PopID();
-        }
+        Window_ObjectList();
+
+        Window_Inspector();
     }
-    ImGui::EndTabBar();
 
-
-    ImGui::End();
-
-    ImGui::PopID();
     #endif // _DEBUG
 }
 
 void DebugManager::ChangeFont()
 {
     #ifdef _DEBUG
+
     ImGuiIO& io = ImGui::GetIO();
 
     ImFontConfig fontcfg;
@@ -373,6 +379,7 @@ void DebugManager::ChangeFont()
 
     io.Fonts->Build();
     ImGui_ImplDX12_CreateDeviceObjects();
+
     #endif // _DEBUG
 }
 
@@ -388,29 +395,6 @@ void DebugManager::ShowDockSpace()
     auto vp = ImGui::GetMainViewport();
 
     ImGui::DockSpaceOverViewport(ImGui::GetID("Inspector"), vp, ImGuiDockNodeFlags_PassthruCentralNode);
-
-    #endif // _DEBUG
-}
-
-void DebugManager::Window_GameScreen()
-{
-    #ifdef _DEBUG
-
-    uint32_t srvIndex = pDx12_->GetGameWndSRVIndex();
-    auto gpuHnd = SRVManager::GetInstance()->GetGPUDescriptorHandle(srvIndex);
-
-    auto vp = pDx12_->GetViewport();
-
-    uint32_t width = static_cast<uint32_t>(vp.Width);
-    uint32_t height = static_cast<uint32_t>(vp.Height);
-
-    ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
-    ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0, 0, 0, 0));
-    ImGui::Begin("GameWindow", nullptr, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoBringToFrontOnFocus);
-    ImGui::Image((ImTextureID)gpuHnd.ptr, ImVec2(static_cast<float>(width), static_cast<float>(height)));
-    ImGui::End();
-    ImGui::PopStyleVar();
-    ImGui::PopStyleColor();
 
     #endif // _DEBUG
 }

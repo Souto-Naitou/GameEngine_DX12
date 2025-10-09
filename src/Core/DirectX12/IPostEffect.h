@@ -41,6 +41,7 @@ class DirectX12;
 namespace Helper::PostEffect
 {
     template <typename T>
+    [[nodiscard]]
     inline std::unique_ptr<T> CreatePostEffect(DirectX12* _pDx12)
     {
         auto pEffect = std::make_unique<T>();

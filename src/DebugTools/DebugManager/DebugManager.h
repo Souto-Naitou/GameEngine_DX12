@@ -9,6 +9,7 @@
 #include <string>
 #include <array>
 #include <optional>
+#include <Features/Input/Input.h>
 
 #ifdef _DEBUG
 #define RegisterDebugWindowC(category, name, func, windowMode)      DebugManager::GetInstance()->SetComponent(category, name, std::bind(&func, this), windowMode)
@@ -60,8 +61,8 @@ public:
     void    Update();
     void    DrawUI();
     void    ChangeFont();
-    void    SetDisplay(bool _isEnable) { onDisplay_ = _isEnable; }
-    bool    GetDisplay() const { return onDisplay_; }
+    void    SetDisplay(bool _isEnable) { isDisplay_ = _isEnable; }
+    bool    IsDisplay() const { return isDisplay_; }
 
     double  GetFPS() const { return fps_; }
     void    PushLog(const std::string& _log);
@@ -69,6 +70,9 @@ public:
 private:
     DebugManager();
     ~DebugManager();
+
+    // Input
+    Input*                  pInput_ = nullptr;
 
     // Localization
     Localization::_Common       lang_common_ = {};
@@ -92,7 +96,7 @@ private:
     std::string             textLog_ = {};
 
     // flags
-    bool                    onDisplay_ = true;
+    bool                    isDisplay_ = true;
     bool                    enableAutoScroll_ = true;
     bool                    isExistSettingFile_ = false;
     
@@ -103,10 +107,9 @@ private:
 
 
 private: /// Windows
-    void Window_Common();
     void Window_ObjectList();
-    void Window_GameScreen();
     void Window_DebugInfo();
+    void Window_Inspector();
     void ShowDockSpace();
     void OverlayFPS() const;
     void DebugInfoBar() const;

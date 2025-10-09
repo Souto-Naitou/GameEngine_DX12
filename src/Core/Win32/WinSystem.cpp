@@ -86,7 +86,12 @@ void WinSystem::ToggleFullScreen()
     else
     {
         // ウィンドウモードに戻す
-        SetWindowLong(hwnd_, GWL_STYLE, WS_OVERLAPPEDWINDOW);
+        #ifndef _DEBUG
+        auto dwFlag = WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX | WS_MAXIMIZEBOX;
+        #else
+        auto dwFlag = WS_OVERLAPPEDWINDOW;
+        #endif // _DEBUG
+        SetWindowLong(hwnd_, GWL_STYLE, dwFlag);
         SetWindowPos(hwnd_, HWND_TOP, 100, 100, clientWidth, clientHeight, SWP_NOOWNERZORDER | SWP_FRAMECHANGED);
     }
 }
